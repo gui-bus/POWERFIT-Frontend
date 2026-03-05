@@ -6,6 +6,15 @@ const nextConfig: NextConfig = {
       {
         hostname: "www.figma.com",
       },
+      {
+        hostname: "*.ufs.sh"
+      },
+      {
+        hostname: "lh3.googleusercontent.com"
+      },
+      {
+        hostname: "images.unsplash.com"
+      }
     ],
   },
 };

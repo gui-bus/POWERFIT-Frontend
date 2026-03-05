@@ -1,0 +1,101 @@
+"use client";
+
+import Link from "next/link";
+import { House, Calendar, Sparkles, ChartNoAxesColumn, UserRound, LogOut, Settings } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { authClient } from "@/lib/authClient";
+
+export function BottomNav() {
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const navItems = [
+    { icon: House, href: "/", active: pathname === "/" },
+    { icon: Calendar, href: "#" },
+    { icon: ChartNoAxesColumn, href: "#" },
+    { icon: UserRound, href: "#" },
+  ];
+
+  const handleLogout = async () => {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("/auth");
+        },
+      },
+    });
+  };
+
+  return (
+    <>
+      {/* Mobile Bottom Nav */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-t border-border px-6 py-4 flex items-center justify-between rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
+        <Link href="/" className="p-3">
+          <House className={cn("size-6 transition-all", pathname === "/" ? "text-primary scale-110" : "text-muted-foreground")} />
+        </Link>
+        <button className="p-3">
+          <Calendar className="size-6 text-muted-foreground" />
+        </button>
+        <div className="relative -mt-14">
+          <button className="bg-primary p-5 rounded-full border-[8px] border-background shadow-2xl shadow-primary/40 transition-transform active:scale-95 text-primary-foreground">
+            <Sparkles className="size-6" />
+          </button>
+        </div>
+        <button className="p-3">
+          <ChartNoAxesColumn className="size-6 text-muted-foreground" />
+        </button>
+        <button className="p-3">
+          <UserRound className="size-6 text-muted-foreground" />
+        </button>
+      </nav>
+
+      {/* Desktop Sidebar */}
+      <nav className="hidden lg:flex fixed left-0 top-0 bottom-0 w-24 xl:w-28 bg-card border-r border-border flex-col items-center py-10 z-50">
+        <Link href="/" className="font-syne text-3xl font-black italic text-primary mb-12 tracking-tighter hover:scale-110 transition-transform">
+          P.
+        </Link>
+
+        <div className="flex flex-col gap-6 flex-1">
+          {navItems.map((item, i) => (
+            <Link 
+              key={i}
+              href={item.href} 
+              className={cn(
+                "p-4 rounded-2xl transition-all duration-300 group relative flex items-center justify-center",
+                item.active 
+                  ? "bg-primary text-primary-foreground shadow-2xl shadow-primary/30" 
+                  : "text-muted-foreground hover:text-primary hover:bg-accent"
+              )}
+            >
+              <item.icon className="size-6 stroke-[2.5]" />
+              {item.active && (
+                <span className="absolute -left-10 w-2 h-10 bg-primary rounded-r-full shadow-[4px_0_12px_rgba(var(--primary),0.4)]" />
+              )}
+            </Link>
+          ))}
+          
+          <button className="mt-4 p-4 rounded-2xl text-muted-foreground hover:text-primary hover:bg-accent transition-all">
+            <Settings className="size-6 stroke-[2.5]" />
+          </button>
+        </div>
+
+        <div className="flex flex-col gap-8 items-center mb-4">
+          <button className="bg-primary p-5 rounded-3xl shadow-2xl hover:opacity-90 transition-all active:scale-95 group relative text-primary-foreground">
+            <Sparkles className="size-7 group-hover:scale-110 transition-transform" />
+            <span className="absolute -top-1 -right-1 size-4 bg-background rounded-full border-4 border-primary" />
+          </button>
+          
+          <div className="h-px w-8 bg-border" />
+          
+          <button 
+            onClick={handleLogout}
+            className="p-4 text-muted-foreground hover:text-destructive transition-colors cursor-pointer"
+          >
+            <LogOut className="size-6" />
+          </button>
+        </div>
+      </nav>
+    </>
+  );
+}

@@ -14,19 +14,18 @@ Este arquivo serve como guia de contexto para o agente Gemini ao trabalhar neste
 - [📝 Padrões de Commit e Git](#-padrões-de-commit-e-git)
 - [🎨 Estilização e Tematização](#-estilização-e-tematização)
 - [📦 Implementação de Funcionalidades](#-implementação-de-funcionalidades)
-  - [Imagens](#imagens)
-  - [Formulários](#formulários)
-  - [Componentes](#componentes)
 - [📡 API e Data Fetching](#-api-e-data-fetching)
-  - [Geração de Código (Orval)](#geração-de-código-orval)
-  - [Estratégia de Fetching](#estratégia-de-fetching)
-  - [Tratamento de Erros e Mutações](#tratamento-de-erros-e-mutações)
 
 ---
 
 ## 🌟 Visão Geral do Projeto
 
 Você atua como um engenheiro de software sênior especializado em desenvolvimento web moderno. O foco é entregar soluções de alta qualidade, escaláveis e fáceis de manter, utilizando o estado da arte do ecossistema React/Next.js.
+
+### 🏷️ Branding e Identidade
+- **Nome do Projeto:** **POWER.FIT**
+- **Logo:** Em contextos reduzidos (como sidebars), utilize apenas a letra **P.** (em itálico e negrito).
+- **Cores da Marca:** O projeto utiliza tons de **laranja** como cor principal, definidos pela variável `--primary` no CSS.
 
 ## 🛠️ Tecnologias e Ferramentas
 
@@ -72,7 +71,7 @@ Você atua como um engenheiro de software sênior especializado em desenvolvimen
 
 ### 🎨 Estilização e Tematização
 - **Tailwind v4:** Use classes utilitárias por padrão. CSS puro apenas em casos estritamente necessários.
-- **Sem Cores Hard-coded:** Use **SEMPRE** as cores do tema definidas em `app/globals.css`.
+- **Sem Cores Hard-coded:** Use **SEMPRE** as cores do tema definidas em `app/globals.css`. **NUNCA** utilize valores hexadecimais diretamente se houver uma variável de tema correspondente.
 - **Theming:** Antes de criar variáveis de cor, verifique se o tema do shadcn/ui já não atende à necessidade.
 
 ---
@@ -85,38 +84,6 @@ Você atua como um engenheiro de software sênior especializado em desenvolvimen
 ### Formulários
 - **Padrão:** Zod para validação + React Hook Form para estado.
 - **Componente Base:** Utilize o componente em `@components/ui/form.tsx`.
-
-#### Exemplo de Estrutura:
-```tsx
-const formSchema = z.object({
-  username: z.string().min(2, "Mínimo de 2 caracteres."),
-});
-
-export function ProfileForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-  });
-
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl><Input {...field} /></FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Enviar</Button>
-      </form>
-    </Form>
-  );
-}
-```
 
 ### Componentes
 - **shadcn/ui:** Priorize o uso de componentes da biblioteca. Verifique a [documentação](https://ui.shadcn.com/docs/components).
@@ -144,21 +111,3 @@ O Orval gera hooks baseados no TanStack Query em `@lib/api/generated`.
 ### Tratamento de Erros e Mutações
 - **AuthClient:** **NUNCA** use `try/catch`. Faça destructuring de `{ error }` do resultado.
 - **Mutações:** Use a variação síncrona do `mutate` e trate estados em `onSuccess` e `onError`.
-
-#### Exemplo de Mutação:
-```tsx
-const { mutate: createStore } = useCreateStore();
-
-const onSubmit = (data) => {
-  createStore({ data }, {
-    onSuccess: () => {
-      toast.success("Criado com sucesso!");
-      queryClient.invalidateQueries({ queryKey: getStoreQueryKey() });
-    },
-    onError: (error) => {
-      const msg = error.response?.data?.message || "Erro ao criar.";
-      toast.error(msg);
-    },
-  });
-};
-```
