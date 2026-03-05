@@ -7,7 +7,7 @@ import Image from "next/image";
 import { ConsistencyGrid } from "@/components/consistencyGrid";
 import { WorkoutCard } from "@/components/workoutCard";
 import { BottomNav } from "@/components/bottomNav";
-import { Bell, Search, Sparkles, ArrowRight, BookOpen } from "lucide-react";
+import { Bell, Sparkles, ArrowRight, BookOpen } from "lucide-react";
 import { UserNav } from "@/components/userNav";
 
 const MOCK_POSTS = [
@@ -87,7 +87,7 @@ export default async function Home() {
       <BottomNav />
 
       <main className="flex-1 lg:ml-24 xl:ml-28 h-screen overflow-y-auto custom-scrollbar bg-background">
-        <div className="max-w-[1200px] mx-auto pb-32 lg:pb-12 px-5 sm:px-10 lg:px-12">
+        <div className="max-w-300 mx-auto pb-32 lg:pb-12 px-5 sm:px-10 lg:px-12">
           
           <header className="flex items-center justify-between py-8 lg:py-10">
             <div>
@@ -112,7 +112,7 @@ export default async function Home() {
           </header>
 
           <div className="lg:pt-0">
-            <section className="relative aspect-[16/10] sm:aspect-[21/9] lg:h-[420px] w-full overflow-hidden rounded-[2.5rem] lg:rounded-[3.5rem] shadow-2xl shadow-primary/10">
+            <section className="relative aspect-16/10 sm:aspect-21/9 lg:h-105 w-full overflow-hidden rounded-[2.5rem] lg:rounded-[3.5rem] shadow-2xl shadow-primary/10">
               <Image
                 src="/images/login-bg.png"
                 alt="Banner"
@@ -120,8 +120,8 @@ export default async function Home() {
                 className="object-cover scale-105"
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90" />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent opacity-60" />
+              <div className="absolute inset-0 bg-linear-to-t from-black via-black/20 to-transparent opacity-90" />
+              <div className="absolute inset-0 bg-linear-to-r from-black/40 via-transparent to-transparent opacity-60" />
               
               <div className="absolute inset-0 flex flex-col justify-end lg:justify-between p-6 sm:p-10 lg:p-16">
                 <div className="hidden lg:block">
@@ -189,7 +189,7 @@ export default async function Home() {
         </div>
       </main>
 
-      <aside className="hidden lg:flex w-[480px] xl:w-[520px] bg-card border-l border-border flex-col h-screen overflow-y-auto custom-scrollbar">
+      <aside className="hidden lg:flex w-120 xl:w-130 bg-card border-l border-border flex-col h-screen overflow-y-auto custom-scrollbar">
         <div className="p-12 space-y-12">
           
           <div className="flex items-center justify-between">
