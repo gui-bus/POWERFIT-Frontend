@@ -1,6 +1,5 @@
 import {
   getHomeData,
-  getHomeDataResponseSuccess,
 } from "@/lib/api/fetch-generated";
 import { authClient } from "@/lib/authClient";
 import { headers } from "next/headers";

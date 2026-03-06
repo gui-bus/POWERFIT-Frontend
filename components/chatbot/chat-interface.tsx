@@ -113,7 +113,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
       <div className="flex shrink-0 items-center justify-between border-b border-border p-6 bg-card">
         <div className="flex items-center gap-3">
           <div className="flex items-center justify-center rounded-2xl bg-primary/10 border border-primary/10 p-3 shadow-inner">
-            <Sparkles className="size-[20px] text-primary" />
+            <Sparkles className="size-5 text-primary" />
           </div>
           <div className="flex flex-col">
             <span className="font-heading text-base font-black uppercase italic tracking-tight text-foreground">
@@ -233,6 +233,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
             />
             <Button
               type="submit"
+              // eslint-disable-next-line
               disabled={!form.watch("message").trim() || isLoading}
               size="icon"
               className="size-12 shrink-0 rounded-2xl bg-primary text-primary-foreground shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-transform"
@@ -250,7 +251,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
   return (
     <AnimatePresence>
       {chatParams.chat_open && (
-        <div className="absolute inset-0 z-[100] flex items-end justify-end p-4 sm:p-8 pointer-events-none">
+        <div className="absolute inset-0 z-100 flex items-end justify-end p-4 sm:p-8 pointer-events-none">
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -264,7 +265,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative w-full max-w-[440px] h-[600px] max-h-[80vh] flex flex-col pointer-events-auto"
+            className="relative w-full max-w-110 h-150 max-h-[80vh] flex flex-col pointer-events-auto"
           >
             {chatContent}
           </motion.div>

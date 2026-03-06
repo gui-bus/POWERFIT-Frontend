@@ -1,4 +1,4 @@
-import { getHomeData, getWorkoutPlanById } from "@/lib/api/fetch-generated";
+import { getHomeData } from "@/lib/api/fetch-generated";
 import { authClient } from "@/lib/authClient";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -9,7 +9,6 @@ import { WorkoutCard } from "@/components/workoutCard";
 import { Bell, Sparkles, Plus } from "lucide-react";
 import { UserNav } from "@/components/userNav";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 
 export default async function Home() {
   const session = await authClient.getSession({
@@ -69,7 +68,7 @@ export default async function Home() {
       </header>
 
       <div className="lg:pt-0">
-        <section className="relative aspect-16/10 sm:aspect-21/9 lg:h-105 w-full overflow-hidden rounded-[2.5rem] lg:rounded-[3.5rem] shadow-2xl">
+        <section className="relative aspect-16/10 sm:aspect-21/9 lg:h-105 w-full overflow-hidden rounded-[2.5rem] lg:rounded-[3.5rem] shadow-2xl border">
           <Image
             src="/images/login-bg.png"
             alt="Banner"

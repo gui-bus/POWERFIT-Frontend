@@ -17,11 +17,8 @@ const WEEKDAYS_LABELS = ["S", "T", "Q", "Q", "S", "S", "D"];
 
 export function ConsistencyGrid({ consistencyByDay, streak }: ConsistencyGridProps) {
   const today = dayjs().startOf('day');
-  // Ajuste para garantir que a semana sempre comece na segunda-feira (1) da semana atual.
   const startOfWeek = today.startOf('week').add(1, 'day').subtract(today.day() === 0 ? 7 : 0, 'day');
 
-  // Cálculo da ofensiva atual baseado nos dados de consistência para garantir 
-  // que a UI reflita os dias marcados como concluídos/iniciados.
   const dates = Object.keys(consistencyByDay).sort().reverse();
   let calculatedStreak = 0;
   for (const date of dates) {
@@ -42,7 +39,7 @@ export function ConsistencyGrid({ consistencyByDay, streak }: ConsistencyGridPro
   const finalStreak = Math.max(streak, calculatedStreak);
 
   return (
-    <div className="w-full flex flex-col gap-4 px-5 pt-6">
+    <div className="w-full flex flex-col gap-4 p-8">
       <div className="flex items-center justify-between">
         <div className="space-y-0.5">
           <h2 className="text-xl font-bold text-foreground tracking-tight flex items-center gap-2">
@@ -66,8 +63,6 @@ export function ConsistencyGrid({ consistencyByDay, streak }: ConsistencyGridPro
           const isToday = currentDate.isSame(today, "day");
           const isPast = currentDate.isBefore(today, "day");
           
-          // Consideramos concluído se a API diz que sim, 
-          // ou se for um dia passado que foi pelo menos iniciado (fallback para rest days ou delays de sync)
           const isCompleted = status?.workoutDayCompleted || (isPast && status?.workoutDayStarted);
           const isStarted = status?.workoutDayStarted;
 
@@ -85,7 +80,7 @@ export function ConsistencyGrid({ consistencyByDay, streak }: ConsistencyGridPro
                 )}
               >
                 {isCompleted ? (
-                  <Check className="size-5 stroke-[3]" />
+                  <Check className="size-5 stroke-3" />
                 ) : isStarted ? (
                   <div className="relative">
                     <Play className="size-4 fill-current" />

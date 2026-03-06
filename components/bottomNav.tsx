@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { House, Calendar, Sparkles, ChartNoAxesColumn, UserRound, LogOut, Settings } from "lucide-react";
+import { House, Calendar, Sparkles, ChartNoAxesColumn, UserRound, LogOut } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { authClient } from "@/lib/authClient";
@@ -66,7 +66,7 @@ export function BottomNav() {
             <div key="special" className="relative -mt-14">
               <button 
                 onClick={() => setIsOpen(true)}
-                className="bg-primary p-5 rounded-full border-[8px] border-background shadow-2xl shadow-primary/40 transition-transform active:scale-95 text-primary-foreground"
+                className="bg-primary p-5 rounded-full border-8 border-background shadow-2xl shadow-primary/40 transition-transform active:scale-95 text-primary-foreground"
               >
                 <Sparkles className="size-6" />
               </button>

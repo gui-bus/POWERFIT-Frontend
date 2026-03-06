@@ -1,7 +1,7 @@
 "use client";
 
 import { GetWorkoutDayById200ExercisesItem } from "@/lib/api/fetch-generated";
-import { CircleHelp, Zap, Repeat, Layers } from "lucide-react";
+import { CircleHelp } from "lucide-react";
 import { useQueryStates, parseAsBoolean, parseAsString } from "nuqs";
 
 interface ExerciseItemProps {
@@ -17,47 +17,59 @@ export function ExerciseItem({ exercise }: ExerciseItemProps) {
   const handleHelpClick = () => {
     setChatParams({
       chat_open: true,
-      chat_initial_message: `Qual a forma correta de executar o exercício ${exercise.name}?`,
+      chat_initial_message: `Poderia me dar instruções sobre como executar o ${exercise.name}?`,
     });
   };
+
+  const minutes = Math.floor(exercise.restTimeInSeconds / 60);
+  const seconds = exercise.restTimeInSeconds % 60;
+
+  const formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+
   return (
-    <div className="group bg-card/50 backdrop-blur-sm border border-border/50 p-6 rounded-[2rem] flex flex-col gap-6 shadow-sm hover:shadow-2xl hover:border-primary/30 transition-all duration-500 relative overflow-hidden">
-      {/* Side Accent */}
-      <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary/10 group-hover:bg-primary transition-colors" />
-      
-      <div className="flex items-start justify-between">
-        <div className="space-y-1">
-          <h3 className="font-syne text-lg font-black text-foreground uppercase italic leading-tight tracking-tight">
+    <div className="group bg-background border-b border-border p-6 sm:p-10 transition-all duration-300 hover:bg-muted/30">
+      <div className="flex flex-col gap-10 sm:gap-12">
+        <div className="space-y-4 sm:space-y-6">
+          <button
+            onClick={handleHelpClick}
+            className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors uppercase text-[10px] font-black tracking-[0.2em] border border-border px-3 py-1.5 rounded-sm bg-background/50 active:scale-95 cursor-help"
+          >
+            <CircleHelp className="size-3.5" />
+            Instruções
+          </button>
+
+          <h3 className="text-3xl sm:text-4xl font-bold text-foreground uppercase tracking-[ -0.04em] leading-[0.9] max-w-4xl">
             {exercise.name}
           </h3>
-          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Protocolo de Execução</p>
         </div>
-        <button 
-          onClick={handleHelpClick}
-          className="size-10 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all active:scale-90"
-        >
-          <CircleHelp className="size-5" />
-        </button>
-      </div>
 
-      <div className="grid grid-cols-3 gap-3">
-        <div className="bg-secondary/50 p-3 rounded-2xl flex flex-col gap-1 items-center justify-center border border-transparent hover:border-primary/10 transition-colors">
-          <Layers className="size-3.5 text-primary" />
-          <span className="text-[10px] font-black uppercase tracking-widest text-foreground">
-            {exercise.sets} Séries
-          </span>
-        </div>
-        <div className="bg-secondary/50 p-3 rounded-2xl flex flex-col gap-1 items-center justify-center border border-transparent hover:border-primary/10 transition-colors">
-          <Repeat className="size-3.5 text-primary" />
-          <span className="text-[10px] font-black uppercase tracking-widest text-foreground">
-            {exercise.reps} Reps
-          </span>
-        </div>
-        <div className="bg-secondary/50 p-3 rounded-2xl flex flex-col gap-1 items-center justify-center border border-transparent hover:border-primary/10 transition-colors text-center">
-          <Zap className="size-3.5 text-primary fill-primary/20" />
-          <span className="text-[10px] font-black uppercase tracking-widest text-foreground">
-            {exercise.restTimeInSeconds}s Desc
-          </span>
+        <div className="grid grid-cols-3 gap-4 sm:gap-12 max-w-5xl">
+          <div className="flex flex-col gap-2 sm:gap-4">
+            <span className="text-[9px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
+              Séries
+            </span>
+            <span className="text-4xl sm:text-5xl font-light text-foreground leading-none tabular-nums tracking-tighter">
+              {exercise.sets.toString().padStart(2, "0")}
+            </span>
+          </div>
+
+          <div className="flex flex-col gap-2 sm:gap-4 border-l border-border/50 pl-4 sm:pl-12">
+            <span className="text-[9px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
+              Reps
+            </span>
+            <span className="text-4xl sm:text-5xl font-light text-foreground leading-none tracking-tighter tabular-nums">
+              {exercise.reps}
+            </span>
+          </div>
+
+          <div className="flex flex-col gap-2 sm:gap-4 border-l border-border/50 pl-4 sm:pl-12">
+            <span className="text-[9px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
+              Pausa
+            </span>
+            <span className="text-4xl sm:text-5xl font-light text-foreground italic tabular-nums tracking-tighter">
+              {formattedTime}
+            </span>
+          </div>
         </div>
       </div>
     </div>

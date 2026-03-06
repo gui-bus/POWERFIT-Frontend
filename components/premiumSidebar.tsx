@@ -48,10 +48,9 @@ interface PremiumSidebarProps {
 
 export function PremiumSidebar({ user, homeData }: PremiumSidebarProps) {
   return (
-    <aside className="hidden lg:flex w-120 xl:w-130 bg-card border-l border-border flex-col h-screen overflow-y-auto custom-scrollbar sticky top-0">
+    <aside className="hidden 2xl:flex w-120 xl:w-130 bg-card border-l border-border flex-col h-screen overflow-y-auto custom-scrollbar sticky top-0">
       <div className="p-12 space-y-12">
         
-        {/* User Profile & Notifications */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <UserNav user={user} />
@@ -66,7 +65,6 @@ export function PremiumSidebar({ user, homeData }: PremiumSidebarProps) {
           </button>
         </div>
 
-        {/* Consistency Grid */}
         <div className="bg-background rounded-[2.5rem] border border-border overflow-hidden">
           <ConsistencyGrid 
             consistencyByDay={homeData.consistencyByDay} 
@@ -74,7 +72,6 @@ export function PremiumSidebar({ user, homeData }: PremiumSidebarProps) {
           />
         </div>
 
-        {/* Blog Insights Section */}
         <div className="space-y-8">
           <div className="flex items-center justify-between px-2">
             <div className="flex items-center gap-2 text-primary">

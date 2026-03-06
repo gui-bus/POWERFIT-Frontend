@@ -21,7 +21,7 @@ export function WorkoutDayHeader({ title }: WorkoutDayHeaderProps) {
       <h1 className="font-syne text-lg font-black uppercase italic tracking-tighter text-foreground">
         {title}
       </h1>
-      <div className="size-10" /> {/* Spacer */}
+      <div className="size-10" />
     </div>
   );
 }

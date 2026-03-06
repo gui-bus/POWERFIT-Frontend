@@ -24,6 +24,7 @@ export function SessionAction({ planId, dayId, activeSessionId, isCompleted }: S
       }
     } catch (error) {
       toast.error("Erro inesperado ao iniciar treino");
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -39,6 +40,7 @@ export function SessionAction({ planId, dayId, activeSessionId, isCompleted }: S
       }
     } catch (error) {
       toast.error("Erro inesperado ao concluir treino");
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -46,7 +48,7 @@ export function SessionAction({ planId, dayId, activeSessionId, isCompleted }: S
 
   if (isCompleted) {
     return (
-      <Button variant="ghost" disabled className="w-full h-12 rounded-full font-bold uppercase italic tracking-widest border border-border">
+      <Button variant="ghost" disabled className="w-full h-12 rounded-full font-bold uppercase italic tracking-widest border border-border cursor-pointer">
         Concluído!
       </Button>
     );
@@ -57,7 +59,7 @@ export function SessionAction({ planId, dayId, activeSessionId, isCompleted }: S
       <Button 
         onClick={handleComplete} 
         disabled={isLoading}
-        className="w-full h-12 rounded-full bg-primary text-primary-foreground font-bold uppercase italic tracking-widest hover:opacity-90 transition-all shadow-lg shadow-primary/20"
+        className="w-full h-12 rounded-full bg-primary text-primary-foreground font-bold uppercase italic tracking-widest hover:opacity-90 transition-all shadow-lg shadow-primary/20 cursor-pointer"
       >
         {isLoading ? "Concluindo..." : "Marcar como concluído"}
       </Button>
@@ -68,7 +70,7 @@ export function SessionAction({ planId, dayId, activeSessionId, isCompleted }: S
     <Button 
       onClick={handleStart} 
       disabled={isLoading}
-      className="w-full h-12 rounded-full bg-primary text-primary-foreground font-bold uppercase italic tracking-widest hover:opacity-90 transition-all shadow-lg shadow-primary/20"
+      className="w-full h-12 rounded-full bg-primary text-primary-foreground font-bold uppercase italic tracking-widest hover:opacity-90 transition-all shadow-lg shadow-primary/20 cursor-pointer"
     >
       {isLoading ? "Iniciando..." : "Iniciar Treino"}
     </Button>

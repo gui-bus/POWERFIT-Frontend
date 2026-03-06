@@ -1,4 +1,4 @@
-import { getWorkoutPlanById, getWorkoutPlanByIdResponseSuccess, getHomeData } from "@/lib/api/fetch-generated";
+import { getWorkoutPlanById, getHomeData } from "@/lib/api/fetch-generated";
 import { authClient } from "@/lib/authClient";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -49,10 +49,10 @@ export default async function WorkoutPlanDetailsPage({ params }: PageProps) {
   );
 
   return (
-    <div className="max-w-[1000px] mx-auto pb-32 lg:pb-12">
+    <div className="max-w-250 mx-auto pb-32 lg:pb-12">
       
       {/* Top Banner */}
-      <div className="relative h-[296px] w-full overflow-hidden rounded-b-[2.5rem] lg:rounded-b-[3.5rem] shadow-2xl">
+      <div className="relative h-74 w-full overflow-hidden rounded-b-[2.5rem] lg:rounded-b-[3.5rem] shadow-2xl">
         <Image
           src="/images/login-bg.png"
           alt="Plano Banner"
@@ -60,8 +60,8 @@ export default async function WorkoutPlanDetailsPage({ params }: PageProps) {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-95" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent opacity-60" />
+        <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent opacity-95" />
+        <div className="absolute inset-0 bg-linear-to-r from-black/60 via-transparent to-transparent opacity-60" />
         
         <div className="absolute inset-0 flex flex-col justify-between p-8 sm:p-12 lg:p-16">
           <h1 className="font-syne text-2xl font-black text-white uppercase italic tracking-tighter">
@@ -69,7 +69,7 @@ export default async function WorkoutPlanDetailsPage({ params }: PageProps) {
           </h1>
 
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 bg-[#2B54FF] px-4 py-1.5 rounded-full shadow-lg shadow-blue-600/20">
+            <div className="inline-flex items-center gap-2 bg-online px-4 py-1.5 rounded-full shadow-lg shadow-blue-600/20">
               <Goal className="size-4 text-white" />
               <span className="text-[10px] sm:text-xs font-black text-white uppercase tracking-widest italic">
                 {plan.name}
