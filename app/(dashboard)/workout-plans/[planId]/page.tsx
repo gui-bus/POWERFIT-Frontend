@@ -43,6 +43,11 @@ export default async function WorkoutPlanDetailsPage({ params }: PageProps) {
 
   const activeWorkoutDayId = homeData.todayWorkoutDay?.id;
 
+  const weekDayOrder = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
+  const sortedWorkoutDays = [...plan.workoutDays].sort((a, b) => 
+    weekDayOrder.indexOf(a.weekDay) - weekDayOrder.indexOf(b.weekDay)
+  );
+
   return (
     <div className="max-w-[1000px] mx-auto pb-32 lg:pb-12">
       
@@ -78,11 +83,10 @@ export default async function WorkoutPlanDetailsPage({ params }: PageProps) {
       </div>
 
       <div className="mt-8 px-5 sm:px-10 lg:px-12 space-y-2">
-        {plan.workoutDays.map((day) => {
+        {sortedWorkoutDays.map((day) => {
           const todayDate = dayjs().startOf('day');
           const startOfWeek = todayDate.startOf('week').add(1, 'day').subtract(todayDate.day() === 0 ? 7 : 0, 'day');
           
-          const weekDayOrder = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
           const dayDate = startOfWeek.add(weekDayOrder.indexOf(day.weekDay), 'day');
           const dateKey = dayDate.format("YYYY-MM-DD");
           
