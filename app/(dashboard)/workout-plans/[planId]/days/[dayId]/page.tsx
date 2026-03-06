@@ -117,7 +117,7 @@ export default async function WorkoutDayPage({ params }: PageProps) {
       <WorkoutDayHeader title={WEEKDAY_TRANSLATIONS[workoutDay.weekDay]} />
 
       <div className="lg:pt-10 pt-4">
-        <section className="relative aspect-[16/10] sm:aspect-[21/9] lg:h-[380px] w-full overflow-hidden rounded-[2.5rem] lg:rounded-[3.5rem] shadow-2xl shadow-primary/10">
+        <section className="relative aspect-[16/10] sm:aspect-[21/9] lg:h-[320px] w-full overflow-hidden rounded-[2.5rem] lg:rounded-[3rem] shadow-2xl border border-border/10">
           <Image
             src={workoutDay.coverImageUrl || "/images/login-bg.png"}
             alt={workoutDay.name}
@@ -125,35 +125,39 @@ export default async function WorkoutDayPage({ params }: PageProps) {
             className="object-cover scale-105"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent opacity-60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-95" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent opacity-40" />
           
-          <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-10 lg:p-16">
-            <div className="absolute top-6 sm:top-10 left-6 sm:left-10">
-              <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-full px-4 py-2 flex items-center gap-2 shadow-lg">
-                <Calendar className="size-3 text-white" />
-                <span className="text-[10px] font-black text-white uppercase tracking-widest italic">
+          <div className="absolute inset-0 flex flex-col justify-between p-6 sm:p-10 lg:p-12">
+            <div className="flex justify-between items-start">
+              <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 flex items-center gap-2 shadow-lg">
+                <Calendar className="size-3 text-primary" />
+                <span className="text-[9px] font-black text-white uppercase tracking-widest italic">
                   {WEEKDAY_TRANSLATIONS[workoutDay.weekDay]}
                 </span>
               </div>
             </div>
 
-            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-              <div className="space-y-4 max-w-2xl text-balance">
-                <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tighter uppercase italic leading-none drop-shadow-2xl">
-                  {workoutDay.name}
-                </h2>
-                <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+              <div className="space-y-4 max-w-2xl">
+                <div className="space-y-1">
+                  <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em] italic">Sessão Atual</p>
+                  <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tighter uppercase italic leading-none drop-shadow-2xl">
+                    {workoutDay.name}
+                  </h2>
+                </div>
+                
+                <div className="flex flex-wrap items-center gap-2.5">
                   <div className="flex items-center gap-1.5 bg-white/5 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 shadow-sm">
                     <Timer className="size-3.5 text-primary" />
                     <span className="text-[10px] sm:text-xs font-black text-white uppercase italic tracking-wider">
-                      {Math.round(workoutDay.estimatedDurationInSeconds / 60)}m
+                      {Math.round(workoutDay.estimatedDurationInSeconds / 60)}m Estimados
                     </span>
                   </div>
                   <div className="flex items-center gap-1.5 bg-white/5 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 shadow-sm">
                     <Dumbbell className="size-3.5 text-primary" />
                     <span className="text-[10px] sm:text-xs font-black text-white uppercase italic tracking-wider">
-                      {workoutDay.exercises.length} Exercícios
+                      {workoutDay.exercises.length} Exercícios no Protocolo
                     </span>
                   </div>
                 </div>
@@ -182,7 +186,7 @@ export default async function WorkoutDayPage({ params }: PageProps) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 max-w-3xl mx-auto">
+        <div className="flex flex-col gap-6 w-full max-w-3xl mx-auto">
           {workoutDay.exercises.map((exercise, index) => (
             <div key={exercise.id} className="flex gap-4 sm:gap-6 items-start">
               <div className="hidden sm:flex flex-col items-center gap-2 pt-4">
