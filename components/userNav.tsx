@@ -38,7 +38,7 @@ export function UserNav({ user }: UserNavProps) {
     const fetchHomeData = async () => {
       try {
         const response = await getHomeData(dayjs().format("YYYY-MM-DD"));
-        if (!("error" in response) && response.data.activeWorkoutPlanId && response.data.todayWorkoutDay) {
+        if (response.status === 200 && response.data.activeWorkoutPlanId && response.data.todayWorkoutDay) {
           setTodayWorkoutLink(`/workout-plans/${response.data.activeWorkoutPlanId}/days/${response.data.todayWorkoutDay.id}`);
         }
       } catch (error) {

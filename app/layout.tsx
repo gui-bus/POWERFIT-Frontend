@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/themeProvider";
 import { Toaster } from "sonner";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Chat } from "@/components/chatbot/chat-interface";
+import { Suspense } from "react";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -41,11 +42,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <NuqsAdapter>
-            {children}
-            <Chat />
-            <Toaster richColors position="top-right" />
-          </NuqsAdapter>
+          <Suspense>
+            <NuqsAdapter>
+              {children}
+              <Chat />
+              <Toaster richColors position="top-right" />
+            </NuqsAdapter>
+          </Suspense>
         </ThemeProvider>
       </body>
     </html>
