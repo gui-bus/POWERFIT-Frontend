@@ -16,14 +16,14 @@ export function BottomNav() {
   
   const [, setIsOpen] = useQueryState("chat_open", parseAsBoolean.withDefault(false));
   
-  const [todayWorkoutLink, setTodayWorkoutLink] = useState<string | null>(null);
+  const [planOverviewLink, setPlanOverviewLink] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
         const response = await getHomeData(dayjs().format("YYYY-MM-DD"));
-        if (response.status === 200 && response.data.activeWorkoutPlanId && response.data.todayWorkoutDay) {
-          setTodayWorkoutLink(`/workout-plans/${response.data.activeWorkoutPlanId}/days/${response.data.todayWorkoutDay.id}`);
+        if (response.status === 200 && response.data.activeWorkoutPlanId) {
+          setPlanOverviewLink(`/workout-plans/${response.data.activeWorkoutPlanId}`);
         }
       } catch (error) {
         console.error("Failed to fetch home data for nav link", error);
@@ -39,7 +39,7 @@ export function BottomNav() {
     { icon: House, href: "/", active: pathname === "/" },
     { 
       icon: Calendar, 
-      href: todayWorkoutLink || "#", 
+      href: planOverviewLink || "#", 
       active: isWorkoutDayActive 
     },
     { icon: ChartNoAxesColumn, href: "/stats", active: pathname === "/stats" },
@@ -105,10 +105,6 @@ export function BottomNav() {
               )}
             </Link>
           ))}
-          
-          <button className="mt-4 p-4 rounded-2xl text-muted-foreground hover:text-primary hover:bg-accent transition-all">
-            <Settings className="size-6 stroke-[2.5]" />
-          </button>
         </div>
 
         <div className="flex flex-col gap-8 items-center mb-4">

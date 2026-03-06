@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdownMenu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogOut, User, Settings, Moon, Sun, Calendar } from "lucide-react";
+import { LogOut, User, Moon, Sun, Calendar } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { getHomeData } from "@/lib/api/fetch-generated";
@@ -32,14 +32,14 @@ export function UserNav({ user }: UserNavProps) {
   const router = useRouter();
   const pathname = usePathname();
   const { setTheme, theme } = useTheme();
-  const [todayWorkoutLink, setTodayWorkoutLink] = useState<string | null>(null);
+  const [planOverviewLink, setPlanOverviewLink] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
         const response = await getHomeData(dayjs().format("YYYY-MM-DD"));
-        if (response.status === 200 && response.data.activeWorkoutPlanId && response.data.todayWorkoutDay) {
-          setTodayWorkoutLink(`/workout-plans/${response.data.activeWorkoutPlanId}/days/${response.data.todayWorkoutDay.id}`);
+        if (response.status === 200 && response.data.activeWorkoutPlanId) {
+          setPlanOverviewLink(`/workout-plans/${response.data.activeWorkoutPlanId}`);
         }
       } catch (error) {
         console.error("Failed to fetch home data for user nav", error);
@@ -89,18 +89,17 @@ export function UserNav({ user }: UserNavProps) {
               "rounded-xl p-3 focus:bg-primary focus:text-primary-foreground group cursor-pointer",
               isWorkoutDayActive && "bg-primary/5 text-primary"
             )}
-            onClick={() => todayWorkoutLink && router.push(todayWorkoutLink)}
+            onClick={() => planOverviewLink && router.push(planOverviewLink)}
           >
             <Calendar className="mr-3 h-4 w-4 stroke-[2.5]" />
-            <span className="font-bold text-xs uppercase tracking-wider">Treino de Hoje</span>
+            <span className="font-bold text-xs uppercase tracking-wider">Plano de Treino</span>
           </DropdownMenuItem>
-          <DropdownMenuItem className="rounded-xl p-3 focus:bg-primary focus:text-primary-foreground group cursor-pointer">
+          <DropdownMenuItem 
+            className="rounded-xl p-3 focus:bg-primary focus:text-primary-foreground group cursor-pointer"
+            onClick={() => router.push("/profile")}
+          >
             <User className="mr-3 h-4 w-4 stroke-[2.5]" />
             <span className="font-bold text-xs uppercase tracking-wider">Perfil</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem className="rounded-xl p-3 focus:bg-primary focus:text-primary-foreground group cursor-pointer">
-            <Settings className="mr-3 h-4 w-4 stroke-[2.5]" />
-            <span className="font-bold text-xs uppercase tracking-wider">Configurações</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator className="bg-border/50" />
