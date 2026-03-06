@@ -37,11 +37,11 @@ export default async function DashboardLayout({
   const homeData = homeResponse.data;
 
   return (
-    <div className="relative min-h-screen flex flex-col lg:flex-row overflow-x-hidden selection:bg-primary/20 selection:text-primary transition-colors duration-500">
+    <div className="relative min-h-screen flex flex-col lg:flex-row overflow-x-hidden selection:bg-primary/20 selection:text-primary transition-colors duration-500 w-full max-w-440 mx-auto">
       <BackgroundImages />
       <BottomNav />
 
-      <main className="flex-1 lg:ml-24 xl:ml-28 h-screen overflow-y-auto custom-scrollbar">
+      <main className="flex-1 h-screen overflow-y-auto custom-scrollbar">
         {children}
       </main>
 

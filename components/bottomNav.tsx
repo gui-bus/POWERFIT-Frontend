@@ -82,7 +82,7 @@ export function BottomNav() {
       </nav>
 
       {/* Desktop Sidebar */}
-      <nav className="hidden lg:flex fixed left-0 top-0 bottom-0 w-24 xl:w-28 bg-card border-r border-border flex-col items-center py-10 z-50">
+      <nav className="hidden lg:flex sticky left-0 top-0 h-screen w-24 xl:w-28 bg-card border-r border-border flex-col items-center py-10 z-50">
         <Link href="/" className="font-syne text-3xl font-black italic text-primary mb-12 tracking-tighter hover:scale-110 transition-transform">
           P.
         </Link>
