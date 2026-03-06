@@ -41,7 +41,7 @@ export function BottomNav() {
       active: isWorkoutDayActive 
     },
     { icon: ChartNoAxesColumn, href: "/stats", active: pathname === "/stats" },
-    { icon: UserRound, href: "#" },
+    { icon: UserRound, href: "/profile", active: pathname === "/profile" },
   ];
 
   const handleLogout = async () => {
