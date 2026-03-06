@@ -112,7 +112,7 @@ export default async function Home() {
           </header>
 
           <div className="lg:pt-0">
-            <section className="relative aspect-16/10 sm:aspect-21/9 lg:h-105 w-full overflow-hidden rounded-[2.5rem] lg:rounded-[3.5rem] shadow-2xl shadow-primary/10">
+            <section className="relative aspect-16/10 sm:aspect-21/9 lg:h-105 w-full overflow-hidden rounded-[2.5rem] lg:rounded-[3.5rem] shadow-2xl">
               <Image
                 src="/images/login-bg.png"
                 alt="Banner"
@@ -169,13 +169,27 @@ export default async function Home() {
               </div>
               
               <div className="grid grid-cols-1 gap-2">
-                {workoutDays.map((day) => (
-                  <WorkoutCard 
-                    key={day.id} 
-                    workout={day} 
-                    isActive={day.id === activeWorkoutDayId}
-                  />
-                ))}
+                {workoutDays.map((day) => {
+                  const todayDate = dayjs().startOf('day');
+                  const startOfWeek = todayDate.startOf('week').add(1, 'day').subtract(todayDate.day() === 0 ? 7 : 0, 'day');
+                  
+                  const weekDayOrder = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
+                  const dayDate = startOfWeek.add(weekDayOrder.indexOf(day.weekDay), 'day');
+                  const dateKey = dayDate.format("YYYY-MM-DD");
+                  
+                  const status = homeData.consistencyByDay[dateKey];
+                  const isCompleted = status?.workoutDayCompleted || (dayDate.isBefore(todayDate) && status?.workoutDayStarted);
+
+                  return (
+                    <WorkoutCard 
+                      key={day.id} 
+                      workout={day} 
+                      isActive={day.id === activeWorkoutDayId}
+                      isCompleted={isCompleted}
+                      planId={homeData.activeWorkoutPlanId!}
+                    />
+                  );
+                })}
               </div>
             </div>
 

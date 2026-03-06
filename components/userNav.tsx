@@ -1,7 +1,7 @@
 "use client";
 
 import { authClient } from "@/lib/authClient";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,8 +13,12 @@ import {
 } from "@/components/ui/dropdownMenu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogOut, User, Settings, Moon, Sun } from "lucide-react";
+import { LogOut, User, Settings, Moon, Sun, Calendar } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+import { getHomeData } from "@/lib/api/fetch-generated";
+import dayjs from "dayjs";
+import { cn } from "@/lib/utils";
 
 interface UserNavProps {
   user: {
@@ -26,7 +30,24 @@ interface UserNavProps {
 
 export function UserNav({ user }: UserNavProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const { setTheme, theme } = useTheme();
+  const [todayWorkoutLink, setTodayWorkoutLink] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchHomeData = async () => {
+      try {
+        const response = await getHomeData(dayjs().format("YYYY-MM-DD"));
+        if (!("error" in response) && response.data.activeWorkoutPlanId && response.data.todayWorkoutDay) {
+          setTodayWorkoutLink(`/workout-plans/${response.data.activeWorkoutPlanId}/days/${response.data.todayWorkoutDay.id}`);
+        }
+      } catch (error) {
+        console.error("Failed to fetch home data for user nav", error);
+      }
+    };
+
+    fetchHomeData();
+  }, []);
 
   const handleLogout = async () => {
     await authClient.signOut({
@@ -37,6 +58,8 @@ export function UserNav({ user }: UserNavProps) {
       },
     });
   };
+
+  const isWorkoutDayActive = pathname.includes("/workout-plans/");
 
   return (
     <DropdownMenu>
@@ -61,6 +84,16 @@ export function UserNav({ user }: UserNavProps) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-border/50" />
         <DropdownMenuGroup className="p-1">
+          <DropdownMenuItem 
+            className={cn(
+              "rounded-xl p-3 focus:bg-primary focus:text-primary-foreground group cursor-pointer",
+              isWorkoutDayActive && "bg-primary/5 text-primary"
+            )}
+            onClick={() => todayWorkoutLink && router.push(todayWorkoutLink)}
+          >
+            <Calendar className="mr-3 h-4 w-4 stroke-[2.5]" />
+            <span className="font-bold text-xs uppercase tracking-wider">Treino de Hoje</span>
+          </DropdownMenuItem>
           <DropdownMenuItem className="rounded-xl p-3 focus:bg-primary focus:text-primary-foreground group cursor-pointer">
             <User className="mr-3 h-4 w-4 stroke-[2.5]" />
             <span className="font-bold text-xs uppercase tracking-wider">Perfil</span>

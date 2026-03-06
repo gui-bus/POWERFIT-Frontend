@@ -2,17 +2,44 @@
 
 import Link from "next/link";
 import { House, Calendar, Sparkles, ChartNoAxesColumn, UserRound, LogOut, Settings } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { authClient } from "@/lib/authClient";
+import { useEffect, useState } from "react";
+import { getHomeData } from "@/lib/api/fetch-generated";
+import dayjs from "dayjs";
 
 export function BottomNav() {
   const pathname = usePathname();
   const router = useRouter();
+  const params = useParams();
+  
+  const [todayWorkoutLink, setTodayWorkoutLink] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchHomeData = async () => {
+      try {
+        const response = await getHomeData(dayjs().format("YYYY-MM-DD"));
+        if (!("error" in response) && response.data.activeWorkoutPlanId && response.data.todayWorkoutDay) {
+          setTodayWorkoutLink(`/workout-plans/${response.data.activeWorkoutPlanId}/days/${response.data.todayWorkoutDay.id}`);
+        }
+      } catch (error) {
+        console.error("Failed to fetch home data for nav link", error);
+      }
+    };
+
+    fetchHomeData();
+  }, []);
+
+  const isWorkoutDayActive = pathname.includes("/workout-plans/");
 
   const navItems = [
     { icon: House, href: "/", active: pathname === "/" },
-    { icon: Calendar, href: "#" },
+    { 
+      icon: Calendar, 
+      href: todayWorkoutLink || "#", 
+      active: isWorkoutDayActive 
+    },
     { icon: ChartNoAxesColumn, href: "#" },
     { icon: UserRound, href: "#" },
   ];
@@ -31,23 +58,22 @@ export function BottomNav() {
     <>
       {/* Mobile Bottom Nav */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-t border-border px-6 py-4 flex items-center justify-between rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
-        <Link href="/" className="p-3">
-          <House className={cn("size-6 transition-all", pathname === "/" ? "text-primary scale-110" : "text-muted-foreground")} />
-        </Link>
-        <button className="p-3">
-          <Calendar className="size-6 text-muted-foreground" />
-        </button>
-        <div className="relative -mt-14">
-          <button className="bg-primary p-5 rounded-full border-[8px] border-background shadow-2xl shadow-primary/40 transition-transform active:scale-95 text-primary-foreground">
-            <Sparkles className="size-6" />
-          </button>
-        </div>
-        <button className="p-3">
-          <ChartNoAxesColumn className="size-6 text-muted-foreground" />
-        </button>
-        <button className="p-3">
-          <UserRound className="size-6 text-muted-foreground" />
-        </button>
+        {navItems.map((item, i) => {
+          const Icon = item.icon;
+          if (i === 2) return (
+            <div key="special" className="relative -mt-14">
+              <button className="bg-primary p-5 rounded-full border-[8px] border-background shadow-2xl shadow-primary/40 transition-transform active:scale-95 text-primary-foreground">
+                <Sparkles className="size-6" />
+              </button>
+            </div>
+          );
+          
+          return (
+            <Link key={i} href={item.href} className="p-3">
+              <Icon className={cn("size-6 transition-all", item.active ? "text-primary scale-110" : "text-muted-foreground")} />
+            </Link>
+          );
+        })}
       </nav>
 
       {/* Desktop Sidebar */}

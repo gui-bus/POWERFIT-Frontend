@@ -1,5 +1,3 @@
-import { cookies } from "next/headers";
-
 const getBody = <T>(c: Response | Request): Promise<T> => {
   return c.json() as Promise<T>;
 };
@@ -11,11 +9,15 @@ const getUrl = (contextUrl: string): string => {
 };
 
 const getHeaders = async (headers?: HeadersInit): Promise<HeadersInit> => {
-  const _cookies = await cookies();
-  return {
-    ...headers,
-    cookie: _cookies.toString(),
-  };
+  if (typeof window === "undefined") {
+    const { cookies } = await import("next/headers");
+    const _cookies = await cookies();
+    return {
+      ...headers,
+      cookie: _cookies.toString(),
+    };
+  }
+  return headers || {};
 };
 
 export const customFetch = async <T>(

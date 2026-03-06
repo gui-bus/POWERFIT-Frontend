@@ -16,7 +16,30 @@ interface ConsistencyGridProps {
 const WEEKDAYS_LABELS = ["S", "T", "Q", "Q", "S", "S", "D"];
 
 export function ConsistencyGrid({ consistencyByDay, streak }: ConsistencyGridProps) {
-  const startOfWeek = dayjs().startOf("week").add(1, "day");
+  const today = dayjs().startOf('day');
+  // Ajuste para garantir que a semana sempre comece na segunda-feira (1) da semana atual.
+  const startOfWeek = today.startOf('week').add(1, 'day').subtract(today.day() === 0 ? 7 : 0, 'day');
+
+  // Cálculo da ofensiva atual baseado nos dados de consistência para garantir 
+  // que a UI reflita os dias marcados como concluídos/iniciados.
+  const dates = Object.keys(consistencyByDay).sort().reverse();
+  let calculatedStreak = 0;
+  for (const date of dates) {
+    const currentDate = dayjs(date);
+    if (currentDate.isAfter(today, 'day')) continue;
+    
+    const status = consistencyByDay[date];
+    const isCompleted = status.workoutDayCompleted || (currentDate.isBefore(today, 'day') && status.workoutDayStarted);
+    
+    if (isCompleted) {
+      calculatedStreak++;
+    } else if (currentDate.isSame(today, 'day')) {
+      continue;
+    } else {
+      break;
+    }
+  }
+  const finalStreak = Math.max(streak, calculatedStreak);
 
   return (
     <div className="w-full flex flex-col gap-4 px-5 pt-6">
@@ -36,15 +59,20 @@ export function ConsistencyGrid({ consistencyByDay, streak }: ConsistencyGridPro
 
       <div className="grid grid-cols-7 gap-3">
         {WEEKDAYS_LABELS.map((label, index) => {
-          const date = startOfWeek.add(index, "day").format("YYYY-MM-DD");
-          const status = consistencyByDay[date];
+          const currentDate = startOfWeek.add(index, "day");
+          const dateKey = currentDate.format("YYYY-MM-DD");
+          const status = consistencyByDay[dateKey];
           
-          const isCompleted = status?.workoutDayCompleted;
+          const isToday = currentDate.isSame(today, "day");
+          const isPast = currentDate.isBefore(today, "day");
+          
+          // Consideramos concluído se a API diz que sim, 
+          // ou se for um dia passado que foi pelo menos iniciado (fallback para rest days ou delays de sync)
+          const isCompleted = status?.workoutDayCompleted || (isPast && status?.workoutDayStarted);
           const isStarted = status?.workoutDayStarted;
-          const isToday = date === dayjs().format("YYYY-MM-DD");
 
           return (
-            <div key={date} className="flex flex-col items-center gap-2.5">
+            <div key={dateKey} className="flex flex-col items-center gap-2.5">
               <div
                 className={cn(
                   "relative size-12 rounded-2xl flex items-center justify-center transition-all duration-300",
@@ -96,7 +124,7 @@ export function ConsistencyGrid({ consistencyByDay, streak }: ConsistencyGridPro
               Ofensiva Atual
             </p>
             <p className="text-2xl font-black text-background leading-none">
-              {streak} {streak === 1 ? 'Dia' : 'Dias'}
+              {finalStreak} {finalStreak === 1 ? 'Dia' : 'Dias'}
             </p>
           </div>
         </div>
@@ -111,7 +139,7 @@ export function ConsistencyGrid({ consistencyByDay, streak }: ConsistencyGridPro
                 key={i} 
                 className={cn(
                   "h-1 w-4 rounded-full",
-                  i <= (streak % 5 || 5) ? "bg-primary" : "bg-muted/20"
+                  i <= (finalStreak % 5 || 5) ? "bg-primary" : "bg-muted/20"
                 )} 
               />
             ))}

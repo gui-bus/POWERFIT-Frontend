@@ -106,7 +106,6 @@ O Orval gera hooks baseados no TanStack Query em `@lib/api/generated`.
 | Contexto | Caminho das Funções/Hooks |
 | :--- | :--- |
 | **Server-side Fetching** | `@app/_lib/api/fetch-generated/index.ts` |
-| **Client-side (Hooks)** | `@lib/api/rc-generated/index.ts` |
 
 ### Tratamento de Erros e Mutações
 - **AuthClient:** **NUNCA** use `try/catch`. Faça destructuring de `{ error }` do resultado.
