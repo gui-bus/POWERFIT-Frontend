@@ -43,33 +43,14 @@ const MOCK_POSTS = [
 ];
 
 interface PremiumSidebarProps {
-  user: {
-    name: string;
-    email: string;
-    image?: string | null;
-  };
   homeData: GetHomeData200;
 }
 
-export function PremiumSidebar({ user, homeData }: PremiumSidebarProps) {
+export function PremiumSidebar({ homeData }: PremiumSidebarProps) {
   return (
     <aside className="hidden 2xl:flex w-120 xl:w-130 bg-card border-l border-border flex-col h-screen overflow-y-auto custom-scrollbar sticky top-0">
       <div className="p-12 space-y-12">
         
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <UserNav user={user} />
-            <div>
-              <p className="text-sm font-black uppercase italic leading-none">{user.name.split(" ")[0]}</p>
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-1">Elite Atleta</p>
-            </div>
-          </div>
-          <button className="relative size-12 bg-background border border-border rounded-2xl flex items-center justify-center text-muted-foreground hover:text-primary transition-colors">
-            <Bell className="size-5" />
-            <span className="absolute top-3 right-3 size-2 bg-primary rounded-full border-2 border-background" />
-          </button>
-        </div>
-
         <div className="bg-background rounded-[2.5rem] border border-border overflow-hidden">
           <ConsistencyGrid 
             consistencyByDay={homeData.consistencyByDay} 

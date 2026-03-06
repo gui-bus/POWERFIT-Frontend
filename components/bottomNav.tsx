@@ -1,18 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { House, Calendar, Sparkles, ChartNoAxesColumn, UserRound, LogOut } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { House, Calendar, Sparkles, ChartNoAxesColumn, UserRound } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { authClient } from "@/lib/authClient";
 import { useEffect, useState } from "react";
 import { getHomeData } from "@/lib/api/fetch-generated";
 import dayjs from "dayjs";
 import { useQueryState, parseAsBoolean } from "nuqs";
+import { UserNav } from "@/components/userNav";
 
 export function BottomNav() {
   const pathname = usePathname();
-  const router = useRouter();
+  const { data: session } = authClient.useSession();
   
   const [, setIsOpen] = useQueryState("chat_open", parseAsBoolean.withDefault(false));
   
@@ -46,42 +47,31 @@ export function BottomNav() {
     { icon: UserRound, href: "/profile", active: pathname === "/profile" },
   ];
 
-  const handleLogout = async () => {
-    await authClient.signOut({
-      fetchOptions: {
-        onSuccess: () => {
-          router.push("/auth");
-        },
-      },
-    });
-  };
-
   return (
     <>
-      {/* Mobile Bottom Nav */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-t border-border px-6 py-4 flex items-center justify-between rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
-        {navItems.map((item, i) => {
-          const Icon = item.icon;
-          if (i === 2) return (
-            <div key="special" className="relative -mt-14">
-              <button 
-                onClick={() => setIsOpen(true)}
-                className="bg-primary p-5 rounded-full border-8 border-background shadow-2xl shadow-primary/40 transition-transform active:scale-95 text-primary-foreground"
-              >
-                <Sparkles className="size-6" />
-              </button>
-            </div>
-          );
-          
-          return (
-            <Link key={i} href={item.href} className="p-3">
-              <Icon className={cn("size-6 transition-all", item.active ? "text-primary scale-110" : "text-muted-foreground")} />
-            </Link>
-          );
-        })}
+        {navItems.slice(0, 2).map((item, i) => (
+          <Link key={i} href={item.href} className="p-3">
+            <item.icon className={cn("size-6 transition-all", item.active ? "text-primary scale-110" : "text-muted-foreground")} />
+          </Link>
+        ))}
+
+        <div className="relative -mt-14">
+          <button 
+            onClick={() => setIsOpen(true)}
+            className="bg-primary p-5 rounded-full border-8 border-background shadow-2xl shadow-primary/40 transition-transform active:scale-95 text-primary-foreground"
+          >
+            <Sparkles className="size-6" />
+          </button>
+        </div>
+
+        {navItems.slice(2).map((item, i) => (
+          <Link key={i + 2} href={item.href} className="p-3">
+            <item.icon className={cn("size-6 transition-all", item.active ? "text-primary scale-110" : "text-muted-foreground")} />
+          </Link>
+        ))}
       </nav>
 
-      {/* Desktop Sidebar */}
       <nav className="hidden lg:flex sticky left-0 top-0 h-screen w-24 xl:w-28 bg-card border-r border-border flex-col items-center py-10 z-50">
         <Link href="/" className="font-syne text-3xl font-black italic text-primary mb-12 tracking-tighter hover:scale-110 transition-transform">
           P.
@@ -116,14 +106,9 @@ export function BottomNav() {
             <span className="absolute -top-1 -right-1 size-4 bg-background rounded-full border-4 border-primary" />
           </button>
           
-          <div className="h-px w-8 bg-border" />
-          
-          <button 
-            onClick={handleLogout}
-            className="p-4 text-muted-foreground hover:text-destructive transition-colors cursor-pointer"
-          >
-            <LogOut className="size-6" />
-          </button>
+          {session?.user && (
+            <UserNav user={session.user} />
+          )}
         </div>
       </nav>
     </>

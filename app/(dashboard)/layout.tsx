@@ -46,11 +46,6 @@ export default async function DashboardLayout({
       </main>
 
       <PremiumSidebar
-        user={{
-          name: session.data.user.name,
-          email: session.data.user.email,
-          image: session.data.user.image,
-        }}
         homeData={homeData}
       />
 
