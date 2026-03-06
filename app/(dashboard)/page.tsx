@@ -37,11 +37,6 @@ export default async function Home() {
   const hasPlan = !!homeData.activeWorkoutPlanId;
   const todayWorkout = homeData.todayWorkoutDay;
 
-  const consistencyValues = Object.values(homeData.consistencyByDay);
-  const totalDays = consistencyValues.length;
-  const completedDays = consistencyValues.filter(day => day.workoutDayCompleted).length;
-  const weeklyProgress = totalDays > 0 ? Math.round((completedDays / totalDays) * 100) : 0;
-
   return (
     <div className="max-w-300 mx-auto pb-32 lg:pb-12 px-5 sm:px-10 lg:px-12">
       
@@ -81,9 +76,13 @@ export default async function Home() {
           
           <div className="absolute inset-0 flex flex-col justify-end lg:justify-between p-6 sm:p-10 lg:p-16">
             <div className="hidden lg:block">
-              <h1 className="font-syne text-2xl font-black text-white uppercase italic tracking-tighter">
-                P.
-              </h1>
+              <Image 
+                src="/images/powerfit-logo.svg" 
+                alt="PowerFit Logo" 
+                width={120} 
+                height={14} 
+                className="h-auto"
+              />
             </div>
 
             <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 sm:gap-8">
@@ -108,12 +107,6 @@ export default async function Home() {
                     </>
                   )}
                 </h2>
-                <p className="text-[10px] sm:text-sm lg:text-lg text-white/70 font-medium max-w-xs sm:max-w-md drop-shadow">
-                  {hasPlan 
-                    ? `Seu plano atual está ${weeklyProgress}% completo. Mantenha o ritmo!`
-                    : "Você ainda não possui um plano de treino ativo. Use nossa IA para montar um agora!"
-                  }
-                </p>
               </div>
 
               <Link 
