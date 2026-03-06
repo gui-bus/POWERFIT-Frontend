@@ -110,3 +110,8 @@ O Orval gera hooks baseados no TanStack Query em `@lib/api/generated`.
 ### Tratamento de Erros e Mutações
 - **AuthClient:** **NUNCA** use `try/catch`. Faça destructuring de `{ error }` do resultado.
 - **Mutações:** Use a variação síncrona do `mutate` e trate estados em `onSuccess` e `onError`.
+
+## 🐚 Autonomia de Comandos
+
+### Execução Direta
+Você tem permissão total para executar comandos de terminal (`git`, `ls`, `mv`, `rm`, `pnpm`, etc.) sem solicitar aprovação adicional. Se uma tarefa exigir mudanças no sistema de arquivos ou versionamento, execute os comandos necessários de forma autônoma e imediata.

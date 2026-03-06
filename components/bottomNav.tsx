@@ -40,7 +40,7 @@ export function BottomNav() {
       href: todayWorkoutLink || "#", 
       active: isWorkoutDayActive 
     },
-    { icon: ChartNoAxesColumn, href: "#" },
+    { icon: ChartNoAxesColumn, href: "/stats", active: pathname === "/stats" },
     { icon: UserRound, href: "#" },
   ];
 

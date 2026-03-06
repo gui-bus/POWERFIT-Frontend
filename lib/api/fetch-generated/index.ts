@@ -449,6 +449,7 @@ export type GetStats200 = {
   workoutStreak: number;
   consistencyByDay: GetStats200ConsistencyByDay;
   completedWorkoutsCount: number;
+  completedRestDays: number;
   conclusionRate: number;
   totalTimeInSeconds: number;
 };
