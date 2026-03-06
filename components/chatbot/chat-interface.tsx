@@ -250,10 +250,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
   return (
     <AnimatePresence>
       {chatParams.chat_open && (
-        <div className="fixed inset-0 z-[100] flex items-end justify-end p-4 sm:p-8 pointer-events-none">
-          {/* Backdrop for mobile to prevent interaction behind? Or just keep it as a widget. 
-              The user said "não pode abrir em tela cheia", so maybe no backdrop or a very light one.
-          */}
+        <div className="absolute inset-0 z-[100] flex items-end justify-end p-4 sm:p-8 pointer-events-none">
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

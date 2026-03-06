@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import { BottomNav } from "@/components/bottomNav";
 import { PremiumSidebar } from "@/components/premiumSidebar";
 import BackgroundImages from "@/components/common/backgroundImages";
+import { Chat } from "@/components/chatbot/chat-interface";
 
 export default async function DashboardLayout({
   children,
@@ -53,6 +54,8 @@ export default async function DashboardLayout({
         }}
         homeData={homeData}
       />
+
+      <Chat />
     </div>
   );
 }

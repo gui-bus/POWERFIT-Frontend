@@ -4,7 +4,6 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/themeProvider";
 import { Toaster } from "sonner";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import { Chat } from "@/components/chatbot/chat-interface";
 import { Suspense } from "react";
 
 const montserrat = Montserrat({
@@ -45,7 +44,6 @@ export default function RootLayout({
           <Suspense>
             <NuqsAdapter>
               {children}
-              <Chat />
               <Toaster richColors position="top-right" />
             </NuqsAdapter>
           </Suspense>
