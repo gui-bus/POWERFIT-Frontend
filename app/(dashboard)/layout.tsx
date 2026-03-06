@@ -1,10 +1,14 @@
-import { getHomeData, getHomeDataResponseSuccess } from "@/lib/api/fetch-generated";
+import {
+  getHomeData,
+  getHomeDataResponseSuccess,
+} from "@/lib/api/fetch-generated";
 import { authClient } from "@/lib/authClient";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import dayjs from "dayjs";
 import { BottomNav } from "@/components/bottomNav";
 import { PremiumSidebar } from "@/components/premiumSidebar";
+import BackgroundImages from "@/components/common/backgroundImages";
 
 export default async function DashboardLayout({
   children,
@@ -20,7 +24,7 @@ export default async function DashboardLayout({
   const today = dayjs();
   const homeResponse = await getHomeData(today.format("YYYY-MM-DD"));
 
-  if ("error" in homeResponse) {
+  if (homeResponse.status !== 200) {
     return (
       <div className="flex min-h-screen items-center justify-center p-6 text-center bg-background">
         <p className="text-muted-foreground font-medium text-lg italic uppercase tracking-tighter">
@@ -30,21 +34,22 @@ export default async function DashboardLayout({
     );
   }
 
-  const { data: homeData } = homeResponse as getHomeDataResponseSuccess;
+  const homeData = homeResponse.data;
 
   return (
-    <div className="relative min-h-screen bg-background flex flex-col lg:flex-row overflow-x-hidden selection:bg-primary/20 selection:text-primary transition-colors duration-500">
+    <div className="relative min-h-screen flex flex-col lg:flex-row overflow-x-hidden selection:bg-primary/20 selection:text-primary transition-colors duration-500">
+      <BackgroundImages />
       <BottomNav />
 
-      <main className="flex-1 lg:ml-24 xl:ml-28 h-screen overflow-y-auto custom-scrollbar bg-background">
+      <main className="flex-1 lg:ml-24 xl:ml-28 h-screen overflow-y-auto custom-scrollbar">
         {children}
       </main>
 
-      <PremiumSidebar 
+      <PremiumSidebar
         user={{
           name: session.data.user.name,
           email: session.data.user.email,
-          image: session.data.user.image
+          image: session.data.user.image,
         }}
         homeData={homeData}
       />
