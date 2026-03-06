@@ -2,17 +2,19 @@
 
 import Link from "next/link";
 import { House, Calendar, Sparkles, ChartNoAxesColumn, UserRound, LogOut, Settings } from "lucide-react";
-import { usePathname, useRouter, useParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { authClient } from "@/lib/authClient";
 import { useEffect, useState } from "react";
 import { getHomeData } from "@/lib/api/fetch-generated";
 import dayjs from "dayjs";
+import { useQueryState, parseAsBoolean } from "nuqs";
 
 export function BottomNav() {
   const pathname = usePathname();
   const router = useRouter();
-  const params = useParams();
+  
+  const [, setIsOpen] = useQueryState("chat_open", parseAsBoolean.withDefault(false));
   
   const [todayWorkoutLink, setTodayWorkoutLink] = useState<string | null>(null);
 
@@ -20,7 +22,7 @@ export function BottomNav() {
     const fetchHomeData = async () => {
       try {
         const response = await getHomeData(dayjs().format("YYYY-MM-DD"));
-        if (!("error" in response) && response.data.activeWorkoutPlanId && response.data.todayWorkoutDay) {
+        if (response.status === 200 && response.data.activeWorkoutPlanId && response.data.todayWorkoutDay) {
           setTodayWorkoutLink(`/workout-plans/${response.data.activeWorkoutPlanId}/days/${response.data.todayWorkoutDay.id}`);
         }
       } catch (error) {
@@ -62,7 +64,10 @@ export function BottomNav() {
           const Icon = item.icon;
           if (i === 2) return (
             <div key="special" className="relative -mt-14">
-              <button className="bg-primary p-5 rounded-full border-[8px] border-background shadow-2xl shadow-primary/40 transition-transform active:scale-95 text-primary-foreground">
+              <button 
+                onClick={() => setIsOpen(true)}
+                className="bg-primary p-5 rounded-full border-[8px] border-background shadow-2xl shadow-primary/40 transition-transform active:scale-95 text-primary-foreground"
+              >
                 <Sparkles className="size-6" />
               </button>
             </div>
@@ -107,7 +112,10 @@ export function BottomNav() {
         </div>
 
         <div className="flex flex-col gap-8 items-center mb-4">
-          <button className="bg-primary p-5 rounded-3xl shadow-2xl hover:opacity-90 transition-all active:scale-95 group relative text-primary-foreground">
+          <button 
+            onClick={() => setIsOpen(true)}
+            className="bg-primary p-5 rounded-3xl shadow-2xl hover:opacity-90 transition-all active:scale-95 group relative text-primary-foreground"
+          >
             <Sparkles className="size-7 group-hover:scale-110 transition-transform" />
             <span className="absolute -top-1 -right-1 size-4 bg-background rounded-full border-4 border-primary" />
           </button>

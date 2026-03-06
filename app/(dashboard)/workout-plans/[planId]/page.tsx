@@ -28,7 +28,7 @@ export default async function WorkoutPlanDetailsPage({ params }: PageProps) {
     getHomeData(today.format("YYYY-MM-DD"))
   ]);
 
-  if ("error" in planResponse || "error" in homeResponse) {
+  if (planResponse.status !== 200 || homeResponse.status !== 200) {
     return (
       <div className="flex h-full items-center justify-center p-6 text-center bg-background">
         <p className="text-muted-foreground font-medium text-lg italic uppercase tracking-tighter">
@@ -38,7 +38,7 @@ export default async function WorkoutPlanDetailsPage({ params }: PageProps) {
     );
   }
 
-  const { data: plan } = planResponse as getWorkoutPlanByIdResponseSuccess;
+  const plan = planResponse.data;
   const homeData = homeResponse.data;
 
   const activeWorkoutDayId = homeData.todayWorkoutDay?.id;

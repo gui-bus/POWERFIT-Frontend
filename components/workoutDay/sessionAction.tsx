@@ -1,6 +1,6 @@
 "use client";
 
-import { startWorkoutAction, completeWorkoutAction } from "@/app/workout-plans/[planId]/days/[dayId]/actions";
+import { startWorkoutAction, completeWorkoutAction } from "@/app/(dashboard)/workout-plans/[planId]/days/[dayId]/actions";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { toast } from "sonner";

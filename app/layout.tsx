@@ -3,6 +3,8 @@ import { Montserrat, Syne, Anton } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/themeProvider";
 import { Toaster } from "sonner";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { Chat } from "@/components/chatbot/chat-interface";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -39,8 +41,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
-          <Toaster richColors position="top-right" />
+          <NuqsAdapter>
+            {children}
+            <Chat />
+            <Toaster richColors position="top-right" />
+          </NuqsAdapter>
         </ThemeProvider>
       </body>
     </html>
