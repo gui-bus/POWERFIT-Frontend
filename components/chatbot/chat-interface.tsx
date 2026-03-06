@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 
 const SUGGESTED_MESSAGES = ["Monte meu plano de treino"];
 
@@ -85,8 +86,6 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  if (!embedded && !chatParams.chat_open) return null;
-
   const handleClose = () => {
     setChatParams({ chat_open: false, chat_initial_message: null });
   };
@@ -108,21 +107,21 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
       className={
         embedded
           ? "flex h-svh flex-col bg-background"
-          : "flex flex-1 flex-col overflow-hidden rounded-[20px] bg-background"
+          : "flex flex-1 flex-col overflow-hidden rounded-[2.5rem] bg-background border border-border shadow-2xl"
       }
     >
-      <div className="flex shrink-0 items-center justify-between border-b border-border p-5">
-        <div className="flex items-center gap-2">
-          <div className="flex items-center justify-center rounded-full bg-primary/8 border border-primary/8 p-3">
-            <Sparkles className="size-[18px] text-primary" />
+      <div className="flex shrink-0 items-center justify-between border-b border-border p-6 bg-card">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center rounded-2xl bg-primary/10 border border-primary/10 p-3 shadow-inner">
+            <Sparkles className="size-[20px] text-primary" />
           </div>
-          <div className="flex flex-col gap-1.5">
-            <span className="font-heading text-base font-semibold text-foreground">
-              Coach AI
+          <div className="flex flex-col">
+            <span className="font-heading text-base font-black uppercase italic tracking-tight text-foreground">
+              Power AI
             </span>
-            <div className="flex items-center gap-1">
-              <div className="size-2 rounded-full bg-online" />
-              <span className="font-heading text-xs text-primary">
+            <div className="flex items-center gap-1.5">
+              <div className="size-2 rounded-full bg-online animate-pulse shadow-[0_0_8px_rgba(43,84,255,0.5)]" />
+              <span className="font-heading text-[10px] font-black uppercase tracking-widest text-primary/80">
                 Online
               </span>
             </div>
@@ -133,27 +132,35 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
             <Link href="/">Acessar FIT.AI</Link>
           </Button>
         ) : (
-          <Button variant="ghost" size="icon" onClick={handleClose}>
-            <X className="size-6 text-foreground" />
+          <Button variant="ghost" size="icon" onClick={handleClose} className="rounded-xl hover:bg-secondary transition-colors">
+            <X className="size-6 text-muted-foreground" />
           </Button>
         )}
       </div>
 
-      <div className="flex-1 overflow-y-auto pb-5">
+      <div className="flex-1 overflow-y-auto pb-6 custom-scrollbar bg-background/50">
+        {messages.length === 0 && (
+          <div className="flex flex-col items-center justify-center h-full p-8 text-center space-y-4 opacity-50">
+             <div className="size-16 rounded-full bg-primary/5 flex items-center justify-center">
+                <Sparkles className="size-8 text-primary/30" />
+             </div>
+             <p className="text-sm font-medium text-muted-foreground italic">Olá! Como posso acelerar seus resultados hoje?</p>
+          </div>
+        )}
         {messages.map((message) => (
           <div
             key={message.id}
             className={
               message.role === "assistant"
-                ? "flex flex-col items-start pl-5 pr-[60px] pt-5"
-                : "flex flex-col items-end pl-[60px] pr-5 pt-5"
+                ? "flex flex-col items-start pl-6 pr-12 pt-6"
+                : "flex flex-col items-end pl-12 pr-6 pt-6"
             }
           >
             <div
               className={
                 message.role === "assistant"
-                  ? "rounded-xl bg-secondary p-3"
-                  : "rounded-xl bg-primary p-3"
+                  ? "rounded-2xl rounded-tl-none bg-secondary p-4 shadow-sm border border-border/50"
+                  : "rounded-2xl rounded-tr-none bg-primary p-4 shadow-lg shadow-primary/20 text-primary-foreground"
               }
             >
               {message.role === "assistant" ? (
@@ -172,7 +179,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
                   ) : null
                 )
               ) : (
-                <p className="font-heading text-sm leading-relaxed text-primary-foreground">
+                <p className="font-heading text-sm leading-relaxed font-medium">
                   {message.parts
                     .filter((part) => part.type === "text")
                     .map(
@@ -188,14 +195,14 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="flex shrink-0 flex-col gap-3">
+      <div className="flex shrink-0 flex-col gap-4 p-6 bg-card/50 border-t border-border">
         {messages.length === 0 && (
-          <div className="flex gap-2.5 overflow-x-auto px-5">
+          <div className="flex gap-2.5 overflow-x-auto pb-2 no-scrollbar">
             {SUGGESTED_MESSAGES.map((suggestion) => (
               <button
                 key={suggestion}
                 onClick={() => handleSuggestion(suggestion)}
-                className="whitespace-nowrap rounded-full bg-primary/10 px-4 py-2 font-heading text-sm text-foreground"
+                className="whitespace-nowrap rounded-full bg-primary/10 hover:bg-primary text-foreground hover:text-primary-foreground px-5 py-2.5 font-heading text-[10px] font-black uppercase italic tracking-widest transition-all border border-primary/10"
               >
                 {suggestion}
               </button>
@@ -206,7 +213,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex items-center gap-2 border-t border-border p-5"
+            className="flex items-center gap-3"
           >
             <FormField
               control={form.control}
@@ -216,8 +223,9 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="Digite sua mensagem"
-                      className="rounded-full border-border bg-secondary px-4 py-3 font-heading text-sm text-foreground placeholder:text-muted-foreground"
+                      autoComplete="off"
+                      placeholder="Fale com a IA..."
+                      className="rounded-2xl border-border bg-background px-5 py-6 font-heading text-sm text-foreground placeholder:text-muted-foreground focus-visible:ring-primary/30"
                     />
                   </FormControl>
                 </FormItem>
@@ -227,9 +235,9 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
               type="submit"
               disabled={!form.watch("message").trim() || isLoading}
               size="icon"
-              className="size-[42px] shrink-0 rounded-full"
+              className="size-12 shrink-0 rounded-2xl bg-primary text-primary-foreground shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-transform"
             >
-              <ArrowUp className="size-5" />
+              <ArrowUp className="size-6" />
             </Button>
           </form>
         </Form>
@@ -240,15 +248,31 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
   if (embedded) return chatContent;
 
   return (
-    <div className="fixed inset-0 z-[60]">
-      <div
-        className="absolute inset-0 bg-foreground/30"
-        onClick={handleClose}
-      />
+    <AnimatePresence>
+      {chatParams.chat_open && (
+        <div className="fixed inset-0 z-[100] flex items-end justify-end p-4 sm:p-8 pointer-events-none">
+          {/* Backdrop for mobile to prevent interaction behind? Or just keep it as a widget. 
+              The user said "não pode abrir em tela cheia", so maybe no backdrop or a very light one.
+          */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={handleClose}
+            className="absolute inset-0 bg-black/5 backdrop-blur-[2px] pointer-events-auto sm:hidden"
+          />
 
-      <div className="absolute inset-x-4 bottom-4 top-40 flex flex-col">
-        {chatContent}
-      </div>
-    </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95, transformOrigin: "bottom right" }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            className="relative w-full max-w-[440px] h-[600px] max-h-[80vh] flex flex-col pointer-events-auto"
+          >
+            {chatContent}
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
   );
 }
