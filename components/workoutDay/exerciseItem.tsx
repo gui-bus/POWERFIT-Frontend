@@ -1,3 +1,5 @@
+"use client";
+
 import { GetWorkoutDayById200ExercisesItem } from "@/lib/api/fetch-generated";
 import { CircleHelp, Zap, Repeat, Layers } from "lucide-react";
 import { useQueryStates, parseAsBoolean, parseAsString } from "nuqs";
