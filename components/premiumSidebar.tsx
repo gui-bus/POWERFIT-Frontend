@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import Image from "next/image";
 import { BookOpen, ArrowRight, Bell, TrendingUp } from "lucide-react";
 import { UserNav } from "@/components/userNav";
@@ -9,6 +10,7 @@ import { GetHomeData200 } from "@/lib/api/fetch-generated";
 const MOCK_POSTS = [
   {
     id: 1,
+    slug: "hipertrofia-maxima",
     title: "Hipertrofia Máxima: A ciência por trás das repetições",
     category: "Treinamento",
     readTime: "5 min",
@@ -16,6 +18,7 @@ const MOCK_POSTS = [
   },
   {
     id: 2,
+    slug: "nutricao-peri-treino",
     title: "Nutrição Peri-treino: O que comer antes e depois",
     category: "Dieta",
     readTime: "8 min",
@@ -23,6 +26,7 @@ const MOCK_POSTS = [
   },
   {
     id: 3,
+    slug: "sono-e-performance",
     title: "Sono e Performance: O anabolizante natural",
     category: "Recovery",
     readTime: "6 min",
@@ -30,6 +34,7 @@ const MOCK_POSTS = [
   },
   {
     id: 4,
+    slug: "mobilidade-articular",
     title: "Mobilidade Articular: Base para Força",
     category: "Mobilidade",
     readTime: "4 min",
@@ -78,41 +83,44 @@ export function PremiumSidebar({ user, homeData }: PremiumSidebarProps) {
               <TrendingUp className="size-5" />
               <h3 className="text-sm font-black uppercase tracking-[0.2em] italic">POWER INSIGHTS</h3>
             </div>
-            <button className="text-[10px] font-bold text-muted-foreground hover:text-primary uppercase tracking-widest transition-colors flex items-center gap-1 group">
-              Ver tudo
-              <ArrowRight className="size-3 transition-transform group-hover:translate-x-1" />
-            </button>
+            <Link href="/blog">
+              <button className="text-[10px] font-bold text-muted-foreground hover:text-primary uppercase tracking-widest transition-colors flex items-center gap-1 group cursor-pointer">
+                Ver tudo
+                <ArrowRight className="size-3 transition-transform group-hover:translate-x-1" />
+              </button>
+            </Link>
           </div>
 
-          <div className="grid grid-cols-2 gap-6">
+          <div className="flex flex-col gap-6">
             {MOCK_POSTS.map((post) => (
-              <article 
-                key={post.id} 
-                className="group bg-background rounded-[2.5rem] border border-border hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/5 transition-all cursor-pointer overflow-hidden flex flex-col"
-              >
-                <div className="relative aspect-square w-full overflow-hidden">
-                  <Image 
-                    src={post.image} 
-                    alt={post.title} 
-                    fill 
-                    className="object-cover transition-transform duration-500 group-hover:scale-110" 
-                  />
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-background/80 backdrop-blur-md text-[8px] font-black text-primary uppercase tracking-widest px-2.5 py-1.5 rounded-lg border border-white/10">
-                      {post.category}
-                    </span>
+              <Link key={post.id} href={`/blog/${post.slug}`}>
+                <article 
+                  className="group bg-background rounded-[2.5rem] border border-border hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/5 transition-all cursor-pointer overflow-hidden flex items-center"
+                >
+                  <div className="relative aspect-square size-32 min-w-32 overflow-hidden">
+                    <Image 
+                      src={post.image} 
+                      alt={post.title} 
+                      fill 
+                      className="object-cover transition-transform duration-500 group-hover:scale-110" 
+                    />
                   </div>
-                </div>
-                <div className="p-6 flex flex-col flex-1 justify-between gap-4">
-                  <h4 className="text-sm font-bold leading-tight group-hover:text-primary transition-colors line-clamp-3 text-foreground">
-                    {post.title}
-                  </h4>
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <BookOpen className="size-3" />
-                    <span className="text-[9px] font-black uppercase tracking-widest">{post.readTime}</span>
+                  <div className="p-6 flex flex-col flex-1 justify-between gap-2">
+                    <div className="space-y-2">
+                      <span className="text-[8px] font-black text-primary uppercase tracking-widest px-2 py-1 rounded-md bg-primary/10 w-fit block">
+                        {post.category}
+                      </span>
+                      <h4 className="text-sm font-bold leading-tight group-hover:text-primary transition-colors line-clamp-2 text-foreground">
+                        {post.title}
+                      </h4>
+                    </div>
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <BookOpen className="size-3" />
+                      <span className="text-[9px] font-black uppercase tracking-widest">{post.readTime}</span>
+                    </div>
                   </div>
-                </div>
-              </article>
+                </article>
+              </Link>
             ))}
           </div>
         </div>
