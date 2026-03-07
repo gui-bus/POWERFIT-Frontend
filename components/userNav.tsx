@@ -64,7 +64,7 @@ export function UserNav({ user }: UserNavProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-12 w-12 rounded-2xl p-0 bg-primary/10 hover:bg-primary/20 transition-all border-2 border-primary/20">
+        <Button variant="ghost" className="relative h-12 w-12 rounded-2xl p-0 cursor-pointer">
           <Avatar className="h-full w-full rounded-[14px] p-1">
             <AvatarImage src={user.image || ""} alt={user.name} className="rounded-xl object-cover border-2 border-background" />
             <AvatarFallback className="rounded-xl bg-primary text-primary-foreground text-xs font-bold uppercase">
@@ -91,14 +91,14 @@ export function UserNav({ user }: UserNavProps) {
             )}
             onClick={() => planOverviewLink && router.push(planOverviewLink)}
           >
-            <CalendarIcon weight="duotone" className="mr-3 h-4 w-4 stroke-[2.5]" />
+            <CalendarIcon weight="duotone" className="mr-3 h-4 w-4 stroke-[2.5] focus:text-white" />
             <span className="font-bold text-xs uppercase tracking-wider">Plano de Treino</span>
           </DropdownMenuItem>
           <DropdownMenuItem 
             className="rounded-xl p-3 focus:bg-primary focus:text-primary-foreground group cursor-pointer"
             onClick={() => router.push("/profile")}
           >
-            <UserIcon weight="duotone" className="mr-3 h-4 w-4 stroke-[2.5]" />
+            <UserIcon weight="duotone" className="mr-3 h-4 w-4 stroke-[2.5] focus:text-white" />
             <span className="font-bold text-xs uppercase tracking-wider">Perfil</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -110,9 +110,9 @@ export function UserNav({ user }: UserNavProps) {
           >
             <div className="flex items-center">
               {theme === "dark" ? (
-                <SunIcon weight="duotone" className="mr-3 h-4 w-4 stroke-[2.5]" />
+                <SunIcon weight="duotone" className="mr-3 h-4 w-4 stroke-[2.5] focus:text-white" />
               ) : (
-                <MoonIcon weight="duotone" className="mr-3 h-4 w-4 stroke-[2.5]" />
+                <MoonIcon weight="duotone" className="mr-3 h-4 w-4 stroke-[2.5] focus:text-white" />
               )}
               <span className="font-bold text-xs uppercase tracking-wider">Alternar Tema</span>
             </div>
@@ -121,10 +121,10 @@ export function UserNav({ user }: UserNavProps) {
         </DropdownMenuGroup>
         <DropdownMenuSeparator className="bg-border/50" />
         <DropdownMenuItem 
-          className="rounded-xl p-3 text-destructive focus:bg-destructive focus:text-destructive-foreground font-bold text-xs uppercase tracking-wider cursor-pointer"
+          className="rounded-xl p-3 text-destructive focus:bg-destructive focus:text-destructive-foreground focus:text-white font-bold text-xs uppercase tracking-wider cursor-pointer"
           onClick={handleLogout}
         >
-          <SignOutIcon weight="duotone" className="mr-3 h-4 w-4 stroke-[2.5]" />
+          <SignOutIcon weight="duotone" className="mr-3 h-4 w-4 stroke-[2.5] focus:text-white" />
           Sair
         </DropdownMenuItem>
       </DropdownMenuContent>
