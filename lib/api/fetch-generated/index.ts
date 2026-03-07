@@ -464,6 +464,30 @@ export type GetStats500 = {
   code: string;
 };
 
+export type GetStreakRanking200RankingItem = {
+  id: string;
+  name: string;
+  /** @nullable */
+  image: string | null;
+  streak: number;
+};
+
+export type GetStreakRanking200 = {
+  ranking: GetStreakRanking200RankingItem[];
+  /** @nullable */
+  currentUserPosition: number | null;
+};
+
+export type GetStreakRanking401 = {
+  error: string;
+  code: string;
+};
+
+export type GetStreakRanking500 = {
+  error: string;
+  code: string;
+};
+
 /**
  * @nullable
  */
@@ -1039,6 +1063,51 @@ export const getStats = async (
   options?: RequestInit,
 ): Promise<getStatsResponse> => {
   return customFetch<getStatsResponse>(getGetStatsUrl(params), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Get users streak ranking
+ */
+export type getStreakRankingResponse200 = {
+  data: GetStreakRanking200;
+  status: 200;
+};
+
+export type getStreakRankingResponse401 = {
+  data: GetStreakRanking401;
+  status: 401;
+};
+
+export type getStreakRankingResponse500 = {
+  data: GetStreakRanking500;
+  status: 500;
+};
+
+export type getStreakRankingResponseSuccess = getStreakRankingResponse200 & {
+  headers: Headers;
+};
+export type getStreakRankingResponseError = (
+  | getStreakRankingResponse401
+  | getStreakRankingResponse500
+) & {
+  headers: Headers;
+};
+
+export type getStreakRankingResponse =
+  | getStreakRankingResponseSuccess
+  | getStreakRankingResponseError;
+
+export const getGetStreakRankingUrl = () => {
+  return `/ranking`;
+};
+
+export const getStreakRanking = async (
+  options?: RequestInit,
+): Promise<getStreakRankingResponse> => {
+  return customFetch<getStreakRankingResponse>(getGetStreakRankingUrl(), {
     ...options,
     method: "GET",
   });
