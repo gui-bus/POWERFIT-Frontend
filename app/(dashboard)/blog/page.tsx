@@ -1,8 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
-import { BookOpenIcon, TrendUpIcon, ArrowRightIcon } from "@phosphor-icons/react/ssr";
+import { BookOpenIcon, ArrowRightIcon } from "@phosphor-icons/react/ssr";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/common/container";
+import { PageHeader } from "@/components/pageHeader";
+import { authClient } from "@/lib/authClient";
+import { headers } from "next/headers";
 
 const MOCK_POSTS = [
   {
@@ -43,21 +46,23 @@ const MOCK_POSTS = [
   }
 ];
 
-export default function BlogListingPage() {
+export default async function BlogListingPage() {
+  const session = await authClient.getSession({
+    fetchOptions: { headers: await headers() },
+  });
+
   return (
     <Container className="space-y-16">
-      <header className="space-y-6 max-w-3xl">
-        <div className="flex items-center gap-2 text-primary">
-          <TrendUpIcon weight="duotone" className="size-6" />
-          <span className="text-sm font-black uppercase tracking-[0.3em] italic">POWER INSIGHTS</span>
-        </div>
-        <h1 className="text-5xl md:text-6xl font-black italic uppercase leading-none tracking-tighter">
-          CENTRAL DE <span className="text-primary">CONHECIMENTO</span>
-        </h1>
-        <p className="text-lg text-muted-foreground font-medium leading-relaxed">
-          Explore artigos técnicos, guias de nutrição e estratégias de performance 
-          escritos por especialistas para elevar seu nível como atleta.
-        </p>
+      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+        <PageHeader 
+          title="BLOG" 
+          subtitle="Central de Conhecimento" 
+          user={session.data?.user ? {
+            name: session.data.user.name,
+            email: session.data.user.email,
+            image: session.data.user.image,
+          } : undefined}
+        />
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

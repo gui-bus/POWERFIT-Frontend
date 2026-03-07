@@ -3,6 +3,9 @@ import Link from "next/link";
 import { ArrowLeftIcon, CalendarIcon, ClockIcon, TagIcon } from "@phosphor-icons/react/ssr";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/common/container";
+import { PageHeader } from "@/components/pageHeader";
+import { authClient } from "@/lib/authClient";
+import { headers } from "next/headers";
 
 const MOCK_POSTS = [
   {
@@ -93,6 +96,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const { slug } = await params;
   const post = MOCK_POSTS.find((p) => p.slug === slug);
 
+  const session = await authClient.getSession({
+    fetchOptions: { headers: await headers() },
+  });
+
   if (!post) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
@@ -107,10 +114,22 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   }
 
   return (
-    <Container className="max-w-4xl">
-      <Link href="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-8 group">
+    <Container className="space-y-12">
+      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+        <PageHeader 
+          title="INSIGHTS" 
+          subtitle="Ciência & Performance" 
+          user={session.data?.user ? {
+            name: session.data.user.name,
+            email: session.data.user.email,
+            image: session.data.user.image,
+          } : undefined}
+        />
+      </header>
+
+      <Link href="/blog" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors group">
         <ArrowLeftIcon weight="duotone" className="size-4 transition-transform group-hover:-translate-x-1" />
-        <span className="text-xs font-black uppercase tracking-widest italic">Voltar</span>
+        <span className="text-xs font-black uppercase tracking-widest italic">Voltar para o Blog</span>
       </Link>
 
       <article className="space-y-8">
