@@ -43,13 +43,13 @@ export default async function Home() {
 
   return (
     <Container>
-      <header className="flex items-center justify-between py-8 lg:py-10">
+      <header className="flex items-center justify-between">
         <PageHeader 
           title="DASHBOARD" 
           subtitle={`Bem-vindo de volta, ${session.data.user.name.split(" ")[0]}!`} 
         />
 
-        <div className="flex items-center gap-3 sm:gap-6 lg:hidden">
+        <div className="lg:hidden">
           <button className="relative size-12 bg-card border border-border rounded-2xl flex items-center justify-center text-muted-foreground hover:text-primary transition-colors">
             <BellIcon weight="duotone" className="size-5" />
             <span className="absolute top-3 right-3 size-2 bg-primary rounded-full border-2 border-background" />

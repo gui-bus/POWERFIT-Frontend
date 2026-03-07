@@ -3,7 +3,7 @@ import { authClient } from "@/lib/authClient";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import Image from "next/image";
-import { PersonIcon, RulerIcon, BarbellIcon, UserIcon, TrendUpIcon } from "@phosphor-icons/react/ssr";
+import { PersonIcon, RulerIcon, BarbellIcon, UserIcon } from "@phosphor-icons/react/ssr";
 import { LogoutButton } from "./logout-button";
 import { PageHeader } from "@/components/pageHeader";
 import { Container } from "@/components/common/container";
@@ -66,16 +66,6 @@ export default async function ProfilePage() {
       {/* Header Section */}
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <PageHeader title="PERFIL" subtitle="Seu Painel Pessoal" />
-
-        <div className="flex items-center gap-4 bg-card/50 backdrop-blur-md border border-border px-6 py-3 rounded-[1.5rem] shadow-sm">
-          <div className="size-10 rounded-xl bg-primary/10 flex items-center justify-center">
-            <TrendUpIcon weight="duotone" className="size-5 text-primary" />
-          </div>
-          <div>
-            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider leading-none mb-1">Status da Conta</p>
-            <p className="text-sm font-black uppercase italic text-foreground leading-none">Plano Básico</p>
-          </div>
-        </div>
       </header>
 
       {/* User Info Section */}
