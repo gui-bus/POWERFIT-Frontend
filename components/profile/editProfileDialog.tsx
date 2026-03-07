@@ -23,16 +23,31 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { upsertUserTrainData, GetUserTrainData200 } from "@/lib/api/fetch-generated";
+import {
+  upsertUserTrainData,
+  GetUserTrainData200,
+} from "@/lib/api/fetch-generated";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { CheckIcon, SpinnerGapIcon } from "@phosphor-icons/react";
 
 const profileSchema = z.object({
-  weight: z.coerce.number().min(30, "Peso muito baixo").max(300, "Peso muito alto"),
-  height: z.coerce.number().min(100, "Altura muito baixa").max(250, "Altura muito alta"),
-  age: z.coerce.number().min(12, "Idade mínima 12 anos").max(100, "Idade máxima 100 anos"),
-  bodyFatPercentage: z.coerce.number().min(0, "Mínimo 0%").max(100, "Máximo 100%"),
+  weight: z.coerce
+    .number()
+    .min(30, "Peso muito baixo")
+    .max(300, "Peso muito alto"),
+  height: z.coerce
+    .number()
+    .min(100, "Altura muito baixa")
+    .max(250, "Altura muito alta"),
+  age: z.coerce
+    .number()
+    .min(12, "Idade mínima 12 anos")
+    .max(100, "Idade máxima 100 anos"),
+  bodyFatPercentage: z.coerce
+    .number()
+    .min(0, "Mínimo 0%")
+    .max(100, "Máximo 100%"),
 });
 
 interface ProfileFormValues {
@@ -47,18 +62,25 @@ interface EditProfileDialogProps {
   children: React.ReactNode;
 }
 
-export function EditProfileDialog({ initialData, children }: EditProfileDialogProps) {
+export function EditProfileDialog({
+  initialData,
+  children,
+}: EditProfileDialogProps) {
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const form = useForm<ProfileFormValues>({
-    resolver: zodResolver(profileSchema) as unknown as Resolver<ProfileFormValues>,
+    resolver: zodResolver(
+      profileSchema,
+    ) as unknown as Resolver<ProfileFormValues>,
     defaultValues: {
-      weight: initialData?.weightInGrams ? initialData.weightInGrams / 1000 : 70,
-      height: initialData?.heightInCentimeters || 170,
-      age: initialData?.age || 25,
-      bodyFatPercentage: initialData?.bodyFatPercentage ?? 15,
+      weight: initialData?.weightInGrams ? initialData.weightInGrams / 1000 : 0,
+      height: initialData?.heightInCentimeters || 0,
+      age: initialData?.age || 0,
+      bodyFatPercentage: initialData?.bodyFatPercentage
+        ? initialData?.bodyFatPercentage * 100
+        : 0,
     },
   });
 
@@ -89,33 +111,37 @@ export function EditProfileDialog({ initialData, children }: EditProfileDialogPr
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {children}
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-106.25">
         <DialogHeader>
           <DialogTitle>Editar Perfil</DialogTitle>
           <DialogDescription>
-            Mantenha seus dados atualizados para que a IA possa ajustar seu treino.
+            Mantenha seus dados atualizados para que a IA possa ajustar seu
+            treino.
           </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 pt-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-6 pt-4"
+          >
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="weight"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Peso (kg)</FormLabel>
+                    <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                      Peso (kg)
+                    </FormLabel>
                     <FormControl>
-                      <Input 
-                        placeholder="70" 
-                        type="number" 
-                        step="0.1" 
+                      <Input
+                        placeholder="70"
+                        type="number"
+                        step="0.1"
                         className="rounded-2xl bg-muted/50 border-none h-12 font-bold"
-                        {...field} 
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
@@ -127,13 +153,15 @@ export function EditProfileDialog({ initialData, children }: EditProfileDialogPr
                 name="height"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Altura (cm)</FormLabel>
+                    <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                      Altura (cm)
+                    </FormLabel>
                     <FormControl>
-                      <Input 
-                        placeholder="175" 
-                        type="number" 
+                      <Input
+                        placeholder="175"
+                        type="number"
                         className="rounded-2xl bg-muted/50 border-none h-12 font-bold"
-                        {...field} 
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
@@ -148,13 +176,15 @@ export function EditProfileDialog({ initialData, children }: EditProfileDialogPr
                 name="age"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Idade</FormLabel>
+                    <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                      Idade
+                    </FormLabel>
                     <FormControl>
-                      <Input 
-                        placeholder="25" 
-                        type="number" 
+                      <Input
+                        placeholder="25"
+                        type="number"
                         className="rounded-2xl bg-muted/50 border-none h-12 font-bold"
-                        {...field} 
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
@@ -166,13 +196,15 @@ export function EditProfileDialog({ initialData, children }: EditProfileDialogPr
                 name="bodyFatPercentage"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Gordura (%)</FormLabel>
+                    <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                      Gordura (%)
+                    </FormLabel>
                     <FormControl>
-                      <Input 
-                        placeholder="15" 
-                        type="number" 
+                      <Input
+                        placeholder="15"
+                        type="number"
                         className="rounded-2xl bg-muted/50 border-none h-12 font-bold"
-                        {...field} 
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
@@ -182,8 +214,8 @@ export function EditProfileDialog({ initialData, children }: EditProfileDialogPr
             </div>
 
             <DialogFooter className="pt-4">
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={isLoading}
                 className="w-full h-14 rounded-2xl font-black uppercase italic tracking-widest gap-3 cursor-pointer"
               >

@@ -81,6 +81,8 @@ export default async function ProfilePage() {
     },
   ];
 
+  console.log("trainData", trainData)
+
   return (
     <Container className="space-y-12">
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
@@ -96,12 +98,10 @@ export default async function ProfilePage() {
       </header>
 
       <div className="max-w-5xl mx-auto w-full space-y-10">
-        {/* Profile Card */}
         <section className="relative overflow-hidden bg-card border border-border rounded-[3rem] shadow-2xl group">
 
           <div className="relative p-8 sm:p-12">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-10">
-              {/* Avatar Section */}
               <div className="relative">
                 <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full animate-pulse" />
                 <div className="relative size-20 sm:size-24 rounded-2xl overflow-hidden border-2 border-background shadow-xl ring-1 ring-border bg-muted">
@@ -123,7 +123,6 @@ export default async function ProfilePage() {
                 </div>
               </div>
 
-              {/* User Details */}
               <div className="flex-1 text-center md:text-left space-y-6">
                 <div className="space-y-2">
                   <h2 className="text-5xl font-anton text-foreground uppercase tracking-tight leading-none italic">
