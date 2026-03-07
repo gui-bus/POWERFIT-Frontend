@@ -3,7 +3,7 @@ import { authClient } from "@/lib/authClient";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import Image from "next/image";
-import { Weight, Ruler, BicepsFlexed, User, LogOut, TrendingUp } from "lucide-react";
+import { PersonIcon, RulerIcon, BarbellIcon, UserIcon, TrendUpIcon } from "@phosphor-icons/react/ssr";
 import { LogoutButton } from "./logout-button";
 
 export default async function ProfilePage() {
@@ -31,28 +31,28 @@ export default async function ProfilePage() {
     {
       label: "Kg",
       value: trainData?.weightInGrams ? (trainData.weightInGrams / 1000).toFixed(1) : "--",
-      icon: Weight,
+      icon: PersonIcon,
       color: "text-blue-500",
       bgColor: "bg-blue-500/10",
     },
     {
       label: "Cm",
       value: trainData?.heightInCentimeters || "--",
-      icon: Ruler,
+      icon: RulerIcon,
       color: "text-indigo-500",
       bgColor: "bg-indigo-500/10",
     },
     {
       label: "Gc",
       value: trainData?.bodyFatPercentage ? `${(trainData.bodyFatPercentage * 100).toFixed(0)}%` : "--",
-      icon: BicepsFlexed,
+      icon: BarbellIcon,
       color: "text-purple-500",
       bgColor: "bg-purple-500/10",
     },
     {
       label: "Anos",
       value: trainData?.age || "--",
-      icon: User,
+      icon: UserIcon,
       color: "text-cyan-500",
       bgColor: "bg-cyan-500/10",
     },
@@ -83,7 +83,7 @@ export default async function ProfilePage() {
 
         <div className="flex items-center gap-4 bg-card/50 backdrop-blur-md border border-border px-6 py-3 rounded-[1.5rem] shadow-sm">
           <div className="size-10 rounded-xl bg-primary/10 flex items-center justify-center">
-            <TrendingUp className="size-5 text-primary" />
+            <TrendUpIcon weight="duotone" className="size-5 text-primary" />
           </div>
           <div>
             <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider leading-none mb-1">Status da Conta</p>
@@ -125,7 +125,7 @@ export default async function ProfilePage() {
         {stats.map((stat, i) => (
           <div key={i} className="bg-card/50 backdrop-blur-xl border border-border rounded-[2rem] p-8 flex flex-col items-center justify-center gap-6 shadow-lg hover:border-primary/30 transition-all group">
             <div className={`p-4 rounded-2xl ${stat.bgColor} group-hover:scale-110 transition-transform`}>
-              <stat.icon className={`size-6 ${stat.color}`} />
+              <stat.icon weight="duotone" className={`size-6 ${stat.color}`} />
             </div>
             <div className="text-center space-y-1">
               <p className="text-2xl font-anton text-foreground leading-none">{stat.value}</p>

@@ -1,6 +1,4 @@
-"use client";
-
-import { Flame } from "lucide-react";
+import { FireIcon } from "@phosphor-icons/react/ssr";
 import { cn } from "@/lib/utils";
 
 interface StreakBannerProps {
@@ -25,7 +23,7 @@ export function StreakBanner({ streak }: StreakBannerProps) {
 
       <div className="relative z-10">
         <div className="size-20 rounded-3xl bg-white/10 backdrop-blur-xl border border-white/10 flex items-center justify-center shadow-xl mb-6 mx-auto group-hover:scale-110 transition-transform duration-500">
-          <Flame className={cn("size-10", hasStreak ? "text-orange-400 fill-orange-400" : "text-white/40")} />
+          <FireIcon weight="duotone" className={cn("size-10", hasStreak ? "text-orange-400" : "text-white/40")} />
         </div>
         
         <div className="space-y-1">

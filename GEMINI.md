@@ -70,6 +70,13 @@ Você atua como um engenheiro de software sênior especializado em desenvolvimen
 - **Atomicidade:** Procure fazer commits atômicos, separando mudanças por funcionalidade ou contexto.
 
 ### 🎨 Estilização e Tematização
+- **Ícones:** **OBRIGATORIAMENTE** utilize Phosphor Icons (`@phosphor-icons/react`).
+  - **Nomenclatura:** Utilize sempre o componente com sufixo `Icon` diretamente (ex: `import { HouseIcon }`).
+  - **Estilo:** Utilize sempre `weight="duotone"`.
+  - **shadcn/ui:** Caso novos componentes do shadcn sejam instalados, **SUBSTITUA IMEDIATAMENTE** os ícones do `lucide-react` (padrão do shadcn) pelos equivalentes do Phosphor Icons seguindo as regras acima.
+  - **Imports:**
+    - **Server Components:** Importe de `@phosphor-icons/react/ssr`.
+    - **Client Components:** Importe de `@phosphor-icons/react`.
 - **Tailwind v4:** Use classes utilitárias por padrão. CSS puro apenas em casos estritamente necessários.
 - **Sem Cores Hard-coded:** Use **SEMPRE** as cores do tema definidas em `app/globals.css`. **NUNCA** utilize valores hexadecimais diretamente se houver uma variável de tema correspondente.
 - **Theming:** Antes de criar variáveis de cor, verifique se o tema do shadcn/ui já não atende à necessidade.

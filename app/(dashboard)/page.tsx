@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import { ConsistencyGrid } from "@/components/consistencyGrid";
 import { WorkoutCard } from "@/components/workoutCard";
-import { Bell, Sparkles, Plus } from "lucide-react";
+import { BellIcon, SparkleIcon, PlusIcon } from "@phosphor-icons/react/ssr";
 import { UserNav } from "@/components/userNav";
 import Link from "next/link";
 
@@ -27,7 +27,9 @@ export default async function Home() {
           <div className="size-16 bg-destructive/10 text-destructive rounded-full flex items-center justify-center mx-auto">
             <p className="text-2xl font-bold">!</p>
           </div>
-          <p className="text-muted-foreground font-medium">Erro ao carregar dados. Verifique sua conexão.</p>
+          <p className="text-muted-foreground font-medium">
+            Erro ao carregar dados. Verifique sua conexão.
+          </p>
         </div>
       </div>
     );
@@ -39,26 +41,29 @@ export default async function Home() {
 
   return (
     <div className="max-w-300 mx-auto pb-32 lg:pb-12 px-5 sm:px-10 lg:px-12">
-      
       <header className="flex items-center justify-between py-8 lg:py-10">
         <div>
-          <h1 className="text-2xl lg:text-3xl font-black text-foreground tracking-tight uppercase italic leading-none">Dashboard</h1>
+          <h1 className="text-2xl lg:text-3xl font-black text-foreground tracking-tight uppercase italic leading-none">
+            Dashboard
+          </h1>
           <p className="hidden sm:block text-xs lg:text-sm text-muted-foreground font-medium uppercase tracking-wider mt-1">
             Bem-vindo de volta, {session.data.user.name.split(" ")[0]}!
           </p>
         </div>
-        
+
         <div className="flex items-center gap-3 sm:gap-6 lg:hidden">
           <button className="relative size-12 bg-card border border-border rounded-2xl flex items-center justify-center text-muted-foreground hover:text-primary transition-colors">
-            <Bell className="size-5" />
+            <BellIcon weight="duotone" className="size-5" />
             <span className="absolute top-3 right-3 size-2 bg-primary rounded-full border-2 border-background" />
           </button>
-          
-          <UserNav user={{
-            name: session.data.user.name,
-            email: session.data.user.email,
-            image: session.data.user.image
-          }} />
+
+          <UserNav
+            user={{
+              name: session.data.user.name,
+              email: session.data.user.email,
+              image: session.data.user.image,
+            }}
+          />
         </div>
       </header>
 
@@ -73,14 +78,14 @@ export default async function Home() {
           />
           <div className="absolute inset-0 bg-linear-to-t from-black via-black/20 to-transparent opacity-90" />
           <div className="absolute inset-0 bg-linear-to-r from-black/40 via-transparent to-transparent opacity-60" />
-          
+
           <div className="absolute inset-0 flex flex-col justify-end lg:justify-between p-6 sm:p-10 lg:p-16">
             <div className="hidden lg:block">
-              <Image 
-                src="/images/powerfit-logo.svg" 
-                alt="PowerFit Logo" 
-                width={120} 
-                height={14} 
+              <Image
+                src="/images/powerfit-logo.svg"
+                alt="PowerFit Logo"
+                width={120}
+                height={14}
                 className="h-auto"
               />
             </div>
@@ -109,10 +114,13 @@ export default async function Home() {
                 </h2>
               </div>
 
-              <Link 
-                href={hasPlan 
-                  ? (todayWorkout ? `/workout-plans/${homeData.activeWorkoutPlanId}/days/${todayWorkout.id}` : `/workout-plans/${homeData.activeWorkoutPlanId}`)
-                  : "?chat_open=true&chat_initial_message=Monte meu plano de treino"
+              <Link
+                href={
+                  hasPlan
+                    ? todayWorkout
+                      ? `/workout-plans/${homeData.activeWorkoutPlanId}/days/${todayWorkout.id}`
+                      : `/workout-plans/${homeData.activeWorkoutPlanId}`
+                    : "?chat_open=true&chat_initial_message=Monte meu plano de treino"
                 }
                 className="group bg-white hover:bg-primary text-black hover:text-white px-6 sm:px-8 py-3 sm:py-4 lg:px-10 lg:py-5 rounded-2xl sm:rounded-[2rem] text-[10px] sm:text-sm lg:text-base font-black uppercase italic transition-all shadow-2xl active:scale-95 flex items-center gap-3 sm:gap-4 w-fit"
               >
@@ -131,56 +139,74 @@ export default async function Home() {
                 {hasPlan ? "Treino de Hoje" : "Comece Agora"}
               </h2>
               <p className="text-[10px] lg:text-xs text-muted-foreground font-bold uppercase tracking-widest mt-1">
-                {hasPlan 
-                  ? (todayWorkout ? `Foco em ${todayWorkout.name}` : "Dia de descanso ou sem treino agendado")
-                  : "Crie seu primeiro plano de treino com IA"
-                }
+                {hasPlan
+                  ? todayWorkout
+                    ? `Foco em ${todayWorkout.name}`
+                    : "Dia de descanso ou sem treino agendado"
+                  : "Crie seu primeiro plano de treino com IA"}
               </p>
             </div>
             {hasPlan && (
-              <Link href={`/workout-plans/${homeData.activeWorkoutPlanId}`} className="text-[10px] lg:text-xs font-black text-primary uppercase italic tracking-widest hover:underline">
+              <Link
+                href={`/workout-plans/${homeData.activeWorkoutPlanId}`}
+                className="text-[10px] lg:text-xs font-black text-primary uppercase italic tracking-widest hover:underline"
+              >
                 Ver plano completo
               </Link>
             )}
           </div>
-          
+
           <div className="grid grid-cols-1 gap-2">
             {hasPlan ? (
               todayWorkout ? (
-                <WorkoutCard 
-                  workout={todayWorkout} 
+                <WorkoutCard
+                  workout={todayWorkout}
                   isActive={true}
-                  isCompleted={homeData.consistencyByDay[today.format("YYYY-MM-DD")]?.workoutDayCompleted}
+                  isCompleted={
+                    homeData.consistencyByDay[today.format("YYYY-MM-DD")]
+                      ?.workoutDayCompleted
+                  }
                   planId={homeData.activeWorkoutPlanId!}
                 />
               ) : (
                 <div className="bg-card border border-border rounded-[2rem] p-8 text-center space-y-4">
                   <div className="size-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto">
-                    <Plus className="size-8" />
+                    <PlusIcon weight="duotone" className="size-8" />
                   </div>
                   <div className="space-y-1">
-                    <p className="font-syne text-lg font-black uppercase italic text-foreground tracking-tight">Sem treino hoje</p>
-                    <p className="text-sm text-muted-foreground font-medium">Aproveite para descansar ou revisar sua consistência.</p>
+                    <p className="font-syne text-lg font-black uppercase italic text-foreground tracking-tight">
+                      Sem treino hoje
+                    </p>
+                    <p className="text-sm text-muted-foreground font-medium">
+                      Aproveite para descansar ou revisar sua consistência.
+                    </p>
                   </div>
                 </div>
               )
             ) : (
-              <Link 
+              <Link
                 href="?chat_open=true&chat_initial_message=Monte meu plano de treino"
                 className="group bg-card border border-border rounded-[2rem] p-10 text-center space-y-6 hover:border-primary/50 transition-all active:scale-[0.99]"
               >
                 <div className="size-20 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
-                  <Sparkles className="size-10 fill-current" />
+                  <SparkleIcon
+                    weight="duotone"
+                    className="size-10 fill-current"
+                  />
                 </div>
                 <div className="space-y-2">
-                  <h3 className="font-syne text-2xl font-black uppercase italic text-foreground tracking-tight">Fale com o Coach AI</h3>
+                  <h3 className="font-syne text-2xl font-black uppercase italic text-foreground tracking-tight">
+                    Fale com o Coach AI
+                  </h3>
                   <p className="text-muted-foreground font-medium max-w-sm mx-auto">
-                    Nossa inteligência artificial está pronta para criar um plano de treino personalizado baseado nos seus objetivos e rotina.
+                    Nossa inteligência artificial está pronta para criar um
+                    plano de treino personalizado baseado nos seus objetivos e
+                    rotina.
                   </p>
                 </div>
                 <div className="inline-flex items-center gap-2 text-primary font-black uppercase italic tracking-widest text-sm">
                   Iniciar conversa
-                  <Plus className="size-4" />
+                  <PlusIcon weight="duotone" className="size-4" />
                 </div>
               </Link>
             )}
@@ -188,9 +214,9 @@ export default async function Home() {
         </div>
 
         <div className="lg:hidden px-5 pb-10">
-           <ConsistencyGrid 
-            consistencyByDay={homeData.consistencyByDay} 
-            streak={homeData.workoutStreak} 
+          <ConsistencyGrid
+            consistencyByDay={homeData.consistencyByDay}
+            streak={homeData.workoutStreak}
           />
         </div>
       </div>

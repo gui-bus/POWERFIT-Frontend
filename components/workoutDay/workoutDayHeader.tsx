@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronLeft } from "lucide-react";
+import { CaretLeftIcon } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 
 interface WorkoutDayHeaderProps {
@@ -16,7 +16,7 @@ export function WorkoutDayHeader({ title }: WorkoutDayHeaderProps) {
         onClick={() => router.back()}
         className="size-10 flex items-center justify-center rounded-xl bg-card border border-border hover:bg-accent transition-colors"
       >
-        <ChevronLeft className="size-6 text-foreground" />
+        <CaretLeftIcon weight="duotone" className="size-6 text-foreground" />
       </button>
       <h1 className="font-syne text-lg font-black uppercase italic tracking-tighter text-foreground">
         {title}

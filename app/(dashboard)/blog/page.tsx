@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { BookOpen, TrendingUp, ArrowRight } from "lucide-react";
+import { BookOpenIcon, TrendUpIcon, ArrowRightIcon } from "@phosphor-icons/react/ssr";
 import { Button } from "@/components/ui/button";
 
 const MOCK_POSTS = [
@@ -47,7 +47,7 @@ export default function BlogListingPage() {
     <div className="container mx-auto py-12 px-6 space-y-16">
       <header className="space-y-6 max-w-3xl">
         <div className="flex items-center gap-2 text-primary">
-          <TrendingUp className="size-6" />
+          <TrendUpIcon weight="duotone" className="size-6" />
           <span className="text-sm font-black uppercase tracking-[0.3em] italic">POWER INSIGHTS</span>
         </div>
         <h1 className="text-5xl md:text-6xl font-black italic uppercase leading-none tracking-tighter">
@@ -78,7 +78,7 @@ export default function BlogListingPage() {
               </div>
               <div className="p-8 space-y-4 flex flex-col flex-1">
                 <div className="flex items-center gap-3 text-muted-foreground text-[10px] font-black uppercase tracking-widest">
-                  <BookOpen className="size-4" />
+                  <BookOpenIcon weight="duotone" className="size-4" />
                   <span>{post.readTime} DE LEITURA</span>
                 </div>
                 <h2 className="text-2xl font-black italic uppercase leading-tight group-hover:text-primary transition-colors">
@@ -90,7 +90,7 @@ export default function BlogListingPage() {
                 <div className="pt-4 mt-auto">
                   <Button variant="ghost" className="p-0 h-auto font-black italic uppercase tracking-widest text-[11px] group-hover:text-primary gap-2">
                     Ler Artigo Completo
-                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                    <ArrowRightIcon weight="duotone" className="size-4 transition-transform group-hover:translate-x-1" />
                   </Button>
                 </div>
               </div>

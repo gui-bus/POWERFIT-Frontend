@@ -1,8 +1,10 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
-import { BookOpen, ArrowRight, TrendingUp } from "lucide-react";
+import { 
+  BookOpenIcon, 
+  ArrowRightIcon, 
+  TrendUpIcon 
+} from "@phosphor-icons/react/ssr";
 import { ConsistencyGrid } from "@/components/consistencyGrid";
 import { GetHomeData200 } from "@/lib/api/fetch-generated";
 
@@ -60,13 +62,13 @@ export function PremiumSidebar({ homeData }: PremiumSidebarProps) {
         <div className="space-y-8">
           <div className="flex items-center justify-between px-2">
             <div className="flex items-center gap-2 text-primary">
-              <TrendingUp className="size-5" />
+              <TrendUpIcon weight="duotone" className="size-5" />
               <h3 className="text-sm font-black uppercase tracking-[0.2em] italic">POWER INSIGHTS</h3>
             </div>
             <Link href="/blog">
               <button className="text-[10px] font-bold text-muted-foreground hover:text-primary uppercase tracking-widest transition-colors flex items-center gap-1 group cursor-pointer">
                 Ver tudo
-                <ArrowRight className="size-3 transition-transform group-hover:translate-x-1" />
+                <ArrowRightIcon weight="duotone" className="size-3 transition-transform group-hover:translate-x-1" />
               </button>
             </Link>
           </div>
@@ -95,7 +97,7 @@ export function PremiumSidebar({ homeData }: PremiumSidebarProps) {
                       </h4>
                     </div>
                     <div className="flex items-center gap-2 text-muted-foreground">
-                      <BookOpen className="size-3" />
+                      <BookOpenIcon weight="duotone" className="size-3" />
                       <span className="text-[9px] font-black uppercase tracking-widest">{post.readTime}</span>
                     </div>
                   </div>

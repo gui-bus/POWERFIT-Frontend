@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { useQueryStates, parseAsBoolean, parseAsString } from "nuqs";
-import { Sparkles, X, ArrowUp } from "lucide-react";
+import { SparkleIcon, XIcon, ArrowUpIcon } from "@phosphor-icons/react";
 import { Streamdown } from "streamdown";
 import "streamdown/styles.css";
 import { useForm } from "react-hook-form";
@@ -123,17 +123,40 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
           </div>
         </div>
         {embedded ? (
-          <Button variant="ghost" size="sm" asChild className="rounded-xl font-black italic uppercase text-[10px] tracking-widest">
+          <Button
+            variant="ghost"
+            size="sm"
+            asChild
+            className="rounded-xl font-black italic uppercase text-[10px] tracking-widest"
+          >
             <Link href="/">Acessar FIT.AI</Link>
           </Button>
         ) : (
-          <Button variant="ghost" size="icon" onClick={handleClose} className="rounded-2xl hover:bg-primary/10 hover:text-primary transition-all group">
-            <X className="size-5 text-muted-foreground group-hover:rotate-90 transition-transform" />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleClose}
+            className="rounded-2xl hover:bg-primary/10 hover:text-primary transition-all group"
+          >
+            <XIcon
+              weight="duotone"
+              className="size-5 text-muted-foreground group-hover:rotate-90 transition-transform"
+            />
           </Button>
         )}
       </div>
 
-      <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-4 bg-background/30">        
+      <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-4 bg-background/30">
+        {messages.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex flex-col items-center justify-center h-full opacity-20 grayscale"
+          >
+            <SparkleIcon weight="duotone" className="size-12 text-primary" />
+          </motion.div>
+        )}
+
         <AnimatePresence mode="popLayout">
           {messages.map((message) => (
             <motion.div
@@ -142,7 +165,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
               animate={{ opacity: 1, y: 0 }}
               className={cn(
                 "flex w-full",
-                message.role === "assistant" ? "justify-start" : "justify-end"
+                message.role === "assistant" ? "justify-start" : "justify-end",
               )}
             >
               <div
@@ -150,7 +173,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
                   "max-w-[85%] p-4 text-sm leading-relaxed",
                   message.role === "assistant"
                     ? "rounded-2xl rounded-tl-none bg-card border border-border/50 text-foreground shadow-sm"
-                    : "rounded-2xl rounded-tr-none bg-primary text-primary-foreground shadow-md font-medium"
+                    : "rounded-2xl rounded-tr-none bg-primary text-primary-foreground shadow-md font-medium",
                 )}
               >
                 {message.role === "assistant" ? (
@@ -158,18 +181,23 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
                     part.type === "text" ? (
                       <Streamdown
                         key={index}
-                        isAnimating={isStreaming && messages[messages.length - 1]?.id === message.id}
+                        isAnimating={
+                          isStreaming &&
+                          messages[messages.length - 1]?.id === message.id
+                        }
                         className="font-heading"
                       >
                         {part.text}
                       </Streamdown>
-                    ) : null
+                    ) : null,
                   )
                 ) : (
                   <p className="font-heading">
                     {message.parts
                       .filter((part) => part.type === "text")
-                      .map((part) => (part as { type: "text"; text: string }).text)
+                      .map(
+                        (part) => (part as { type: "text"; text: string }).text,
+                      )
                       .join("")}
                   </p>
                 )}
@@ -223,7 +251,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
               size="icon"
               className="absolute right-1.5 top-1.5 size-11 rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
             >
-              <ArrowUp className="size-5 stroke-3" />
+              <ArrowUpIcon weight="duotone" className="size-5 stroke-3" />
             </Button>
           </form>
         </Form>
@@ -248,9 +276,9 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
               className="group relative flex items-center gap-3 bg-card border border-border pl-4 pr-6 py-3 rounded-full shadow-2xl hover:shadow-primary/20 hover:border-primary/30 transition-all duration-500 active:scale-95 cursor-pointer"
             >
               <div className="absolute inset-0 bg-primary/5 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-              
+
               <div className="relative size-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground shadow-lg shadow-primary/30 transition-transform duration-500">
-                <Sparkles className="size-5 fill-current" />
+                <SparkleIcon weight="duotone" className="size-5 fill-current" />
                 <div className="absolute -top-0.5 -right-0.5 size-3 bg-lime-500 rounded-full border-2 border-card shadow-[0_0_8px_rgba(132,204,22,0.5)]" />
               </div>
 
@@ -274,7 +302,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
       <AnimatePresence>
         {chatParams.chat_open && (
           <div className="absolute inset-0 z-100 flex items-end justify-end p-4 sm:p-8 pointer-events-none overflow-hidden">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -283,7 +311,12 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
             />
 
             <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.95, transformOrigin: "bottom right" }}
+              initial={{
+                opacity: 0,
+                y: 20,
+                scale: 0.95,
+                transformOrigin: "bottom right",
+              }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.95 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}

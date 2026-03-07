@@ -1,8 +1,6 @@
-"use client";
-
 import { GetHomeData200ConsistencyByDay } from "@/lib/api/fetch-generated";
 import { cn } from "@/lib/utils";
-import { Flame, Check, Play } from "lucide-react";
+import { FireIcon, CheckIcon, PlayIcon } from "@phosphor-icons/react/ssr";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
 
@@ -77,10 +75,10 @@ export function ConsistencyGrid({ consistencyByDay, streak }: ConsistencyGridPro
                 )}
               >
                 {isCompleted ? (
-                  <Check className="size-5 stroke-3" />
+                  <CheckIcon weight="duotone" className="size-5 stroke-3" />
                 ) : isStarted ? (
                   <div className="relative">
-                    <Play className="size-4 fill-current" />
+                    <PlayIcon weight="duotone" className="size-4 fill-current" />
                     <span className="absolute inset-0 size-4 bg-primary animate-ping rounded-full opacity-20" />
                   </div>
                 ) : (
@@ -104,12 +102,12 @@ export function ConsistencyGrid({ consistencyByDay, streak }: ConsistencyGridPro
 
       <div className="flex items-center justify-between bg-foreground rounded-2xl p-4 mt-2 overflow-hidden relative group">
         <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform text-background">
-          <Flame size={60} />
+          <FireIcon weight="duotone" size={60} />
         </div>
         
         <div className="flex items-center gap-4 relative z-10">
           <div className="size-12 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
-            <Flame className="size-7 text-primary-foreground" fill="currentColor" />
+            <FireIcon weight="duotone" className="size-7 text-primary-foreground" fill="currentColor" />
           </div>
           <div>
             <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">

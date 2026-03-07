@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Calendar, Clock, Tag } from "lucide-react";
+import { ArrowLeftIcon, CalendarIcon, ClockIcon, TagIcon } from "@phosphor-icons/react/ssr";
 import { Button } from "@/components/ui/button";
 
 const MOCK_POSTS = [
@@ -108,7 +108,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   return (
     <div className="container max-w-4xl mx-auto py-12 px-6">
       <Link href="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-8 group">
-        <ArrowLeft className="size-4 transition-transform group-hover:-translate-x-1" />
+        <ArrowLeftIcon weight="duotone" className="size-4 transition-transform group-hover:-translate-x-1" />
         <span className="text-xs font-black uppercase tracking-widest italic">Voltar</span>
       </Link>
 
@@ -116,15 +116,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         <header className="space-y-6">
           <div className="flex flex-wrap items-center gap-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
             <span className="flex items-center gap-1.5 text-primary bg-primary/10 px-3 py-1.5 rounded-xl border border-primary/20">
-              <Tag className="size-3" />
+              <TagIcon weight="duotone" className="size-3" />
               {post.category}
             </span>
             <span className="flex items-center gap-1.5">
-              <Calendar className="size-3" />
+              <CalendarIcon weight="duotone" className="size-3" />
               {post.date}
             </span>
             <span className="flex items-center gap-1.5">
-              <Clock className="size-3" />
+              <ClockIcon weight="duotone" className="size-3" />
               {post.readTime}
             </span>
           </div>

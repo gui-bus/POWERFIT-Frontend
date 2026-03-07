@@ -1,6 +1,4 @@
-"use client";
-
-import { CircleCheck, CirclePercent, Hourglass } from "lucide-react";
+import { CheckCircleIcon, PercentIcon, HourglassIcon } from "@phosphor-icons/react/ssr";
 
 interface StatCardsProps {
   completedWorkoutsCount: number;
@@ -27,22 +25,22 @@ export function StatCards({
     {
       label: "Treinos Feitos",
       value: completedWorkoutsCount,
-      icon: CircleCheck,
+      icon: CheckCircleIcon,
     },
     {
       label: "Descansos Feitos",
       value: completedRestDays,
-      icon: CircleCheck,
+      icon: CheckCircleIcon,
     },
     {
       label: "Taxa de conclusão",
       value: `${Math.round(conclusionRate * 100)}%`,
-      icon: CirclePercent,
+      icon: PercentIcon,
     },
     {
       label: "Tempo Total",
       value: formatTime(totalTimeInSeconds),
-      icon: Hourglass,
+      icon: HourglassIcon,
     }
   ];
 
@@ -54,7 +52,7 @@ export function StatCards({
           className="bg-primary/5 border border-primary/10 rounded-[2rem] p-8 flex flex-col items-center text-center gap-6"
         >
           <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center">
-            <stat.icon className="size-6 text-primary" />
+            <stat.icon weight="duotone" className="size-6 text-primary" />
           </div>
           <div className="space-y-1">
             <p className="font-syne text-3xl font-black text-foreground uppercase italic tracking-tighter">

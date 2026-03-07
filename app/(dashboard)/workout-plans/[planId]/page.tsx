@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { WorkoutCard } from "@/components/workoutCard";
-import { Goal } from "lucide-react";
+import { TargetIcon } from "@phosphor-icons/react/ssr";
 
 interface PageProps {
   params: Promise<{
@@ -70,7 +70,7 @@ export default async function WorkoutPlanDetailsPage({ params }: PageProps) {
 
           <div className="space-y-4">
             <div className="inline-flex items-center gap-2 bg-online px-4 py-1.5 rounded-full shadow-lg shadow-blue-600/20">
-              <Goal className="size-4 text-white" />
+              <TargetIcon weight="duotone" className="size-4 text-white" />
               <span className="text-[10px] sm:text-xs font-black text-white uppercase tracking-widest italic">
                 {plan.name}
               </span>

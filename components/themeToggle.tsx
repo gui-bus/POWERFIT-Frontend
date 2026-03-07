@@ -1,5 +1,5 @@
 "use client";
-import { Moon, Sun } from "lucide-react";
+import { MoonIcon, SunIcon } from "@phosphor-icons/react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 
@@ -17,7 +17,7 @@ export function ThemeToggle() {
             : "text-muted-foreground hover:text-foreground"
         )}
       >
-        <Sun className="size-5 stroke-[2.5]" />
+        <SunIcon weight="duotone" className="size-5 stroke-[2.5]" />
       </button>
       <button
         onClick={() => setTheme("dark")}
@@ -28,7 +28,7 @@ export function ThemeToggle() {
             : "text-muted-foreground hover:text-foreground"
         )}
       >
-        <Moon className="size-5 stroke-[2.5]" />
+        <MoonIcon weight="duotone" className="size-5 stroke-[2.5]" />
       </button>
     </div>
   );

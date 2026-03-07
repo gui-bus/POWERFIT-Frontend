@@ -1,7 +1,7 @@
 "use client";
 
 import { GetWorkoutDayById200ExercisesItem } from "@/lib/api/fetch-generated";
-import { CircleHelp } from "lucide-react";
+import { QuestionIcon } from "@phosphor-icons/react";
 import { useQueryStates, parseAsBoolean, parseAsString } from "nuqs";
 
 interface ExerciseItemProps {
@@ -34,7 +34,7 @@ export function ExerciseItem({ exercise }: ExerciseItemProps) {
             onClick={handleHelpClick}
             className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors uppercase text-[10px] font-black tracking-[0.2em] border border-border px-3 py-1.5 rounded-sm bg-background/50 active:scale-95 cursor-help"
           >
-            <CircleHelp className="size-3.5" />
+            <QuestionIcon size={16} />
             Instruções
           </button>
 

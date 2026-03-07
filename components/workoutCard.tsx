@@ -1,12 +1,12 @@
 import { GetWorkoutPlanById200WorkoutDaysItem } from "@/lib/api/fetch-generated";
 import {
-  Timer,
-  Dumbbell,
-  Lock,
-  Coffee,
-  CheckCircle2,
-  ArrowRight,
-} from "lucide-react";
+  TimerIcon,
+  BarbellIcon,
+  LockIcon,
+  CoffeeIcon,
+  CheckCircleIcon,
+  ArrowRightIcon,
+} from "@phosphor-icons/react/ssr";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -70,9 +70,9 @@ export function WorkoutCard({
               )}
             >
               {isCompleted ? (
-                <CheckCircle2 className="size-8 stroke-2" />
+                <CheckCircleIcon weight="duotone" className="size-8 stroke-2" />
               ) : (
-                <Coffee className="size-8 stroke-2" />
+                <CoffeeIcon weight="duotone" className="size-8 stroke-2" />
               )}
             </div>
 
@@ -131,14 +131,14 @@ export function WorkoutCard({
                 )}
               >
                 {isCompleted ? (
-                  <CheckCircle2 className="size-3.5" />
+                  <CheckCircleIcon weight="duotone" className="size-3.5" />
                 ) : isActive ? (
                   <span className="relative flex size-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                     <span className="relative inline-flex rounded-full size-2 bg-primary"></span>
                   </span>
                 ) : (
-                  <Lock className="size-3" />
+                  <LockIcon weight="duotone" className="size-3" />
                 )}
                 <span className="text-[10px] font-black uppercase tracking-[0.25em] leading-none">
                   {isCompleted
@@ -154,7 +154,7 @@ export function WorkoutCard({
                   <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     TREINAR
                   </span>
-                  <ArrowRight className="size-4" />
+                  <ArrowRightIcon weight="duotone" className="size-4" />
                 </div>
               )}
             </div>
@@ -190,11 +190,11 @@ export function WorkoutCard({
               <div className="flex items-center gap-2">
                 {[
                   {
-                    icon: Timer,
+                    icon: TimerIcon,
                     label: `Tempo estimado: ${Math.round(workout.estimatedDurationInSeconds / 60)} MIN`,
                   },
                   {
-                    icon: Dumbbell,
+                    icon: BarbellIcon,
                     label: `${workout.exercisesCount} EXERCÍCIOS`,
                   },
                 ].map((item, i) => (
@@ -202,7 +202,7 @@ export function WorkoutCard({
                     key={i}
                     className="group/pill flex items-center gap-2 bg-white/3 hover:bg-white/8 backdrop-blur-md px-4 py-2 rounded-sm border border-white/10 transition-colors"
                   >
-                    <item.icon className="size-3 text-primary" />
+                    <item.icon weight="duotone" className="size-3 text-primary" />
                     <span className="text-[9px] font-black text-white/90 uppercase tracking-widest">
                       {item.label}
                     </span>

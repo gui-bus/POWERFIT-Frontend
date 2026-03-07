@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdownMenu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogOut, User, Moon, Sun, Calendar } from "lucide-react";
+import { SignOutIcon, UserIcon, MoonIcon, SunIcon, CalendarIcon } from "@phosphor-icons/react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { getHomeData } from "@/lib/api/fetch-generated";
@@ -91,14 +91,14 @@ export function UserNav({ user }: UserNavProps) {
             )}
             onClick={() => planOverviewLink && router.push(planOverviewLink)}
           >
-            <Calendar className="mr-3 h-4 w-4 stroke-[2.5]" />
+            <CalendarIcon weight="duotone" className="mr-3 h-4 w-4 stroke-[2.5]" />
             <span className="font-bold text-xs uppercase tracking-wider">Plano de Treino</span>
           </DropdownMenuItem>
           <DropdownMenuItem 
             className="rounded-xl p-3 focus:bg-primary focus:text-primary-foreground group cursor-pointer"
             onClick={() => router.push("/profile")}
           >
-            <User className="mr-3 h-4 w-4 stroke-[2.5]" />
+            <UserIcon weight="duotone" className="mr-3 h-4 w-4 stroke-[2.5]" />
             <span className="font-bold text-xs uppercase tracking-wider">Perfil</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -110,9 +110,9 @@ export function UserNav({ user }: UserNavProps) {
           >
             <div className="flex items-center">
               {theme === "dark" ? (
-                <Sun className="mr-3 h-4 w-4 stroke-[2.5]" />
+                <SunIcon weight="duotone" className="mr-3 h-4 w-4 stroke-[2.5]" />
               ) : (
-                <Moon className="mr-3 h-4 w-4 stroke-[2.5]" />
+                <MoonIcon weight="duotone" className="mr-3 h-4 w-4 stroke-[2.5]" />
               )}
               <span className="font-bold text-xs uppercase tracking-wider">Alternar Tema</span>
             </div>
@@ -124,7 +124,7 @@ export function UserNav({ user }: UserNavProps) {
           className="rounded-xl p-3 text-destructive focus:bg-destructive focus:text-destructive-foreground font-bold text-xs uppercase tracking-wider cursor-pointer"
           onClick={handleLogout}
         >
-          <LogOut className="mr-3 h-4 w-4 stroke-[2.5]" />
+          <SignOutIcon weight="duotone" className="mr-3 h-4 w-4 stroke-[2.5]" />
           Sair
         </DropdownMenuItem>
       </DropdownMenuContent>

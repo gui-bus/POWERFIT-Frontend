@@ -9,14 +9,14 @@ import { WorkoutDayHeader } from "@/components/workoutDay/workoutDayHeader";
 import { ExerciseItem } from "@/components/workoutDay/exerciseItem";
 import { SessionAction } from "@/components/workoutDay/sessionAction";
 import {
-  Calendar,
-  Timer,
-  Dumbbell,
-  Coffee,
-  Zap,
-  Moon,
-  Droplets,
-} from "lucide-react";
+  CalendarIcon,
+  TimerIcon,
+  BarbellIcon,
+  CoffeeIcon,
+  LightningIcon,
+  MoonIcon,
+  DropIcon,
+} from "@phosphor-icons/react/ssr";
 import { cn } from "@/lib/utils";
 
 interface PageProps {
@@ -75,9 +75,9 @@ export default async function WorkoutDayPage({ params }: PageProps) {
             <div className="relative">
               <div className="absolute inset-0 bg-primary/20 rounded-[3rem] blur-3xl animate-pulse" />
               <div className="relative size-32 sm:size-40 rounded-[3rem] bg-card border border-border shadow-2xl flex items-center justify-center group transition-transform duration-700 hover:scale-110">
-                <Coffee className="size-16 sm:size-20 text-primary stroke-[1.5]" />
+                <CoffeeIcon weight="duotone" className="size-16 sm:size-20 text-primary stroke-[1.5]" />
                 <div className="absolute -top-2 -right-2 size-8 bg-primary rounded-full flex items-center justify-center shadow-lg">
-                  <Zap className="size-4 text-primary-foreground fill-primary-foreground" />
+                  <LightningIcon weight="duotone" className="size-4 text-primary-foreground fill-primary-foreground" />
                 </div>
               </div>
             </div>
@@ -96,19 +96,19 @@ export default async function WorkoutDayPage({ params }: PageProps) {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-4xl px-4">
               {[
                 {
-                  icon: Moon,
+                  icon: MoonIcon,
                   title: "Sono",
                   val: "7-9h",
                   color: "text-indigo-400",
                 },
                 {
-                  icon: Droplets,
+                  icon: DropIcon,
                   title: "Água",
                   val: "3.5L",
                   color: "text-blue-400",
                 },
                 {
-                  icon: Coffee,
+                  icon: CoffeeIcon,
                   title: "Nutrição",
                   val: "Limpa",
                   color: "text-orange-400",
@@ -118,7 +118,7 @@ export default async function WorkoutDayPage({ params }: PageProps) {
                   key={i}
                   className="bg-card/50 backdrop-blur-sm border border-border/50 p-6 rounded-[2rem] flex flex-col items-center gap-2 hover:border-primary/30 transition-colors"
                 >
-                  <item.icon className={cn("size-6 mb-1", item.color)} />
+                  <item.icon weight="duotone" className={cn("size-6 mb-1", item.color)} />
                   <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
                     {item.title}
                   </span>
@@ -167,7 +167,7 @@ export default async function WorkoutDayPage({ params }: PageProps) {
             <div className="flex justify-between items-start">
               <div className="group/badge flex items-center gap-2 bg-black/20 backdrop-blur-xl border border-white/20 px-5 py-2 rounded-full transition-all hover:bg-white/10">
                 <div className="relative">
-                  <Calendar className="size-3.5 text-primary animate-pulse" />
+                  <CalendarIcon weight="duotone" className="size-3.5 text-primary animate-pulse" />
                   <div className="absolute inset-0 blur-sm bg-primary/40 size-3.5" />
                 </div>
                 <span className="text-[10px] font-bold text-white uppercase tracking-[0.15em]">
@@ -194,11 +194,11 @@ export default async function WorkoutDayPage({ params }: PageProps) {
                 <div className="flex flex-wrap items-center gap-3">
                   {[
                     {
-                      icon: Timer,
+                      icon: TimerIcon,
                       text: `${Math.round(workoutDay.estimatedDurationInSeconds / 60)}m Estimados`,
                     },
                     {
-                      icon: Dumbbell,
+                      icon: BarbellIcon,
                       text: `${workoutDay.exercises.length} Exercícios`,
                     },
                   ].map((item, idx) => (
@@ -206,7 +206,7 @@ export default async function WorkoutDayPage({ params }: PageProps) {
                       key={idx}
                       className="flex items-center gap-2.5 bg-white/5 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10 hover:border-white/30 transition-colors"
                     >
-                      <item.icon className="size-4 text-primary" />
+                      <item.icon weight="duotone" className="size-4 text-primary" />
                       <span className="text-[11px] font-semibold text-zinc-100 uppercase tracking-wide">
                         {item.text}
                       </span>

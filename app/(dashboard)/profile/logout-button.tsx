@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut } from "lucide-react";
+import { SignOutIcon } from "@phosphor-icons/react";
 import { authClient } from "@/lib/authClient";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -32,7 +32,7 @@ export function LogoutButton() {
       className="flex items-center gap-3 px-8 py-4 rounded-[1.5rem] bg-destructive/10 text-destructive font-black uppercase italic tracking-widest text-sm hover:bg-destructive hover:text-destructive-foreground transition-all active:scale-95 disabled:opacity-50 hover:text-white cursor-pointer"
     >
       <span className="leading-none">{isLoggingOut ? "Saindo..." : "Sair da conta"}</span>
-      <LogOut className="size-5" />
+      <SignOutIcon weight="duotone" className="size-5" />
     </button>
   );
 }
