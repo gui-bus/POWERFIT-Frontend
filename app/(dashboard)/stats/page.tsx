@@ -4,13 +4,13 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
-import Image from "next/image";
 
 dayjs.locale("pt-br");
 import { StreakBanner } from "@/components/stats/streakBanner";
 import { ConsistencyHeatmap } from "@/components/stats/consistencyHeatmap";
 import { StatCards } from "@/components/stats/statCards";
 import { ChartBarIcon, TrendUpIcon, CalendarIcon, ClockIcon } from "@phosphor-icons/react/ssr";
+import { PageHeader } from "@/components/pageHeader";
 
 export default async function StatsPage() {
   const session = await authClient.getSession({
@@ -43,23 +43,7 @@ export default async function StatsPage() {
     <div className="relative z-10 max-w-350 mx-auto p-6 sm:p-10 lg:p-16 space-y-12">
       
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-        <div className="space-y-1">
-          <div className="flex items-center gap-3">
-            <Image 
-              src="/images/powerfit-logo.svg" 
-              alt="PowerFit" 
-              width={140} 
-              height={16} 
-              className="h-5 w-auto" 
-            />
-            <h1 className="font-anton text-3xl text-primary italic uppercase tracking-widest leading-none">
-              STATS
-            </h1>
-          </div>
-          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.4em] pl-1">
-            Evolução & Performance
-          </p>
-        </div>
+        <PageHeader title="Estatísticas" subtitle="Evolução & Performance" />
 
         <div className="flex items-center gap-4 bg-card/50 backdrop-blur-md border border-border px-6 py-3 rounded-[1.5rem] shadow-sm">
           <div className="size-10 rounded-xl bg-primary/10 flex items-center justify-center">

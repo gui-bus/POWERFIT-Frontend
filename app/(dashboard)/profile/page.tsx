@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 import { PersonIcon, RulerIcon, BarbellIcon, UserIcon, TrendUpIcon } from "@phosphor-icons/react/ssr";
 import { LogoutButton } from "./logout-button";
+import { PageHeader } from "@/components/pageHeader";
 
 export default async function ProfilePage() {
   const session = await authClient.getSession({
@@ -63,23 +64,7 @@ export default async function ProfilePage() {
       
       {/* Header Section */}
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-        <div className="space-y-1">
-          <div className="flex items-center gap-3">
-            <Image 
-              src="/images/powerfit-logo.svg" 
-              alt="PowerFit" 
-              width={140} 
-              height={16} 
-              className="h-5 w-auto" 
-            />
-            <h1 className="font-anton text-3xl text-primary italic uppercase tracking-widest leading-none">
-              PROFILE
-            </h1>
-          </div>
-          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.4em] pl-1">
-            Seu Painel Pessoal
-          </p>
-        </div>
+        <PageHeader title="PERFIL" subtitle="Seu Painel Pessoal" />
 
         <div className="flex items-center gap-4 bg-card/50 backdrop-blur-md border border-border px-6 py-3 rounded-[1.5rem] shadow-sm">
           <div className="size-10 rounded-xl bg-primary/10 flex items-center justify-center">

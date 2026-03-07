@@ -9,6 +9,7 @@ import { WorkoutCard } from "@/components/workoutCard";
 import { BellIcon, SparkleIcon, PlusIcon } from "@phosphor-icons/react/ssr";
 import { UserNav } from "@/components/userNav";
 import Link from "next/link";
+import { PageHeader } from "@/components/pageHeader";
 
 export default async function Home() {
   const session = await authClient.getSession({
@@ -42,14 +43,10 @@ export default async function Home() {
   return (
     <div className="max-w-300 mx-auto pb-32 lg:pb-12 px-5 sm:px-10 lg:px-12">
       <header className="flex items-center justify-between py-8 lg:py-10">
-        <div>
-          <h1 className="text-2xl lg:text-3xl font-black text-foreground tracking-tight uppercase italic leading-none">
-            Dashboard
-          </h1>
-          <p className="hidden sm:block text-xs lg:text-sm text-muted-foreground font-medium uppercase tracking-wider mt-1">
-            Bem-vindo de volta, {session.data.user.name.split(" ")[0]}!
-          </p>
-        </div>
+        <PageHeader 
+          title="DASHBOARD" 
+          subtitle={`Bem-vindo de volta, ${session.data.user.name.split(" ")[0]}!`} 
+        />
 
         <div className="flex items-center gap-3 sm:gap-6 lg:hidden">
           <button className="relative size-12 bg-card border border-border rounded-2xl flex items-center justify-center text-muted-foreground hover:text-primary transition-colors">
@@ -124,7 +121,7 @@ export default async function Home() {
                 }
                 className="group bg-white hover:bg-primary text-black hover:text-white px-6 sm:px-8 py-3 sm:py-4 lg:px-10 lg:py-5 rounded-2xl sm:rounded-[2rem] text-[10px] sm:text-sm lg:text-base font-black uppercase italic transition-all shadow-2xl active:scale-95 flex items-center gap-3 sm:gap-4 w-fit"
               >
-                {hasPlan ? "Iniciar Treino" : "Montar Plano"}
+                {hasPlan ? "Iniciar Treino de hoje" : "Montar Plano"}
               </Link>
             </div>
           </div>
