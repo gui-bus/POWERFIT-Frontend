@@ -51,8 +51,7 @@ export default async function WorkoutPlanDetailsPage({ params }: PageProps) {
   return (
     <div className="max-w-250 mx-auto pb-32 lg:pb-12">
       
-      {/* Top Banner */}
-      <div className="relative h-74 w-full overflow-hidden rounded-b-[2.5rem] lg:rounded-b-[3.5rem] shadow-2xl">
+      <div className="relative h-74 w-full overflow-hidden rounded-b-[2.5rem] lg:rounded-b-[3.5rem] shadow-2xl border border-t-0">
         <Image
           src="/images/login-bg.png"
           alt="Plano Banner"
@@ -64,12 +63,15 @@ export default async function WorkoutPlanDetailsPage({ params }: PageProps) {
         <div className="absolute inset-0 bg-linear-to-r from-black/60 via-transparent to-transparent opacity-60" />
         
         <div className="absolute inset-0 flex flex-col justify-between p-8 sm:p-12 lg:p-16">
-          <h1 className="font-syne text-2xl font-black text-white uppercase italic tracking-tighter">
-            Fit.ai
-          </h1>
+          <Image 
+            src="/images/powerfit-logo.svg" 
+            alt="PowerFit Logo" 
+            width={100} 
+            height={12} 
+          />
 
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 bg-online px-4 py-1.5 rounded-full shadow-lg shadow-blue-600/20">
+            <div className="inline-flex items-center gap-2 bg-primary px-4 py-1.5 rounded-full shadow-lg shadow-blue-600/20">
               <TargetIcon weight="duotone" className="size-4 text-white" />
               <span className="text-[10px] sm:text-xs font-black text-white uppercase tracking-widest italic">
                 {plan.name}
@@ -82,7 +84,7 @@ export default async function WorkoutPlanDetailsPage({ params }: PageProps) {
         </div>
       </div>
 
-      <div className="mt-8 px-5 sm:px-10 lg:px-12 space-y-2">
+      <div className="mt-8 px-5 sm:px-10 lg:px-12 space-y-6">
         {sortedWorkoutDays.map((day) => {
           const todayDate = dayjs().startOf('day');
           const startOfWeek = todayDate.startOf('week').add(1, 'day').subtract(todayDate.day() === 0 ? 7 : 0, 'day');
