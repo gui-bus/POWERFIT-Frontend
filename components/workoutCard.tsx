@@ -144,7 +144,7 @@ export function WorkoutCard({
                   {isCompleted
                     ? "CONCLUÍDO"
                     : isActive
-                      ? "EM FOCO"
+                      ? "TREINO DE HOJE"
                       : "BLOQUEADO"}
                 </span>
               </div>
