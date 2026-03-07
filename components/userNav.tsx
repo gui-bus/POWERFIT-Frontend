@@ -14,11 +14,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SignOutIcon, UserIcon, MoonIcon, SunIcon, CalendarIcon } from "@phosphor-icons/react";
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { getHomeData } from "@/lib/api/fetch-generated";
 import dayjs from "dayjs";
 import { cn } from "@/lib/utils";
+import { useThemeTransition } from "@/lib/hooks/useThemeTransition";
 
 interface UserNavProps {
   user: {
@@ -31,7 +31,7 @@ interface UserNavProps {
 export function UserNav({ user }: UserNavProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const { setTheme, theme } = useTheme();
+  const { theme, toggleTheme } = useThemeTransition();
   const [planOverviewLink, setPlanOverviewLink] = useState<string | null>(null);
 
   useEffect(() => {
@@ -65,13 +65,13 @@ export function UserNav({ user }: UserNavProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-14 w-auto rounded-2xl px-3 flex items-center gap-3 cursor-pointer hover:bg-primary/5 transition-all">
-          <Avatar className="h-10 w-10 rounded-[12px] p-0.5 border border-border">
+          <Avatar className="h-10 w-10 rounded-2xl p-0.5">
             <AvatarImage src={user.image || ""} alt={user.name} className="rounded-[10px] object-cover" />
             <AvatarFallback className="rounded-[10px] bg-primary text-primary-foreground text-[10px] font-black uppercase">
               {user.name.substring(0, 2)}
             </AvatarFallback>
           </Avatar>
-          <div className="flex flex-col items-start text-left hidden sm:flex">
+          <div className="flex flex-col items-start text-left sm:flex">
             <p className="text-[11px] font-black leading-none uppercase italic tracking-tight text-foreground">{user.name}</p>
             <p className="text-[9px] font-bold leading-none text-muted-foreground uppercase tracking-widest mt-1">
               {user.email.length > 20 ? `${user.email.substring(0, 20)}...` : user.email}
@@ -112,7 +112,7 @@ export function UserNav({ user }: UserNavProps) {
         <DropdownMenuGroup className="p-1">
           <DropdownMenuItem 
             className="rounded-xl p-3 focus:bg-primary focus:text-primary-foreground group cursor-pointer flex items-center justify-between"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            onClick={toggleTheme}
           >
             <div className="flex items-center">
               {theme === "dark" ? (

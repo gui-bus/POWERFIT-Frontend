@@ -37,7 +37,7 @@ export function ConsistencyGrid({ consistencyByDay, streak }: ConsistencyGridPro
   const finalStreak = Math.max(streak, calculatedStreak);
 
   return (
-    <div className="w-full flex flex-col gap-4 p-8">
+    <div className="w-full flex flex-col gap-4 lg:p-8">
       <div className="flex items-center justify-between">
         <div className="space-y-0.5">
           <h2 className="text-xl font-bold text-foreground tracking-tight flex items-center gap-2">
@@ -49,7 +49,7 @@ export function ConsistencyGrid({ consistencyByDay, streak }: ConsistencyGridPro
         </div>
       </div>
 
-      <div className="grid grid-cols-7 gap-3">
+      <div className="grid grid-cols-7 gap-6">
         {WEEKDAYS_LABELS.map((label, index) => {
           const currentDate = startOfWeek.add(index, "day");
           const dateKey = currentDate.format("YYYY-MM-DD");
@@ -75,7 +75,7 @@ export function ConsistencyGrid({ consistencyByDay, streak }: ConsistencyGridPro
                 )}
               >
                 {isCompleted ? (
-                  <CheckIcon weight="duotone" className="size-5 stroke-3" />
+                  <CheckIcon className="size-5 stroke-3" />
                 ) : isStarted ? (
                   <div className="relative">
                     <PlayIcon weight="duotone" className="size-4 fill-current" />
