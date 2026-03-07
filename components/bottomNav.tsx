@@ -1,15 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { House, Calendar, Sparkles, ChartNoAxesColumn, UserRound } from "lucide-react";
+import { House, Calendar, ChartNoAxesColumn, UserRound, Sparkles } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { authClient } from "@/lib/authClient";
 import { useEffect, useState } from "react";
 import { getHomeData } from "@/lib/api/fetch-generated";
 import dayjs from "dayjs";
-import { useQueryState, parseAsBoolean } from "nuqs";
 import { UserNav } from "@/components/userNav";
+import { useQueryState, parseAsBoolean } from "nuqs";
 
 export function BottomNav() {
   const pathname = usePathname();
@@ -72,42 +72,33 @@ export function BottomNav() {
         ))}
       </nav>
 
-      <nav className="hidden lg:flex sticky left-0 top-0 h-screen w-24 xl:w-28 bg-card border-r border-border flex-col items-center py-10 z-50">
-        <Link href="/" className="font-syne text-3xl font-black italic text-primary mb-12 tracking-tighter hover:scale-110 transition-transform">
+      <nav className="hidden lg:flex sticky left-0 top-0 h-screen w-20 bg-card/50 backdrop-blur-xl border-r border-border flex-col items-center py-8 z-50 transition-all duration-300">
+        <Link href="/" className="font-syne text-2xl font-black italic text-primary mb-10 tracking-tighter hover:scale-110 transition-transform">
           P.
         </Link>
 
-        <div className="flex flex-col gap-6 flex-1">
+        <div className="flex flex-col gap-4 flex-1">
           {navItems.map((item, i) => (
             <Link 
               key={i}
               href={item.href} 
               className={cn(
-                "p-4 rounded-2xl transition-all duration-300 group relative flex items-center justify-center",
+                "p-3.5 rounded-2xl transition-all duration-300 group relative flex items-center justify-center",
                 item.active 
-                  ? "bg-primary text-primary-foreground shadow-2xl shadow-primary/30" 
-                  : "text-muted-foreground hover:text-primary hover:bg-accent"
+                  ? "bg-primary text-primary-foreground shadow-xl shadow-primary/20" 
+                  : "text-muted-foreground hover:text-primary hover:bg-primary/5"
               )}
             >
-              <item.icon className="size-6 stroke-[2.5]" />
-              {item.active && (
-                <span className="absolute -left-10 w-2 h-10 bg-primary rounded-r-full shadow-[4px_0_12px_rgba(var(--primary),0.4)]" />
-              )}
+              <item.icon className="size-5 stroke-[2.5]" />
             </Link>
           ))}
         </div>
 
-        <div className="flex flex-col gap-8 items-center mb-4">
-          <button 
-            onClick={() => setIsOpen(true)}
-            className="bg-primary p-5 rounded-3xl shadow-2xl hover:opacity-90 transition-all active:scale-95 group relative text-primary-foreground"
-          >
-            <Sparkles className="size-7 group-hover:scale-110 transition-transform" />
-            <span className="absolute -top-1 -right-1 size-4 bg-background rounded-full border-4 border-primary" />
-          </button>
-          
+        <div className="flex flex-col gap-6 items-center mb-2">
           {session?.user && (
-            <UserNav user={session.user} />
+            <div className="hover:scale-105 transition-transform">
+              <UserNav user={session.user} />
+            </div>
           )}
         </div>
       </nav>

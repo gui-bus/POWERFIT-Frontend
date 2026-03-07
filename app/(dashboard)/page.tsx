@@ -116,10 +116,7 @@ export default async function Home() {
                 }
                 className="group bg-white hover:bg-primary text-black hover:text-white px-6 sm:px-8 py-3 sm:py-4 lg:px-10 lg:py-5 rounded-2xl sm:rounded-[2rem] text-[10px] sm:text-sm lg:text-base font-black uppercase italic transition-all shadow-2xl active:scale-95 flex items-center gap-3 sm:gap-4 w-fit"
               >
-                {hasPlan ? "Bora Treinar" : "Montar Plano"}
-                <div className="size-6 sm:size-8 lg:size-10 bg-black group-hover:bg-white rounded-full flex items-center justify-center transition-colors">
-                  <Sparkles className="size-3 sm:size-4 lg:size-5 text-white group-hover:text-primary" />
-                </div>
+                {hasPlan ? "Iniciar Treino" : "Montar Plano"}
               </Link>
             </div>
           </div>
@@ -172,8 +169,8 @@ export default async function Home() {
                 href="?chat_open=true&chat_initial_message=Monte meu plano de treino"
                 className="group bg-card border border-border rounded-[2rem] p-10 text-center space-y-6 hover:border-primary/50 transition-all active:scale-[0.99]"
               >
-                <div className="size-20 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
-                  <Sparkles className="size-10" />
+                <div className="size-20 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
+                  <Sparkles className="size-10 fill-current" />
                 </div>
                 <div className="space-y-2">
                   <h3 className="font-syne text-2xl font-black uppercase italic text-foreground tracking-tight">Fale com o Coach AI</h3>

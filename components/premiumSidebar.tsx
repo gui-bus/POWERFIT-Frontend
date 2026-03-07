@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { BookOpen, ArrowRight, Bell, TrendingUp } from "lucide-react";
-import { UserNav } from "@/components/userNav";
+import { BookOpen, ArrowRight, TrendingUp } from "lucide-react";
 import { ConsistencyGrid } from "@/components/consistencyGrid";
 import { GetHomeData200 } from "@/lib/api/fetch-generated";
 

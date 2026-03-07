@@ -49,9 +49,6 @@ export function ConsistencyGrid({ consistencyByDay, streak }: ConsistencyGridPro
             Sua jornada semanal
           </p>
         </div>
-        <button className="text-xs font-bold text-primary bg-primary/10 px-3 py-1.5 rounded-full hover:bg-primary/20 transition-colors">
-          Histórico
-        </button>
       </div>
 
       <div className="grid grid-cols-7 gap-3">
