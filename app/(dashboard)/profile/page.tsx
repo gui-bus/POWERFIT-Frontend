@@ -65,7 +65,15 @@ export default async function ProfilePage() {
       
       {/* Header Section */}
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-        <PageHeader title="PERFIL" subtitle="Seu Painel Pessoal" />
+        <PageHeader 
+          title="PERFIL" 
+          subtitle="Seu Painel Pessoal" 
+          user={{
+            name: session.data.user.name,
+            email: session.data.user.email,
+            image: session.data.user.image,
+          }}
+        />
       </header>
 
       {/* User Info Section */}

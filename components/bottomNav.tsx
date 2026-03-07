@@ -123,14 +123,6 @@ export function BottomNav() {
             </Link>
           ))}
         </div>
-
-        <div className="flex flex-col gap-6 items-center mb-2">
-          {session?.user && (
-            <div className="hover:scale-105 transition-transform">
-              <UserNav user={session.user} />
-            </div>
-          )}
-        </div>
       </nav>
     </>
   );

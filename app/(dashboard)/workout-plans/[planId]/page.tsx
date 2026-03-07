@@ -53,7 +53,15 @@ export default async function WorkoutPlanDetailsPage({ params }: PageProps) {
   return (
     <Container>
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-        <PageHeader title="Plano" subtitle="Seu Cronograma Semanal" />
+        <PageHeader 
+          title="Plano" 
+          subtitle="Seu Cronograma Semanal" 
+          user={{
+            name: session.data.user.name,
+            email: session.data.user.email,
+            image: session.data.user.image,
+          }}
+        />
       </header>
 
       <div className="lg:pt-0">

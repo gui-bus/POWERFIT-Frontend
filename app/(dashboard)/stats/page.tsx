@@ -44,7 +44,15 @@ export default async function StatsPage() {
     <Container>
       
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-        <PageHeader title="Estatísticas" subtitle="Evolução & Performance" />
+        <PageHeader 
+          title="Estatísticas" 
+          subtitle="Evolução & Performance" 
+          user={{
+            name: session.data.user.name,
+            email: session.data.user.email,
+            image: session.data.user.image,
+          }}
+        />
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">

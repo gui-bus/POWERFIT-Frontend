@@ -64,13 +64,19 @@ export function UserNav({ user }: UserNavProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-12 w-12 rounded-2xl p-0 cursor-pointer">
-          <Avatar className="h-full w-full rounded-[14px] p-1">
-            <AvatarImage src={user.image || ""} alt={user.name} className="rounded-xl object-cover border-2 border-background" />
-            <AvatarFallback className="rounded-xl bg-primary text-primary-foreground text-xs font-bold uppercase">
+        <Button variant="ghost" className="relative h-14 w-auto rounded-2xl px-3 flex items-center gap-3 cursor-pointer hover:bg-primary/5 transition-all">
+          <Avatar className="h-10 w-10 rounded-[12px] p-0.5 border border-border">
+            <AvatarImage src={user.image || ""} alt={user.name} className="rounded-[10px] object-cover" />
+            <AvatarFallback className="rounded-[10px] bg-primary text-primary-foreground text-[10px] font-black uppercase">
               {user.name.substring(0, 2)}
             </AvatarFallback>
           </Avatar>
+          <div className="flex flex-col items-start text-left hidden sm:flex">
+            <p className="text-[11px] font-black leading-none uppercase italic tracking-tight text-foreground">{user.name}</p>
+            <p className="text-[9px] font-bold leading-none text-muted-foreground uppercase tracking-widest mt-1">
+              {user.email.length > 20 ? `${user.email.substring(0, 20)}...` : user.email}
+            </p>
+          </div>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-64 mt-2 rounded-[1.5rem] p-3 border-border bg-card shadow-2xl" align="end" forceMount>

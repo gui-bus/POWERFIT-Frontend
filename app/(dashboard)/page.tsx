@@ -6,8 +6,7 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import { ConsistencyGrid } from "@/components/consistencyGrid";
 import { WorkoutCard } from "@/components/workoutCard";
-import { BellIcon, SparkleIcon, PlusIcon } from "@phosphor-icons/react/ssr";
-import { UserNav } from "@/components/userNav";
+import { SparkleIcon, PlusIcon } from "@phosphor-icons/react/ssr";
 import Link from "next/link";
 import { PageHeader } from "@/components/pageHeader";
 import { Container } from "@/components/common/container";
@@ -47,22 +46,12 @@ export default async function Home() {
         <PageHeader 
           title="DASHBOARD" 
           subtitle={`Bem-vindo de volta, ${session.data.user.name.split(" ")[0]}!`} 
+          user={{
+            name: session.data.user.name,
+            email: session.data.user.email,
+            image: session.data.user.image,
+          }}
         />
-
-        <div className="lg:hidden">
-          <button className="relative size-12 bg-card border border-border rounded-2xl flex items-center justify-center text-muted-foreground hover:text-primary transition-colors">
-            <BellIcon weight="duotone" className="size-5" />
-            <span className="absolute top-3 right-3 size-2 bg-primary rounded-full border-2 border-background" />
-          </button>
-
-          <UserNav
-            user={{
-              name: session.data.user.name,
-              email: session.data.user.email,
-              image: session.data.user.image,
-            }}
-          />
-        </div>
       </header>
 
       <div className="lg:pt-0">
