@@ -11,6 +11,7 @@ import { ConsistencyHeatmap } from "@/components/stats/consistencyHeatmap";
 import { StatCards } from "@/components/stats/statCards";
 import { ChartBarIcon, TrendUpIcon, CalendarIcon, ClockIcon } from "@phosphor-icons/react/ssr";
 import { PageHeader } from "@/components/pageHeader";
+import { Container } from "@/components/common/container";
 
 export default async function StatsPage() {
   const session = await authClient.getSession({
@@ -40,7 +41,7 @@ export default async function StatsPage() {
   console.log("data", stats);
 
   return (
-    <div className="relative z-10 max-w-350 mx-auto p-6 sm:p-10 lg:p-16 space-y-12">
+    <Container>
       
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <PageHeader title="Estatísticas" subtitle="Evolução & Performance" />
@@ -105,8 +106,6 @@ export default async function StatsPage() {
         />
       </div>
 
-      {/* Mobile Spacer */}
-      <div className="h-20 lg:hidden" />
-    </div>
+    </Container>
   );
 }

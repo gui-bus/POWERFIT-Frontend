@@ -10,6 +10,7 @@ import { BellIcon, SparkleIcon, PlusIcon } from "@phosphor-icons/react/ssr";
 import { UserNav } from "@/components/userNav";
 import Link from "next/link";
 import { PageHeader } from "@/components/pageHeader";
+import { Container } from "@/components/common/container";
 
 export default async function Home() {
   const session = await authClient.getSession({
@@ -41,7 +42,7 @@ export default async function Home() {
   const todayWorkout = homeData.todayWorkoutDay;
 
   return (
-    <div className="max-w-300 mx-auto pb-32 lg:pb-12 px-5 sm:px-10 lg:px-12">
+    <Container>
       <header className="flex items-center justify-between py-8 lg:py-10">
         <PageHeader 
           title="DASHBOARD" 
@@ -217,6 +218,6 @@ export default async function Home() {
           />
         </div>
       </div>
-    </div>
+    </Container>
   );
 }

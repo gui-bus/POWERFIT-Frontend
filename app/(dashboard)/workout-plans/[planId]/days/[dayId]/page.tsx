@@ -18,6 +18,7 @@ import {
   DropIcon,
 } from "@phosphor-icons/react/ssr";
 import { cn } from "@/lib/utils";
+import { Container } from "@/components/common/container";
 
 interface PageProps {
   params: Promise<{
@@ -68,7 +69,7 @@ export default async function WorkoutDayPage({ params }: PageProps) {
         <div className="absolute top-0 right-0 w-125 h-125 bg-primary/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-100 h-100 bg-primary/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
-        <div className="relative z-10 max-w-250 mx-auto flex-1 flex flex-col px-6 py-10 lg:py-16">
+        <Container className="max-w-250 flex-1 flex flex-col">
           <WorkoutDayHeader title={WEEKDAY_TRANSLATIONS[workoutDay.weekDay]} />
 
           <div className="flex-1 flex flex-col items-center justify-center text-center space-y-12 py-10">
@@ -141,13 +142,13 @@ export default async function WorkoutDayPage({ params }: PageProps) {
               </p>
             </div>
           </div>
-        </div>
+        </Container>
       </div>
     );
   }
 
   return (
-    <div className="max-w-300 mx-auto pb-32 lg:pb-12 px-5 sm:px-10 lg:px-12">
+    <Container>
       <WorkoutDayHeader title={WEEKDAY_TRANSLATIONS[workoutDay.weekDay]} />
 
       <div className="lg:pt-10 pt-4">
@@ -256,6 +257,6 @@ export default async function WorkoutDayPage({ params }: PageProps) {
           ))}
         </div>
       </div>
-    </div>
+    </Container>
   );
 }

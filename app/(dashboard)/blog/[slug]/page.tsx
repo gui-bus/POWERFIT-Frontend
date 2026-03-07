@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeftIcon, CalendarIcon, ClockIcon, TagIcon } from "@phosphor-icons/react/ssr";
 import { Button } from "@/components/ui/button";
+import { Container } from "@/components/common/container";
 
 const MOCK_POSTS = [
   {
@@ -106,7 +107,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   }
 
   return (
-    <div className="container max-w-4xl mx-auto py-12 px-6">
+    <Container className="max-w-4xl">
       <Link href="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-8 group">
         <ArrowLeftIcon weight="duotone" className="size-4 transition-transform group-hover:-translate-x-1" />
         <span className="text-xs font-black uppercase tracking-widest italic">Voltar</span>
@@ -173,6 +174,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </div>
         </footer>
       </article>
-    </div>
+    </Container>
   );
 }

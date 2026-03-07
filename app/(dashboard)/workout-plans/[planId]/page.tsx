@@ -7,6 +7,7 @@ import Image from "next/image";
 import { WorkoutCard } from "@/components/workoutCard";
 import { TargetIcon } from "@phosphor-icons/react/ssr";
 import { PageHeader } from "@/components/pageHeader";
+import { Container } from "@/components/common/container";
 
 interface PageProps {
   params: Promise<{
@@ -50,8 +51,7 @@ export default async function WorkoutPlanDetailsPage({ params }: PageProps) {
   );
 
   return (
-    <div className="relative z-10 max-w-350 mx-auto p-6 sm:p-10 lg:p-16 space-y-12">
-      
+    <Container>
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <PageHeader title="Plano" subtitle="Seu Cronograma Semanal" />
       </header>
@@ -115,8 +115,6 @@ export default async function WorkoutPlanDetailsPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* Mobile Spacer */}
-      <div className="h-20 lg:hidden" />
-    </div>
+    </Container>
   );
 }

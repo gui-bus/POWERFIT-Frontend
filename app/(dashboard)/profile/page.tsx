@@ -6,6 +6,7 @@ import Image from "next/image";
 import { PersonIcon, RulerIcon, BarbellIcon, UserIcon, TrendUpIcon } from "@phosphor-icons/react/ssr";
 import { LogoutButton } from "./logout-button";
 import { PageHeader } from "@/components/pageHeader";
+import { Container } from "@/components/common/container";
 
 export default async function ProfilePage() {
   const session = await authClient.getSession({
@@ -60,7 +61,7 @@ export default async function ProfilePage() {
   ];
 
   return (
-    <div className="relative z-10 max-w-350 mx-auto p-6 sm:p-10 lg:p-16 space-y-12">
+    <Container>
       
       {/* Header Section */}
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
@@ -125,8 +126,6 @@ export default async function ProfilePage() {
         <LogoutButton />
       </div>
 
-      {/* Mobile Spacer */}
-      <div className="h-20 lg:hidden" />
-    </div>
+    </Container>
   );
 }

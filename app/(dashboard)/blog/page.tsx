@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { BookOpenIcon, TrendUpIcon, ArrowRightIcon } from "@phosphor-icons/react/ssr";
 import { Button } from "@/components/ui/button";
+import { Container } from "@/components/common/container";
 
 const MOCK_POSTS = [
   {
@@ -44,7 +45,7 @@ const MOCK_POSTS = [
 
 export default function BlogListingPage() {
   return (
-    <div className="container mx-auto py-12 px-6 space-y-16">
+    <Container className="space-y-16">
       <header className="space-y-6 max-w-3xl">
         <div className="flex items-center gap-2 text-primary">
           <TrendUpIcon weight="duotone" className="size-6" />
@@ -98,6 +99,6 @@ export default function BlogListingPage() {
           </Link>
         ))}
       </div>
-    </div>
+    </Container>
   )
 }
