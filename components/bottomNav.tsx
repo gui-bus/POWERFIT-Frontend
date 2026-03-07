@@ -7,6 +7,7 @@ import {
   ChartBarIcon,
   UserIcon,
   SparkleIcon,
+  TrophyIcon,
 } from "@phosphor-icons/react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -14,7 +15,6 @@ import { authClient } from "@/lib/authClient";
 import { useEffect, useState } from "react";
 import { getHomeData } from "@/lib/api/fetch-generated";
 import dayjs from "dayjs";
-import { UserNav } from "@/components/userNav";
 import { useQueryState, parseAsBoolean } from "nuqs";
 
 export function BottomNav() {
@@ -54,6 +54,7 @@ export function BottomNav() {
       href: planOverviewLink || "#",
       active: isWorkoutDayActive,
     },
+    { icon: TrophyIcon, href: "/ranking", active: pathname === "/ranking" },
     { icon: ChartBarIcon, href: "/stats", active: pathname === "/stats" },
     { icon: UserIcon, href: "/profile", active: pathname === "/profile" },
   ];
