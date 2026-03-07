@@ -5,7 +5,6 @@ import { authClient } from "@/lib/authClient";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import Image from "next/image";
-import { WorkoutDayHeader } from "@/components/workoutDay/workoutDayHeader";
 import { ExerciseItem } from "@/components/workoutDay/exerciseItem";
 import { SessionAction } from "@/components/workoutDay/sessionAction";
 import {
@@ -19,6 +18,7 @@ import {
 } from "@phosphor-icons/react/ssr";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/common/container";
+import { PageHeader } from "@/components/pageHeader";
 
 interface PageProps {
   params: Promise<{
@@ -70,7 +70,17 @@ export default async function WorkoutDayPage({ params }: PageProps) {
         <div className="absolute bottom-0 left-0 w-100 h-100 bg-primary/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
         <Container className="max-w-250 flex-1 flex flex-col">
-          <WorkoutDayHeader title={WEEKDAY_TRANSLATIONS[workoutDay.weekDay]} />
+          <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            <PageHeader 
+              title="RECOVERY" 
+              subtitle={WEEKDAY_TRANSLATIONS[workoutDay.weekDay]} 
+              user={{
+                name: session.data.user.name,
+                email: session.data.user.email,
+                image: session.data.user.image,
+              }}
+            />
+          </header>
 
           <div className="flex-1 flex flex-col items-center justify-center text-center space-y-12 py-10">
             <div className="relative">
@@ -88,7 +98,7 @@ export default async function WorkoutDayPage({ params }: PageProps) {
                 REGENERAÇÃO <br />{" "}
                 <span className="text-primary">ESTRATÉGICA</span>
               </h2>
-              <p className="text-xs sm:text-sm text-muted-foreground font-medium leading-relaxed max-w-lg mx-auto">
+              <p className="text-xs sm:text-sm text-muted-foreground font-medium leading-relaxed max-lg mx-auto">
                 Seu corpo constrói músculos durante o descanso. Honre este
                 momento com a mesma intensidade que honra seu treino.
               </p>
@@ -149,7 +159,17 @@ export default async function WorkoutDayPage({ params }: PageProps) {
 
   return (
     <Container>
-      <WorkoutDayHeader title={WEEKDAY_TRANSLATIONS[workoutDay.weekDay]} />
+      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
+        <PageHeader 
+          title="WORKOUT" 
+          subtitle={WEEKDAY_TRANSLATIONS[workoutDay.weekDay]} 
+          user={{
+            name: session.data.user.name,
+            email: session.data.user.email,
+            image: session.data.user.image,
+          }}
+        />
+      </header>
 
       <div className="lg:pt-10 pt-4">
         <section className="group relative aspect-8/10 sm:aspect-21/9 lg:h-85 w-full overflow-hidden rounded-[2.5rem] lg:rounded-[3.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-white/10">
@@ -251,7 +271,10 @@ export default async function WorkoutDayPage({ params }: PageProps) {
                 )}
               </div>
               <div className="flex-1">
-                <ExerciseItem exercise={exercise} />
+                <ExerciseItem 
+                  exercise={exercise} 
+                  canMarkAsCompleted={!!activeSession}
+                />
               </div>
             </div>
           ))}
