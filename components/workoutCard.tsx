@@ -43,7 +43,6 @@ export function WorkoutCard({
       className={cn(
         "relative w-full aspect-4/3 sm:aspect-21/9 rounded-[2rem] overflow-hidden group transition-all duration-500 border bg-card",
         isActive ? "shadow-2xl shadow-primary/10" : "hover:border-primary/20",
-        isCompleted && "ring-1 ring-green-500/30 border-green-500/20",
       )}
     >
       {isRestDay ? (
@@ -171,11 +170,7 @@ export function WorkoutCard({
                   <p
                     className={cn(
                       "text-[10px] font-black uppercase tracking-[0.3em]",
-                      isCompleted
-                        ? "text-green-400"
-                        : isActive
-                          ? "text-primary"
-                          : "text-white/40",
+                      isActive ? "text-primary" : "text-white/40",
                     )}
                   >
                     {WEEKDAY_TRANSLATIONS[workout.weekDay]}
@@ -202,7 +197,10 @@ export function WorkoutCard({
                     key={i}
                     className="group/pill flex items-center gap-2 bg-white/3 hover:bg-white/8 backdrop-blur-md px-4 py-2 rounded-sm border border-white/10 transition-colors"
                   >
-                    <item.icon weight="duotone" className="size-3 text-primary" />
+                    <item.icon
+                      weight="duotone"
+                      className="size-3 text-primary"
+                    />
                     <span className="text-[9px] font-black text-white/90 uppercase tracking-widest">
                       {item.label}
                     </span>

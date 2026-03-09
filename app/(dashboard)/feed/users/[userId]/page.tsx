@@ -46,63 +46,81 @@ export default async function UserFeedPage({ params }: UserFeedPageProps) {
   const { data: feedItems } = feedResponse as getUserFeedResponseSuccess;
   
   // Try to get user info from first feed item if available
-  const user = feedItems.length > 0 ? {
+  const userProfile = feedItems.length > 0 ? {
     name: feedItems[0].userName,
     image: feedItems[0].userImage,
   } : null;
 
   return (
-    <Container className="space-y-12">
-      <header className="flex items-center justify-between gap-6">
-        <div className="flex items-center gap-4">
-          <Link href="/friends">
-            <button className="p-3 bg-card border border-border hover:border-primary/50 rounded-2xl transition-all active:scale-90 group">
-              <CaretLeftIcon weight="bold" className="size-5 text-muted-foreground group-hover:text-primary transition-colors" />
-            </button>
-          </Link>
-          <PageHeader
-            title="ATIVIDADES"
-            subtitle={user ? `Histórico de ${user.name}` : "Histórico de treinos"}
-          />
-        </div>
+    <Container className="space-y-12 pb-24">
+      <header className="flex items-center gap-6">
+        <Link href="/feed">
+          <button className="p-4 bg-card border border-border hover:border-primary/50 rounded-[1.5rem] transition-all active:scale-90 group shadow-sm">
+            <CaretLeftIcon weight="bold" className="size-5 text-muted-foreground group-hover:text-primary transition-colors" />
+          </button>
+        </Link>
+        <PageHeader
+          title="PERFIL"
+          subtitle={userProfile ? `Atividades de ${userProfile.name}` : "Histórico de atleta"}
+        />
       </header>
 
-      <div className="w-full space-y-8">
-        {user && (
-           <div className="border rounded-[2.5rem] p-8 flex items-center gap-6 shadow-sm border-primary/20 bg-card">
-            <Avatar className="size-20 border-2 border-primary/20 shadow-lg rounded-[1.5rem]">
-              <AvatarImage src={user.image || ""} alt={user.name} className="object-cover" />
-              <AvatarFallback className="bg-primary text-primary-foreground font-black text-2xl uppercase italic rounded-[1.5rem]">
-                {user.name.substring(0, 2)}
+      <div className="max-w-3xl mx-auto w-full space-y-8">
+        {/* Profile Card */}
+        {userProfile && (
+          <div className="bg-card border border-border rounded-[3rem] p-8 flex flex-col sm:flex-row items-center gap-8 shadow-sm border-primary/10 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform duration-700">
+              <ActivityIcon weight="fill" className="size-32 text-primary" />
+            </div>
+            
+            <Avatar className="size-32 border-4 border-primary/10 shadow-2xl rounded-[2.5rem] relative z-10 group-hover:scale-105 transition-transform duration-500">
+              <AvatarImage src={userProfile.image || ""} alt={userProfile.name} className="object-cover" />
+              <AvatarFallback className="bg-primary text-primary-foreground font-black text-4xl uppercase italic">
+                {userProfile.name.substring(0, 2)}
               </AvatarFallback>
             </Avatar>
-            <div className="space-y-1">
-              <h3 className="text-2xl font-black uppercase italic tracking-tight text-foreground">{user.name}</h3>
-              <div className="flex items-center gap-2">
-                <ActivityIcon weight="duotone" className="size-4 text-primary" />
-                <p className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">
-                  {feedItems.length} Atividades registradas
-                </p>
+            
+            <div className="space-y-4 text-center sm:text-left relative z-10">
+              <div className="space-y-1">
+                <h3 className="text-3xl font-black uppercase italic tracking-tight text-foreground">{userProfile.name}</h3>
+                <div className="flex items-center justify-center sm:justify-start gap-2 text-primary">
+                  <ActivityIcon weight="duotone" className="size-5" />
+                  <p className="text-xs font-black uppercase italic tracking-widest">
+                    Atleta PowerFit
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-center sm:justify-start gap-6">
+                <div className="text-center sm:text-left">
+                  <p className="text-xl font-black italic text-foreground leading-none">{feedItems.length}</p>
+                  <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1.5">Treinos</p>
+                </div>
+                <div className="w-px h-8 bg-border hidden sm:block" />
+                <div className="text-center sm:text-left">
+                  <p className="text-xl font-black italic text-primary leading-none">--</p>
+                  <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1.5">Nível</p>
+                </div>
               </div>
             </div>
           </div>
         )}
 
         {feedItems.length > 0 ? (
-          <div className="grid grid-cols-1 gap-6">
+          <div className="flex flex-col gap-8">
             {feedItems.map((item) => (
               <FeedItem key={item.id} item={item} />
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center p-12 text-center bg-card/50 border border-dashed border-border rounded-[3rem] space-y-6">
-            <div className="size-20 bg-muted rounded-full flex items-center justify-center">
-              <ActivityIcon weight="duotone" className="size-10 text-muted-foreground" />
+          <div className="flex flex-col items-center justify-center p-16 text-center bg-card/50 border border-dashed border-border rounded-[3rem] space-y-6">
+            <div className="size-24 bg-muted rounded-full flex items-center justify-center opacity-50">
+              <ActivityIcon weight="duotone" className="size-12 text-muted-foreground" />
             </div>
             <div className="space-y-2">
-              <h3 className="text-xl font-black uppercase italic tracking-tight">Sem atividades</h3>
+              <h3 className="text-xl font-black uppercase italic tracking-tight opacity-80">Sem treinos recentes</h3>
               <p className="text-sm text-muted-foreground font-medium max-w-xs mx-auto">
-                Este usuário ainda não registrou nenhum treino.
+                Este atleta ainda não registrou atividades públicas no feed.
               </p>
             </div>
           </div>
