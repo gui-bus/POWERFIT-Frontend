@@ -1,13 +1,19 @@
 "use client";
 
-import { GetFeed200Item, togglePowerup } from "@/lib/api/fetch-generated";
+import { 
+  GetFeed200Item, 
+  togglePowerup, 
+  addComment, 
+  GetFeed200ItemCommentsItem 
+} from "@/lib/api/fetch-generated";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
   LightningIcon, 
   ChatTeardropIcon, 
   DotsThreeVerticalIcon, 
   TrendUpIcon,
-  CalendarIcon
+  CalendarIcon,
+  PaperPlaneRightIcon
 } from "@phosphor-icons/react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -17,6 +23,8 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { fadeIn } from "@/lib/utils/animations";
+import { toast } from "sonner";
 
 dayjs.extend(relativeTime);
 dayjs.locale("pt-br");
@@ -30,20 +38,20 @@ export function FeedItem({ item }: FeedItemProps) {
   const [hasPowerup, setHasPowerup] = useState(item.hasPowerupByMe);
   const [powerupsCount, setPowerupsCount] = useState(item.powerupsCount);
   const [isLoading, setIsLoading] = useState(false);
+  const [showComments, setShowComments] = useState(false);
+  const [commentText, setCommentText] = useState("");
+  const [isSubmittingComment, setIsSubmittingComment] = useState(false);
 
   const handleTogglePowerup = async () => {
     if (isLoading) return;
-
     const previousHasPowerup = hasPowerup;
     const previousPowerupsCount = powerupsCount;
-
     setIsLoading(true);
     setHasPowerup(!hasPowerup);
     setPowerupsCount((prev) => (hasPowerup ? prev - 1 : prev + 1));
 
     try {
       const response = await togglePowerup(item.id);
-
       if (response.status === 204) {
         router.refresh();
       } else {
@@ -51,7 +59,6 @@ export function FeedItem({ item }: FeedItemProps) {
         setPowerupsCount(previousPowerupsCount);
       }
     } catch (error) {
-      console.error("Failed to toggle powerup", error);
       setHasPowerup(previousHasPowerup);
       setPowerupsCount(previousPowerupsCount);
     } finally {
@@ -59,12 +66,32 @@ export function FeedItem({ item }: FeedItemProps) {
     }
   };
 
+  const handleAddComment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!commentText.trim() || isSubmittingComment) return;
+
+    setIsSubmittingComment(true);
+    try {
+      const response = await addComment(item.id, { content: commentText });
+      if (response.status === 204) {
+        setCommentText("");
+        toast.success("Comentário adicionado!");
+        router.refresh();
+      }
+    } catch (error) {
+      toast.error("Erro ao adicionar comentário.");
+    } finally {
+      setIsSubmittingComment(false);
+    }
+  };
+
   const timeAgo = dayjs(item.completedAt).fromNow();
 
   return (
     <motion.article 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      variants={fadeIn}
+      initial="initial"
+      animate="animate"
       className="bg-card border border-border rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 group"
     >
       <div className="p-6 sm:p-8 space-y-6">
@@ -127,7 +154,6 @@ export function FeedItem({ item }: FeedItemProps) {
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
           )}
         </div>
@@ -144,27 +170,73 @@ export function FeedItem({ item }: FeedItemProps) {
                 : "bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary border border-transparent hover:border-primary/20"
             )}
           >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={hasPowerup ? "active" : "inactive"}
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 1.5, opacity: 0 }}
-              >
-                <LightningIcon
-                  weight={hasPowerup ? "fill" : "duotone"}
-                  className="size-5"
-                />
-              </motion.div>
-            </AnimatePresence>
+            <LightningIcon weight={hasPowerup ? "fill" : "duotone"} className="size-5" />
             POWERUP {powerupsCount > 0 && <span className="ml-1 opacity-80">({powerupsCount})</span>}
           </button>
 
-          <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-4 rounded-2xl text-[11px] font-black uppercase italic tracking-[0.15em] bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary transition-all active:scale-95 border border-transparent hover:border-primary/20 group/comment">
+          <button 
+            onClick={() => setShowComments(!showComments)}
+            className={cn(
+              "flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-4 rounded-2xl text-[11px] font-black uppercase italic tracking-[0.15em] transition-all active:scale-95 border border-transparent hover:border-primary/20 group/comment",
+              showComments ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary"
+            )}
+          >
             <ChatTeardropIcon weight="duotone" className="size-5 group-hover/comment:rotate-12 transition-transform" />
-            Comentar
+            Comentários {item.comments.length > 0 && <span className="ml-1 opacity-80">({item.comments.length})</span>}
           </button>
         </div>
+
+        {/* Comments Section */}
+        <AnimatePresence>
+          {showComments && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="overflow-hidden pt-4 border-t border-border/50 space-y-6"
+            >
+              {/* Existing Comments */}
+              <div className="space-y-4 max-h-60 overflow-y-auto custom-scrollbar pr-2">
+                {item.comments.map((comment) => (
+                  <div key={comment.id} className="flex gap-3">
+                    <Avatar className="size-8 rounded-xl shrink-0">
+                      <AvatarImage src={comment.userImage || ""} />
+                      <AvatarFallback className="text-[10px] font-bold">{comment.userName.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div className="bg-muted/50 rounded-2xl rounded-tl-none p-3 flex-1">
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <p className="text-[10px] font-black uppercase italic text-foreground">{comment.userName}</p>
+                        <p className="text-[8px] font-bold text-muted-foreground uppercase">{dayjs(comment.createdAt).fromNow()}</p>
+                      </div>
+                      <p className="text-xs text-muted-foreground font-medium">{comment.content}</p>
+                    </div>
+                  </div>
+                ))}
+                {item.comments.length === 0 && (
+                  <p className="text-center py-4 text-[10px] font-bold text-muted-foreground uppercase tracking-widest italic">Nenhum comentário ainda. Seja o primeiro!</p>
+                )}
+              </div>
+
+              {/* Comment Form */}
+              <form onSubmit={handleAddComment} className="flex gap-2">
+                <input 
+                  type="text" 
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                  placeholder="Escreva um comentário..."
+                  className="flex-1 bg-muted/30 border border-border/50 rounded-xl px-4 py-3 text-xs font-medium focus:outline-hidden focus:border-primary/50 transition-colors"
+                />
+                <button 
+                  type="submit"
+                  disabled={isSubmittingComment || !commentText.trim()}
+                  className="bg-primary text-primary-foreground size-10 flex items-center justify-center rounded-xl shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100"
+                >
+                  <PaperPlaneRightIcon weight="fill" className="size-5" />
+                </button>
+              </form>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.article>
   );
