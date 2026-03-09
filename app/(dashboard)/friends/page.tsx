@@ -15,7 +15,7 @@ import { FriendsList } from "@/components/friends/friendsList";
 import { FriendRequests } from "@/components/friends/friendRequests";
 import { AddFriendForm } from "@/components/friends/addFriendForm";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { UsersIcon, StarIcon, ActivityIcon } from "@phosphor-icons/react/ssr";
+import { UsersIcon, ActivityIcon } from "@phosphor-icons/react/ssr";
 
 export default async function FriendsPage() {
   const session = await authClient.getSession({
@@ -62,7 +62,7 @@ export default async function FriendsPage() {
 
       <div className="max-w-4xl mx-auto w-full space-y-12">
         {/* Profile Stats Header - Integrated from Sidebar */}
-        <section className="bg-card border border-border rounded-[3rem] p-8 sm:p-10 shadow-sm border-primary/10 relative overflow-hidden group">
+        <section className="bg-card border border-border rounded-[3rem] p-8 sm:p-10 shadow-sm relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform duration-700">
             <UsersIcon weight="fill" className="size-32 text-primary" />
           </div>
@@ -76,7 +76,7 @@ export default async function FriendsPage() {
                 </AvatarFallback>
               </Avatar>
               <div className="absolute -bottom-2 -right-2 size-10 bg-primary rounded-2xl flex items-center justify-center border-4 border-card shadow-lg">
-                <span className="font-anton text-lg italic text-primary-foreground leading-none">{me.level}</span>
+                <span className="font-anton text-lg text-primary-foreground leading-none">{me.level}</span>
               </div>
             </div>
             
@@ -95,11 +95,6 @@ export default async function FriendsPage() {
                 <div className="text-center md:text-left">
                   <p className="text-2xl font-black italic text-primary leading-none">{me.xp}</p>
                   <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1.5">XP Total</p>
-                </div>
-                <div className="w-px h-8 bg-border hidden md:block" />
-                <div className="text-center md:text-left">
-                  <p className="text-2xl font-black italic text-foreground leading-none">#{me.level * 12}</p>
-                  <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1.5">Rank Global</p>
                 </div>
               </div>
             </div>

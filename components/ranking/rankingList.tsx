@@ -1,14 +1,15 @@
-import { GetStreakRanking200RankingItem } from "@/lib/api/fetch-generated";
+import { GetRanking200RankingItem } from "@/lib/api/fetch-generated";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { FireIcon } from "@phosphor-icons/react/ssr";
+import { FireIcon, StarIcon } from "@phosphor-icons/react/ssr";
 import { cn } from "@/lib/utils";
 
 interface RankingListProps {
-  items: GetStreakRanking200RankingItem[];
+  items: GetRanking200RankingItem[];
+  type: "STREAK" | "XP";
   currentUserId?: string;
 }
 
-export function RankingList({ items, currentUserId }: RankingListProps) {
+export function RankingList({ items, type, currentUserId }: RankingListProps) {
   return (
     <div className="space-y-3">
       {items.map((item, index) => {
@@ -42,15 +43,27 @@ export function RankingList({ items, currentUserId }: RankingListProps) {
                 )}>
                   {item.name}
                 </span>
-                {isCurrentUser && (
-                  <span className="text-[9px] font-bold text-primary/60 uppercase tracking-[0.2em] leading-none mt-0.5">Sua Posição</span>
-                )}
+                <div className="flex items-center gap-2">
+                   {isCurrentUser && (
+                    <span className="text-[9px] font-bold text-primary/60 uppercase tracking-[0.2em] leading-none mt-0.5">Sua Posição</span>
+                  )}
+                  <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.2em] leading-none mt-0.5">Nível {item.level}</span>
+                </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 bg-background/50 px-4 py-2 rounded-2xl border border-border/50 shadow-inner">
-              <FireIcon weight="fill" className="size-4 text-primary" />
-              <span className="font-anton text-sm sm:text-base italic text-foreground leading-none">{item.streak}</span>
+            <div className="flex items-center gap-2 bg-background/50 px-4 py-2 rounded-2xl border border-border/50 shadow-inner min-w-24 justify-center">
+              {type === "STREAK" ? (
+                <>
+                  <FireIcon weight="fill" className="size-4 text-primary" />
+                  <span className="font-anton text-sm sm:text-base italic text-foreground leading-none">{item.streak}</span>
+                </>
+              ) : (
+                <>
+                  <StarIcon weight="fill" className="size-4 text-primary" />
+                  <span className="font-anton text-sm sm:text-base italic text-foreground leading-none">{item.xp} XP</span>
+                </>
+              )}
             </div>
           </div>
         );

@@ -1,13 +1,14 @@
-import { GetStreakRanking200RankingItem } from "@/lib/api/fetch-generated";
+import { GetRanking200RankingItem } from "@/lib/api/fetch-generated";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CrownIcon, FireIcon } from "@phosphor-icons/react/ssr";
+import { CrownIcon, FireIcon, StarIcon } from "@phosphor-icons/react/ssr";
 import { cn } from "@/lib/utils";
 
 interface RankingPodiumProps {
-  items: GetStreakRanking200RankingItem[];
+  items: GetRanking200RankingItem[];
+  type: "STREAK" | "XP";
 }
 
-export function RankingPodium({ items }: RankingPodiumProps) {
+export function RankingPodium({ items, type }: RankingPodiumProps) {
   const top1 = items[0];
   const top2 = items[1];
   const top3 = items[2];
@@ -78,8 +79,17 @@ export function RankingPodium({ items }: RankingPodiumProps) {
                 {slot.item.name.split(' ')[0]}
               </p>
               <div className="flex items-center justify-center gap-1 text-primary">
-                <FireIcon weight="fill" className="size-3 sm:size-4" />
-                <span className="font-black text-[10px] sm:text-sm italic">{slot.item.streak}</span>
+                {type === "STREAK" ? (
+                  <>
+                    <FireIcon weight="fill" className="size-3 sm:size-4" />
+                    <span className="font-black text-[10px] sm:text-sm italic">{slot.item.streak}</span>
+                  </>
+                ) : (
+                  <>
+                    <StarIcon weight="fill" className="size-3 sm:size-4" />
+                    <span className="font-black text-[10px] sm:text-sm italic">{slot.item.xp} XP</span>
+                  </>
+                )}
               </div>
             </div>
 

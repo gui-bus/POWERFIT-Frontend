@@ -974,26 +974,40 @@ export type GetXpHistory500 = {
   code: string;
 };
 
-export type GetStreakRanking200RankingItem = {
+export type GetRankingParams = {
+  sortBy?: GetRankingSortBy;
+};
+
+export type GetRankingSortBy =
+  (typeof GetRankingSortBy)[keyof typeof GetRankingSortBy];
+
+export const GetRankingSortBy = {
+  STREAK: "STREAK",
+  XP: "XP",
+} as const;
+
+export type GetRanking200RankingItem = {
   id: string;
   name: string;
   /** @nullable */
   image: string | null;
   streak: number;
+  xp: number;
+  level: number;
 };
 
-export type GetStreakRanking200 = {
-  ranking: GetStreakRanking200RankingItem[];
+export type GetRanking200 = {
+  ranking: GetRanking200RankingItem[];
   /** @nullable */
   currentUserPosition: number | null;
 };
 
-export type GetStreakRanking401 = {
+export type GetRanking401 = {
   error: string;
   code: string;
 };
 
-export type GetStreakRanking500 = {
+export type GetRanking500 = {
   error: string;
   code: string;
 };
@@ -2452,45 +2466,58 @@ export const getXpHistory = async (
 };
 
 /**
- * @summary Get users streak ranking
+ * @summary Get users ranking
  */
-export type getStreakRankingResponse200 = {
-  data: GetStreakRanking200;
+export type getRankingResponse200 = {
+  data: GetRanking200;
   status: 200;
 };
 
-export type getStreakRankingResponse401 = {
-  data: GetStreakRanking401;
+export type getRankingResponse401 = {
+  data: GetRanking401;
   status: 401;
 };
 
-export type getStreakRankingResponse500 = {
-  data: GetStreakRanking500;
+export type getRankingResponse500 = {
+  data: GetRanking500;
   status: 500;
 };
 
-export type getStreakRankingResponseSuccess = getStreakRankingResponse200 & {
+export type getRankingResponseSuccess = getRankingResponse200 & {
   headers: Headers;
 };
-export type getStreakRankingResponseError = (
-  | getStreakRankingResponse401
-  | getStreakRankingResponse500
+export type getRankingResponseError = (
+  | getRankingResponse401
+  | getRankingResponse500
 ) & {
   headers: Headers;
 };
 
-export type getStreakRankingResponse =
-  | getStreakRankingResponseSuccess
-  | getStreakRankingResponseError;
+export type getRankingResponse =
+  | getRankingResponseSuccess
+  | getRankingResponseError;
 
-export const getGetStreakRankingUrl = () => {
-  return `/ranking`;
+export const getGetRankingUrl = (params?: GetRankingParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/ranking?${stringifiedParams}`
+    : `/ranking`;
 };
 
-export const getStreakRanking = async (
+export const getRanking = async (
+  params?: GetRankingParams,
   options?: RequestInit,
-): Promise<getStreakRankingResponse> => {
-  return customFetch<getStreakRankingResponse>(getGetStreakRankingUrl(), {
+): Promise<getRankingResponse> => {
+  return customFetch<getRankingResponse>(getGetRankingUrl(params), {
     ...options,
     method: "GET",
   });
