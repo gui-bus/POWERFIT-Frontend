@@ -477,6 +477,8 @@ export type GetMe200 = {
   image: string | null;
   /** @nullable */
   friendCode: string | null;
+  xp: number;
+  level: number;
 };
 
 export type GetMe401 = {
@@ -530,6 +532,8 @@ export type AddFriend200 = {
   image: string | null;
   /** @nullable */
   friendCode: string | null;
+  xp: number;
+  level: number;
 };
 
 export type AddFriend400 = {
@@ -765,6 +769,9 @@ export const GetNotifications200ItemType = {
   FRIEND_REQUEST: "FRIEND_REQUEST",
   FRIEND_ACCEPTED: "FRIEND_ACCEPTED",
   POWERUP_RECEIVED: "POWERUP_RECEIVED",
+  LEVEL_UP: "LEVEL_UP",
+  ACHIEVEMENT_UNLOCKED: "ACHIEVEMENT_UNLOCKED",
+  CHALLENGE_INVITE: "CHALLENGE_INVITE",
 } as const;
 
 /**
@@ -841,6 +848,128 @@ export type MarkNotificationAsRead404 = {
 };
 
 export type MarkNotificationAsRead500 = {
+  error: string;
+  code: string;
+};
+
+export type GetAchievements200Item = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+  description: string;
+  /** @nullable */
+  iconUrl: string | null;
+  xpReward: number;
+  /** @nullable */
+  unlockedAt?: string | null;
+};
+
+export type GetAchievements401 = {
+  error: string;
+  code: string;
+};
+
+export type GetAchievements500 = {
+  error: string;
+  code: string;
+};
+
+export type GetChallenges200ItemType =
+  (typeof GetChallenges200ItemType)[keyof typeof GetChallenges200ItemType];
+
+export const GetChallenges200ItemType = {
+  GLOBAL: "GLOBAL",
+  FRIEND_DUEL: "FRIEND_DUEL",
+} as const;
+
+export type GetChallenges200ItemStatus =
+  (typeof GetChallenges200ItemStatus)[keyof typeof GetChallenges200ItemStatus];
+
+export const GetChallenges200ItemStatus = {
+  PENDING: "PENDING",
+  ACTIVE: "ACTIVE",
+  COMPLETED: "COMPLETED",
+} as const;
+
+export type GetChallenges200Item = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+  description: string;
+  type: GetChallenges200ItemType;
+  status: GetChallenges200ItemStatus;
+  /** @nullable */
+  startDate: string | null;
+  /** @nullable */
+  endDate: string | null;
+  xpReward: number;
+  participantsCount: number;
+  isJoined: boolean;
+};
+
+export type GetChallenges401 = {
+  error: string;
+  code: string;
+};
+
+export type GetChallenges500 = {
+  error: string;
+  code: string;
+};
+
+/**
+ * @nullable
+ */
+export type JoinChallenge204 =
+  | (typeof JoinChallenge204)[keyof typeof JoinChallenge204]
+  | null;
+
+export const JoinChallenge204 = {} as const;
+
+export type JoinChallenge401 = {
+  error: string;
+  code: string;
+};
+
+export type JoinChallenge404 = {
+  error: string;
+  code: string;
+};
+
+export type JoinChallenge500 = {
+  error: string;
+  code: string;
+};
+
+export type GetXpHistory200ItemReason =
+  (typeof GetXpHistory200ItemReason)[keyof typeof GetXpHistory200ItemReason];
+
+export const GetXpHistory200ItemReason = {
+  WORKOUT_COMPLETED: "WORKOUT_COMPLETED",
+  PERSONAL_RECORD: "PERSONAL_RECORD",
+  STREAK_7_DAYS: "STREAK_7_DAYS",
+  STREAK_30_DAYS: "STREAK_30_DAYS",
+  POWERUP_GIVEN: "POWERUP_GIVEN",
+  POWERUP_RECEIVED: "POWERUP_RECEIVED",
+  FRIEND_ACCEPTED: "FRIEND_ACCEPTED",
+  CHALLENGE_COMPLETED: "CHALLENGE_COMPLETED",
+  CHALLENGE_WON: "CHALLENGE_WON",
+} as const;
+
+export type GetXpHistory200Item = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  amount: number;
+  reason: GetXpHistory200ItemReason;
+  createdAt: string;
+};
+
+export type GetXpHistory401 = {
+  error: string;
+  code: string;
+};
+
+export type GetXpHistory500 = {
   error: string;
   code: string;
 };
@@ -2133,6 +2262,193 @@ export const markNotificationAsRead = async (
       method: "PATCH",
     },
   );
+};
+
+/**
+ * @summary Get all achievements and user progress
+ */
+export type getAchievementsResponse200 = {
+  data: GetAchievements200Item[];
+  status: 200;
+};
+
+export type getAchievementsResponse401 = {
+  data: GetAchievements401;
+  status: 401;
+};
+
+export type getAchievementsResponse500 = {
+  data: GetAchievements500;
+  status: 500;
+};
+
+export type getAchievementsResponseSuccess = getAchievementsResponse200 & {
+  headers: Headers;
+};
+export type getAchievementsResponseError = (
+  | getAchievementsResponse401
+  | getAchievementsResponse500
+) & {
+  headers: Headers;
+};
+
+export type getAchievementsResponse =
+  | getAchievementsResponseSuccess
+  | getAchievementsResponseError;
+
+export const getGetAchievementsUrl = () => {
+  return `/gamification/achievements`;
+};
+
+export const getAchievements = async (
+  options?: RequestInit,
+): Promise<getAchievementsResponse> => {
+  return customFetch<getAchievementsResponse>(getGetAchievementsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Get available challenges
+ */
+export type getChallengesResponse200 = {
+  data: GetChallenges200Item[];
+  status: 200;
+};
+
+export type getChallengesResponse401 = {
+  data: GetChallenges401;
+  status: 401;
+};
+
+export type getChallengesResponse500 = {
+  data: GetChallenges500;
+  status: 500;
+};
+
+export type getChallengesResponseSuccess = getChallengesResponse200 & {
+  headers: Headers;
+};
+export type getChallengesResponseError = (
+  | getChallengesResponse401
+  | getChallengesResponse500
+) & {
+  headers: Headers;
+};
+
+export type getChallengesResponse =
+  | getChallengesResponseSuccess
+  | getChallengesResponseError;
+
+export const getGetChallengesUrl = () => {
+  return `/gamification/challenges`;
+};
+
+export const getChallenges = async (
+  options?: RequestInit,
+): Promise<getChallengesResponse> => {
+  return customFetch<getChallengesResponse>(getGetChallengesUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Join a challenge
+ */
+export type joinChallengeResponse204 = {
+  data: JoinChallenge204;
+  status: 204;
+};
+
+export type joinChallengeResponse401 = {
+  data: JoinChallenge401;
+  status: 401;
+};
+
+export type joinChallengeResponse404 = {
+  data: JoinChallenge404;
+  status: 404;
+};
+
+export type joinChallengeResponse500 = {
+  data: JoinChallenge500;
+  status: 500;
+};
+
+export type joinChallengeResponseSuccess = joinChallengeResponse204 & {
+  headers: Headers;
+};
+export type joinChallengeResponseError = (
+  | joinChallengeResponse401
+  | joinChallengeResponse404
+  | joinChallengeResponse500
+) & {
+  headers: Headers;
+};
+
+export type joinChallengeResponse =
+  | joinChallengeResponseSuccess
+  | joinChallengeResponseError;
+
+export const getJoinChallengeUrl = (id: string) => {
+  return `/gamification/challenges/${id}/join`;
+};
+
+export const joinChallenge = async (
+  id: string,
+  options?: RequestInit,
+): Promise<joinChallengeResponse> => {
+  return customFetch<joinChallengeResponse>(getJoinChallengeUrl(id), {
+    ...options,
+    method: "POST",
+  });
+};
+
+/**
+ * @summary Get XP transaction history
+ */
+export type getXpHistoryResponse200 = {
+  data: GetXpHistory200Item[];
+  status: 200;
+};
+
+export type getXpHistoryResponse401 = {
+  data: GetXpHistory401;
+  status: 401;
+};
+
+export type getXpHistoryResponse500 = {
+  data: GetXpHistory500;
+  status: 500;
+};
+
+export type getXpHistoryResponseSuccess = getXpHistoryResponse200 & {
+  headers: Headers;
+};
+export type getXpHistoryResponseError = (
+  | getXpHistoryResponse401
+  | getXpHistoryResponse500
+) & {
+  headers: Headers;
+};
+
+export type getXpHistoryResponse =
+  | getXpHistoryResponseSuccess
+  | getXpHistoryResponseError;
+
+export const getGetXpHistoryUrl = () => {
+  return `/gamification/xp-history`;
+};
+
+export const getXpHistory = async (
+  options?: RequestInit,
+): Promise<getXpHistoryResponse> => {
+  return customFetch<getXpHistoryResponse>(getGetXpHistoryUrl(), {
+    ...options,
+    method: "GET",
+  });
 };
 
 /**

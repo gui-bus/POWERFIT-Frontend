@@ -3,10 +3,14 @@ import Image from "next/image";
 import { 
   BookOpenIcon, 
   ArrowRightIcon, 
-  TrendUpIcon 
+  TrendUpIcon,
+  TrophyIcon,
+  LightningIcon,
+  StarIcon,
+  UsersIcon
 } from "@phosphor-icons/react/ssr";
 import { ConsistencyGrid } from "@/components/consistencyGrid";
-import { GetHomeData200 } from "@/lib/api/fetch-generated";
+import { GetHomeData200, GetMe200 } from "@/lib/api/fetch-generated";
 
 const MOCK_POSTS = [
   {
@@ -45,14 +49,74 @@ const MOCK_POSTS = [
 
 interface PremiumSidebarProps {
   homeData: GetHomeData200;
+  userData: GetMe200;
 }
 
-export function PremiumSidebar({ homeData }: PremiumSidebarProps) {
+export function PremiumSidebar({ homeData, userData }: PremiumSidebarProps) {
+  // Simple level calculation for the progress bar
+  // Assuming each level is 1000 XP
+  const xpInCurrentLevel = userData.xp % 1000;
+  const progressPercent = (xpInCurrentLevel / 1000) * 100;
+
   return (
     <aside className="hidden 2xl:flex w-120 xl:w-130 bg-card border-l border-border flex-col h-screen overflow-y-auto custom-scrollbar sticky top-0">
       <div className="p-12 space-y-12">
         
-        <div className="bg-background rounded-[2.5rem] border border-border overflow-hidden">
+        {/* User Level Card */}
+        <div className="bg-primary border border-primary/20 rounded-[2.5rem] p-8 shadow-lg shadow-primary/10 overflow-hidden relative group">
+          <div className="absolute -bottom-4 -right-4 opacity-20 group-hover:scale-110 transition-transform duration-700">
+            <StarIcon weight="fill" className="size-32 text-primary-foreground" />
+          </div>
+          
+          <div className="relative z-10 space-y-6">
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <p className="text-[10px] font-black text-primary-foreground/70 uppercase tracking-[0.2em]">Seu Progresso</p>
+                <h3 className="font-anton text-3xl italic text-primary-foreground uppercase leading-none">Nível {userData.level}</h3>
+              </div>
+              <div className="size-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 text-white">
+                <LightningIcon weight="fill" className="size-7" />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex justify-between items-end">
+                <p className="text-[10px] font-black text-primary-foreground uppercase tracking-widest">{userData.xp} XP Total</p>
+                <p className="text-[10px] font-black text-primary-foreground/70 uppercase tracking-widest">{xpInCurrentLevel} / 1000 XP</p>
+              </div>
+              <div className="h-3 bg-black/20 rounded-full overflow-hidden border border-white/10 p-0.5">
+                <div 
+                  className="h-full bg-white rounded-full transition-all duration-1000 ease-out shadow-[0_0_15px_rgba(255,255,255,0.5)]" 
+                  style={{ width: `${progressPercent}%` }} 
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Social & Gamification Links */}
+        <div className="grid grid-cols-3 gap-4">
+          <Link href="/ranking">
+            <button className="w-full bg-background border border-border hover:border-primary/30 rounded-3xl p-4 text-center transition-all hover:shadow-xl group cursor-pointer">
+              <TrophyIcon weight="duotone" className="size-6 text-primary mx-auto mb-2 group-hover:scale-110 transition-transform" />
+              <p className="text-[9px] font-black uppercase italic tracking-widest text-foreground">Ranking</p>
+            </button>
+          </Link>
+          <Link href="/friends">
+            <button className="w-full bg-background border border-border hover:border-primary/30 rounded-3xl p-4 text-center transition-all hover:shadow-xl group cursor-pointer">
+              <UsersIcon weight="duotone" className="size-6 text-primary mx-auto mb-2 group-hover:scale-110 transition-transform" />
+              <p className="text-[9px] font-black uppercase italic tracking-widest text-foreground">Amigos</p>
+            </button>
+          </Link>
+          <Link href="/achievements">
+            <button className="w-full bg-background border border-border hover:border-primary/30 rounded-3xl p-4 text-center transition-all hover:shadow-xl group cursor-pointer">
+              <StarIcon weight="duotone" className="size-6 text-primary mx-auto mb-2 group-hover:scale-110 transition-transform" />
+              <p className="text-[9px] font-black uppercase italic tracking-widest text-foreground">Conquistas</p>
+            </button>
+          </Link>
+        </div>
+
+        <div className="bg-background rounded-[2.5rem] border border-border overflow-hidden shadow-sm">
           <ConsistencyGrid 
             consistencyByDay={homeData.consistencyByDay} 
             streak={homeData.workoutStreak} 

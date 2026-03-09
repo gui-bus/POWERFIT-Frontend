@@ -48,7 +48,7 @@ export default async function FeedPage() {
         />
       </header>
 
-      <div className="max-w-3xl mx-auto w-full space-y-8">
+      <div className="w-full space-y-8">
         {feedItems.length > 0 ? (
           <div className="flex flex-col gap-8">
             {feedItems.map((item) => (

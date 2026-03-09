@@ -15,6 +15,9 @@ import {
   UserPlusIcon,
   LightningIcon,
   UserCircleIcon,
+  StarIcon,
+  TrophyIcon,
+  SwordIcon
 } from "@phosphor-icons/react";
 import {
   DropdownMenu,
@@ -90,6 +93,12 @@ export function NotificationCenter() {
         return <UserCircleIcon weight="duotone" className="size-4 text-green-500" />;
       case "POWERUP_RECEIVED":
         return <LightningIcon weight="duotone" className="size-4 text-primary" />;
+      case "LEVEL_UP":
+        return <StarIcon weight="fill" className="size-4 text-yellow-500" />;
+      case "ACHIEVEMENT_UNLOCKED":
+        return <TrophyIcon weight="duotone" className="size-4 text-orange-500" />;
+      case "CHALLENGE_INVITE":
+        return <SwordIcon weight="duotone" className="size-4 text-red-500" />;
       default:
         return <BellIcon weight="duotone" className="size-4 text-muted-foreground" />;
     }
@@ -100,11 +109,20 @@ export function NotificationCenter() {
       handleMarkAsRead(notification.id);
     }
 
-    if (notification.type === "FRIEND_REQUEST") {
-      router.push("/friends");
-    } else if (notification.type === "POWERUP_RECEIVED" && notification.activityId) {
-       // We could link to the specific activity if we had a detail page or just the feed
-       router.push("/feed");
+    switch (notification.type) {
+      case "FRIEND_REQUEST":
+        router.push("/friends");
+        break;
+      case "POWERUP_RECEIVED":
+        router.push("/feed");
+        break;
+      case "LEVEL_UP":
+      case "ACHIEVEMENT_UNLOCKED":
+        router.push("/achievements");
+        break;
+      case "CHALLENGE_INVITE":
+        router.push("/challenges");
+        break;
     }
   };
 
@@ -184,6 +202,9 @@ export function NotificationCenter() {
                     {notification.type === "FRIEND_REQUEST" && "enviou um pedido de amizade."}
                     {notification.type === "FRIEND_ACCEPTED" && "aceitou seu pedido de amizade."}
                     {notification.type === "POWERUP_RECEIVED" && "deu um Powerup no seu treino!"}
+                    {notification.type === "LEVEL_UP" && "Parabéns! Você subiu de nível!"}
+                    {notification.type === "ACHIEVEMENT_UNLOCKED" && "Você desbloqueou uma nova conquista!"}
+                    {notification.type === "CHALLENGE_INVITE" && "convidou você para um desafio!"}
                   </p>
                   <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
                     {dayjs(notification.createdAt).fromNow()}
