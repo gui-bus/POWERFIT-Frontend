@@ -48,7 +48,7 @@ export function SessionAction({ planId, dayId, activeSessionId, isCompleted }: S
 
   if (isCompleted) {
     return (
-      <Button variant="ghost" disabled className="w-full h-12 rounded-full font-bold uppercase italic tracking-widest border border-border cursor-pointer">
+      <Button variant="ghost" disabled className="w-full h-12 rounded-full font-bold uppercase italic tracking-widest border border-border cursor-pointer text-white">
         Concluído!
       </Button>
     );

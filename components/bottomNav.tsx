@@ -8,6 +8,7 @@ import {
   UserIcon,
   SparkleIcon,
   TrophyIcon,
+  UsersIcon,
 } from "@phosphor-icons/react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -54,6 +55,7 @@ export function BottomNav() {
       href: planOverviewLink || "#",
       active: isWorkoutDayActive,
     },
+    { icon: UsersIcon, href: "/feed", active: pathname === "/feed" },
     { icon: TrophyIcon, href: "/ranking", active: pathname === "/ranking" },
     { icon: ChartBarIcon, href: "/stats", active: pathname === "/stats" },
     { icon: UserIcon, href: "/profile", active: pathname === "/profile" },
@@ -61,13 +63,13 @@ export function BottomNav() {
 
   return (
     <>
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-t border-border px-6 py-4 flex items-center justify-between rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
-        {navItems.slice(0, 2).map((item, i) => (
-          <Link key={i} href={item.href} className="p-3">
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-t border-border px-4 py-4 flex items-center justify-between rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
+        {navItems.slice(0, 3).map((item, i) => (
+          <Link key={i} href={item.href} className="p-2">
             <item.icon
               weight="duotone"
               className={cn(
-                "size-6 transition-all",
+                "size-5 transition-all",
                 item.active
                   ? "text-primary scale-110"
                   : "text-muted-foreground",
@@ -85,12 +87,12 @@ export function BottomNav() {
           </button>
         </div>
 
-        {navItems.slice(2).map((item, i) => (
-          <Link key={i + 2} href={item.href} className="p-3">
+        {navItems.slice(3).map((item, i) => (
+          <Link key={i + 3} href={item.href} className="p-2">
             <item.icon
               weight="duotone"
               className={cn(
-                "size-6 transition-all",
+                "size-5 transition-all",
                 item.active
                   ? "text-primary scale-110"
                   : "text-muted-foreground",

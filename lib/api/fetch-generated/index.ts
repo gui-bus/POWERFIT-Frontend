@@ -334,6 +334,10 @@ export type StartWorkoutSession500 = {
   code: string;
 };
 
+export type CompleteWorkoutSessionParams = {
+  statusMessage?: string;
+};
+
 export type CompleteWorkoutSession200 = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
@@ -460,6 +464,296 @@ export type GetStats401 = {
 };
 
 export type GetStats500 = {
+  error: string;
+  code: string;
+};
+
+export type GetMe200 = {
+  id: string;
+  name: string;
+  /** @pattern ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$ */
+  email: string;
+  /** @nullable */
+  image: string | null;
+  /** @nullable */
+  friendCode: string | null;
+};
+
+export type GetMe401 = {
+  error: string;
+  code: string;
+};
+
+export type GetMe404 = {
+  error: string;
+  code: string;
+};
+
+export type GetMe500 = {
+  error: string;
+  code: string;
+};
+
+export type GetFriends200Item = {
+  id: string;
+  name: string;
+  /** @pattern ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$ */
+  email: string;
+  /** @nullable */
+  image: string | null;
+  /** @nullable */
+  friendCode: string | null;
+  since: string;
+};
+
+export type GetFriends401 = {
+  error: string;
+  code: string;
+};
+
+export type GetFriends500 = {
+  error: string;
+  code: string;
+};
+
+export type AddFriendBody = {
+  /** @minLength 1 */
+  codeOrEmail: string;
+};
+
+export type AddFriend200 = {
+  id: string;
+  name: string;
+  /** @pattern ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$ */
+  email: string;
+  /** @nullable */
+  image: string | null;
+  /** @nullable */
+  friendCode: string | null;
+};
+
+export type AddFriend400 = {
+  error: string;
+  code: string;
+};
+
+export type AddFriend401 = {
+  error: string;
+  code: string;
+};
+
+export type AddFriend404 = {
+  error: string;
+  code: string;
+};
+
+export type AddFriend500 = {
+  error: string;
+  code: string;
+};
+
+export type GetFriendRequests200ItemStatus =
+  (typeof GetFriendRequests200ItemStatus)[keyof typeof GetFriendRequests200ItemStatus];
+
+export const GetFriendRequests200ItemStatus = {
+  PENDING: "PENDING",
+  ACCEPTED: "ACCEPTED",
+} as const;
+
+export type GetFriendRequests200ItemUser = {
+  id: string;
+  name: string;
+  /** @pattern ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$ */
+  email: string;
+  /** @nullable */
+  image: string | null;
+};
+
+export type GetFriendRequests200Item = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  status: GetFriendRequests200ItemStatus;
+  createdAt: string;
+  user: GetFriendRequests200ItemUser;
+};
+
+export type GetFriendRequests401 = {
+  error: string;
+  code: string;
+};
+
+export type GetFriendRequests500 = {
+  error: string;
+  code: string;
+};
+
+/**
+ * @nullable
+ */
+export type AcceptFriendRequest204 =
+  | (typeof AcceptFriendRequest204)[keyof typeof AcceptFriendRequest204]
+  | null;
+
+export const AcceptFriendRequest204 = {} as const;
+
+export type AcceptFriendRequest401 = {
+  error: string;
+  code: string;
+};
+
+export type AcceptFriendRequest404 = {
+  error: string;
+  code: string;
+};
+
+export type AcceptFriendRequest500 = {
+  error: string;
+  code: string;
+};
+
+/**
+ * @nullable
+ */
+export type DeclineFriendRequest204 =
+  | (typeof DeclineFriendRequest204)[keyof typeof DeclineFriendRequest204]
+  | null;
+
+export const DeclineFriendRequest204 = {} as const;
+
+export type DeclineFriendRequest401 = {
+  error: string;
+  code: string;
+};
+
+export type DeclineFriendRequest404 = {
+  error: string;
+  code: string;
+};
+
+export type DeclineFriendRequest500 = {
+  error: string;
+  code: string;
+};
+
+export type GetFeed200Item = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  userId: string;
+  userName: string;
+  /** @nullable */
+  userImage: string | null;
+  workoutDayName: string;
+  workoutPlanName: string;
+  /** @nullable */
+  statusMessage: string | null;
+  /** @nullable */
+  imageUrl: string | null;
+  startedAt: string;
+  completedAt: string;
+  powerupsCount: number;
+  hasPowerupByMe: boolean;
+  createdAt: string;
+};
+
+export type GetFeed401 = {
+  error: string;
+  code: string;
+};
+
+export type GetFeed500 = {
+  error: string;
+  code: string;
+};
+
+export type GetUserFeed200Item = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  userId: string;
+  userName: string;
+  /** @nullable */
+  userImage: string | null;
+  workoutDayName: string;
+  workoutPlanName: string;
+  /** @nullable */
+  statusMessage: string | null;
+  /** @nullable */
+  imageUrl: string | null;
+  startedAt: string;
+  completedAt: string;
+  powerupsCount: number;
+  hasPowerupByMe: boolean;
+  createdAt: string;
+};
+
+export type GetUserFeed401 = {
+  error: string;
+  code: string;
+};
+
+export type GetUserFeed403 = {
+  error: string;
+  code: string;
+};
+
+export type GetUserFeed500 = {
+  error: string;
+  code: string;
+};
+
+/**
+ * @nullable
+ */
+export type TogglePowerup204 =
+  | (typeof TogglePowerup204)[keyof typeof TogglePowerup204]
+  | null;
+
+export const TogglePowerup204 = {} as const;
+
+export type TogglePowerup401 = {
+  error: string;
+  code: string;
+};
+
+export type TogglePowerup403 = {
+  error: string;
+  code: string;
+};
+
+export type TogglePowerup404 = {
+  error: string;
+  code: string;
+};
+
+export type TogglePowerup500 = {
+  error: string;
+  code: string;
+};
+
+/**
+ * @nullable
+ */
+export type DeleteActivity204 =
+  | (typeof DeleteActivity204)[keyof typeof DeleteActivity204]
+  | null;
+
+export const DeleteActivity204 = {} as const;
+
+export type DeleteActivity401 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteActivity403 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteActivity404 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteActivity500 = {
   error: string;
   code: string;
 };
@@ -947,18 +1241,37 @@ export const getCompleteWorkoutSessionUrl = (
   workoutPlanId: string,
   workoutDayId: string,
   sessionId: string,
+  params?: CompleteWorkoutSessionParams,
 ) => {
-  return `/workout-plans/${workoutPlanId}/days/${workoutDayId}/sessions/${sessionId}`;
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/workout-plans/${workoutPlanId}/days/${workoutDayId}/sessions/${sessionId}?${stringifiedParams}`
+    : `/workout-plans/${workoutPlanId}/days/${workoutDayId}/sessions/${sessionId}`;
 };
 
 export const completeWorkoutSession = async (
   workoutPlanId: string,
   workoutDayId: string,
   sessionId: string,
+  params?: CompleteWorkoutSessionParams,
   options?: RequestInit,
 ): Promise<completeWorkoutSessionResponse> => {
   return customFetch<completeWorkoutSessionResponse>(
-    getCompleteWorkoutSessionUrl(workoutPlanId, workoutDayId, sessionId),
+    getCompleteWorkoutSessionUrl(
+      workoutPlanId,
+      workoutDayId,
+      sessionId,
+      params,
+    ),
     {
       ...options,
       method: "PATCH",
@@ -1065,6 +1378,523 @@ export const getStats = async (
   return customFetch<getStatsResponse>(getGetStatsUrl(params), {
     ...options,
     method: "GET",
+  });
+};
+
+/**
+ * @summary Get my user data and friend code
+ */
+export type getMeResponse200 = {
+  data: GetMe200;
+  status: 200;
+};
+
+export type getMeResponse401 = {
+  data: GetMe401;
+  status: 401;
+};
+
+export type getMeResponse404 = {
+  data: GetMe404;
+  status: 404;
+};
+
+export type getMeResponse500 = {
+  data: GetMe500;
+  status: 500;
+};
+
+export type getMeResponseSuccess = getMeResponse200 & {
+  headers: Headers;
+};
+export type getMeResponseError = (
+  | getMeResponse401
+  | getMeResponse404
+  | getMeResponse500
+) & {
+  headers: Headers;
+};
+
+export type getMeResponse = getMeResponseSuccess | getMeResponseError;
+
+export const getGetMeUrl = () => {
+  return `/friendships/me`;
+};
+
+export const getMe = async (options?: RequestInit): Promise<getMeResponse> => {
+  return customFetch<getMeResponse>(getGetMeUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Get friends list
+ */
+export type getFriendsResponse200 = {
+  data: GetFriends200Item[];
+  status: 200;
+};
+
+export type getFriendsResponse401 = {
+  data: GetFriends401;
+  status: 401;
+};
+
+export type getFriendsResponse500 = {
+  data: GetFriends500;
+  status: 500;
+};
+
+export type getFriendsResponseSuccess = getFriendsResponse200 & {
+  headers: Headers;
+};
+export type getFriendsResponseError = (
+  | getFriendsResponse401
+  | getFriendsResponse500
+) & {
+  headers: Headers;
+};
+
+export type getFriendsResponse =
+  | getFriendsResponseSuccess
+  | getFriendsResponseError;
+
+export const getGetFriendsUrl = () => {
+  return `/friendships/`;
+};
+
+export const getFriends = async (
+  options?: RequestInit,
+): Promise<getFriendsResponse> => {
+  return customFetch<getFriendsResponse>(getGetFriendsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Send a friend request by code or email
+ */
+export type addFriendResponse200 = {
+  data: AddFriend200;
+  status: 200;
+};
+
+export type addFriendResponse400 = {
+  data: AddFriend400;
+  status: 400;
+};
+
+export type addFriendResponse401 = {
+  data: AddFriend401;
+  status: 401;
+};
+
+export type addFriendResponse404 = {
+  data: AddFriend404;
+  status: 404;
+};
+
+export type addFriendResponse500 = {
+  data: AddFriend500;
+  status: 500;
+};
+
+export type addFriendResponseSuccess = addFriendResponse200 & {
+  headers: Headers;
+};
+export type addFriendResponseError = (
+  | addFriendResponse400
+  | addFriendResponse401
+  | addFriendResponse404
+  | addFriendResponse500
+) & {
+  headers: Headers;
+};
+
+export type addFriendResponse =
+  | addFriendResponseSuccess
+  | addFriendResponseError;
+
+export const getAddFriendUrl = () => {
+  return `/friendships/`;
+};
+
+export const addFriend = async (
+  addFriendBody: AddFriendBody,
+  options?: RequestInit,
+): Promise<addFriendResponse> => {
+  return customFetch<addFriendResponse>(getAddFriendUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(addFriendBody),
+  });
+};
+
+/**
+ * @summary Get pending friend requests
+ */
+export type getFriendRequestsResponse200 = {
+  data: GetFriendRequests200Item[];
+  status: 200;
+};
+
+export type getFriendRequestsResponse401 = {
+  data: GetFriendRequests401;
+  status: 401;
+};
+
+export type getFriendRequestsResponse500 = {
+  data: GetFriendRequests500;
+  status: 500;
+};
+
+export type getFriendRequestsResponseSuccess = getFriendRequestsResponse200 & {
+  headers: Headers;
+};
+export type getFriendRequestsResponseError = (
+  | getFriendRequestsResponse401
+  | getFriendRequestsResponse500
+) & {
+  headers: Headers;
+};
+
+export type getFriendRequestsResponse =
+  | getFriendRequestsResponseSuccess
+  | getFriendRequestsResponseError;
+
+export const getGetFriendRequestsUrl = () => {
+  return `/friendships/requests`;
+};
+
+export const getFriendRequests = async (
+  options?: RequestInit,
+): Promise<getFriendRequestsResponse> => {
+  return customFetch<getFriendRequestsResponse>(getGetFriendRequestsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Accept a friend request
+ */
+export type acceptFriendRequestResponse204 = {
+  data: AcceptFriendRequest204;
+  status: 204;
+};
+
+export type acceptFriendRequestResponse401 = {
+  data: AcceptFriendRequest401;
+  status: 401;
+};
+
+export type acceptFriendRequestResponse404 = {
+  data: AcceptFriendRequest404;
+  status: 404;
+};
+
+export type acceptFriendRequestResponse500 = {
+  data: AcceptFriendRequest500;
+  status: 500;
+};
+
+export type acceptFriendRequestResponseSuccess =
+  acceptFriendRequestResponse204 & {
+    headers: Headers;
+  };
+export type acceptFriendRequestResponseError = (
+  | acceptFriendRequestResponse401
+  | acceptFriendRequestResponse404
+  | acceptFriendRequestResponse500
+) & {
+  headers: Headers;
+};
+
+export type acceptFriendRequestResponse =
+  | acceptFriendRequestResponseSuccess
+  | acceptFriendRequestResponseError;
+
+export const getAcceptFriendRequestUrl = (id: string) => {
+  return `/friendships/requests/${id}/accept`;
+};
+
+export const acceptFriendRequest = async (
+  id: string,
+  options?: RequestInit,
+): Promise<acceptFriendRequestResponse> => {
+  return customFetch<acceptFriendRequestResponse>(
+    getAcceptFriendRequestUrl(id),
+    {
+      ...options,
+      method: "PATCH",
+    },
+  );
+};
+
+/**
+ * @summary Decline a friend request
+ */
+export type declineFriendRequestResponse204 = {
+  data: DeclineFriendRequest204;
+  status: 204;
+};
+
+export type declineFriendRequestResponse401 = {
+  data: DeclineFriendRequest401;
+  status: 401;
+};
+
+export type declineFriendRequestResponse404 = {
+  data: DeclineFriendRequest404;
+  status: 404;
+};
+
+export type declineFriendRequestResponse500 = {
+  data: DeclineFriendRequest500;
+  status: 500;
+};
+
+export type declineFriendRequestResponseSuccess =
+  declineFriendRequestResponse204 & {
+    headers: Headers;
+  };
+export type declineFriendRequestResponseError = (
+  | declineFriendRequestResponse401
+  | declineFriendRequestResponse404
+  | declineFriendRequestResponse500
+) & {
+  headers: Headers;
+};
+
+export type declineFriendRequestResponse =
+  | declineFriendRequestResponseSuccess
+  | declineFriendRequestResponseError;
+
+export const getDeclineFriendRequestUrl = (id: string) => {
+  return `/friendships/requests/${id}/decline`;
+};
+
+export const declineFriendRequest = async (
+  id: string,
+  options?: RequestInit,
+): Promise<declineFriendRequestResponse> => {
+  return customFetch<declineFriendRequestResponse>(
+    getDeclineFriendRequestUrl(id),
+    {
+      ...options,
+      method: "PATCH",
+    },
+  );
+};
+
+/**
+ * @summary Get activities feed
+ */
+export type getFeedResponse200 = {
+  data: GetFeed200Item[];
+  status: 200;
+};
+
+export type getFeedResponse401 = {
+  data: GetFeed401;
+  status: 401;
+};
+
+export type getFeedResponse500 = {
+  data: GetFeed500;
+  status: 500;
+};
+
+export type getFeedResponseSuccess = getFeedResponse200 & {
+  headers: Headers;
+};
+export type getFeedResponseError = (getFeedResponse401 | getFeedResponse500) & {
+  headers: Headers;
+};
+
+export type getFeedResponse = getFeedResponseSuccess | getFeedResponseError;
+
+export const getGetFeedUrl = () => {
+  return `/feed/`;
+};
+
+export const getFeed = async (
+  options?: RequestInit,
+): Promise<getFeedResponse> => {
+  return customFetch<getFeedResponse>(getGetFeedUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Get activities feed for a specific user
+ */
+export type getUserFeedResponse200 = {
+  data: GetUserFeed200Item[];
+  status: 200;
+};
+
+export type getUserFeedResponse401 = {
+  data: GetUserFeed401;
+  status: 401;
+};
+
+export type getUserFeedResponse403 = {
+  data: GetUserFeed403;
+  status: 403;
+};
+
+export type getUserFeedResponse500 = {
+  data: GetUserFeed500;
+  status: 500;
+};
+
+export type getUserFeedResponseSuccess = getUserFeedResponse200 & {
+  headers: Headers;
+};
+export type getUserFeedResponseError = (
+  | getUserFeedResponse401
+  | getUserFeedResponse403
+  | getUserFeedResponse500
+) & {
+  headers: Headers;
+};
+
+export type getUserFeedResponse =
+  | getUserFeedResponseSuccess
+  | getUserFeedResponseError;
+
+export const getGetUserFeedUrl = (userId: string) => {
+  return `/feed/users/${userId}`;
+};
+
+export const getUserFeed = async (
+  userId: string,
+  options?: RequestInit,
+): Promise<getUserFeedResponse> => {
+  return customFetch<getUserFeedResponse>(getGetUserFeedUrl(userId), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Toggle powerup on an activity
+ */
+export type togglePowerupResponse204 = {
+  data: TogglePowerup204;
+  status: 204;
+};
+
+export type togglePowerupResponse401 = {
+  data: TogglePowerup401;
+  status: 401;
+};
+
+export type togglePowerupResponse403 = {
+  data: TogglePowerup403;
+  status: 403;
+};
+
+export type togglePowerupResponse404 = {
+  data: TogglePowerup404;
+  status: 404;
+};
+
+export type togglePowerupResponse500 = {
+  data: TogglePowerup500;
+  status: 500;
+};
+
+export type togglePowerupResponseSuccess = togglePowerupResponse204 & {
+  headers: Headers;
+};
+export type togglePowerupResponseError = (
+  | togglePowerupResponse401
+  | togglePowerupResponse403
+  | togglePowerupResponse404
+  | togglePowerupResponse500
+) & {
+  headers: Headers;
+};
+
+export type togglePowerupResponse =
+  | togglePowerupResponseSuccess
+  | togglePowerupResponseError;
+
+export const getTogglePowerupUrl = (id: string) => {
+  return `/feed/activities/${id}/powerup`;
+};
+
+export const togglePowerup = async (
+  id: string,
+  options?: RequestInit,
+): Promise<togglePowerupResponse> => {
+  return customFetch<togglePowerupResponse>(getTogglePowerupUrl(id), {
+    ...options,
+    method: "POST",
+  });
+};
+
+/**
+ * @summary Delete an activity
+ */
+export type deleteActivityResponse204 = {
+  data: DeleteActivity204;
+  status: 204;
+};
+
+export type deleteActivityResponse401 = {
+  data: DeleteActivity401;
+  status: 401;
+};
+
+export type deleteActivityResponse403 = {
+  data: DeleteActivity403;
+  status: 403;
+};
+
+export type deleteActivityResponse404 = {
+  data: DeleteActivity404;
+  status: 404;
+};
+
+export type deleteActivityResponse500 = {
+  data: DeleteActivity500;
+  status: 500;
+};
+
+export type deleteActivityResponseSuccess = deleteActivityResponse204 & {
+  headers: Headers;
+};
+export type deleteActivityResponseError = (
+  | deleteActivityResponse401
+  | deleteActivityResponse403
+  | deleteActivityResponse404
+  | deleteActivityResponse500
+) & {
+  headers: Headers;
+};
+
+export type deleteActivityResponse =
+  | deleteActivityResponseSuccess
+  | deleteActivityResponseError;
+
+export const getDeleteActivityUrl = (id: string) => {
+  return `/feed/activities/${id}`;
+};
+
+export const deleteActivity = async (
+  id: string,
+  options?: RequestInit,
+): Promise<deleteActivityResponse> => {
+  return customFetch<deleteActivityResponse>(getDeleteActivityUrl(id), {
+    ...options,
+    method: "DELETE",
   });
 };
 
