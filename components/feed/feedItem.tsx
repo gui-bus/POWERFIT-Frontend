@@ -13,7 +13,8 @@ import {
   DotsThreeVerticalIcon, 
   TrendUpIcon,
   CalendarIcon,
-  PaperPlaneRightIcon
+  PaperPlaneRightIcon,
+  UsersIcon
 } from "@phosphor-icons/react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -136,6 +137,21 @@ export function FeedItem({ item }: FeedItemProps) {
               Completou o treino <span className="text-primary font-black italic uppercase">{item.workoutDayName}</span> 
               {" "}do plano <span className="font-black italic uppercase tracking-tighter opacity-80">{item.workoutPlanName}</span>.
             </p>
+
+            {item.taggedUsers.length > 0 && (
+              <div className="flex items-center gap-2 mt-2">
+                <UsersIcon weight="duotone" className="size-3.5 text-primary" />
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                  Treinou com{" "}
+                  {item.taggedUsers.map((user, index) => (
+                    <span key={user.id} className="text-foreground">
+                      {user.name.split(' ')[0]}
+                      {index < item.taggedUsers.length - 1 ? ", " : ""}
+                    </span>
+                  ))}
+                </p>
+              </div>
+            )}
             
             {item.statusMessage && (
               <div className="mt-3 relative z-10">
@@ -195,7 +211,6 @@ export function FeedItem({ item }: FeedItemProps) {
               exit={{ height: 0, opacity: 0 }}
               className="overflow-hidden pt-4 border-t border-border/50 space-y-6"
             >
-              {/* Existing Comments */}
               <div className="space-y-4 max-h-60 overflow-y-auto custom-scrollbar pr-2">
                 {item.comments.map((comment) => (
                   <div key={comment.id} className="flex gap-3">

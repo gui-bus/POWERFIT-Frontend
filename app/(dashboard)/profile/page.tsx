@@ -175,9 +175,14 @@ export default async function ProfilePage() {
           <div className="space-y-8 lg:col-span-1">
             {/* Biometrics Card */}
             <div className="bg-card border border-border rounded-[2.5rem] p-8 shadow-sm space-y-8">
-              <div className="flex items-center gap-3">
-                <BarbellIcon weight="duotone" className="size-5 text-primary" />
-                <h3 className="text-xs font-black uppercase tracking-[0.2em] italic">Biometria</h3>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <BarbellIcon weight="duotone" className="size-5 text-primary" />
+                  <h3 className="text-xs font-black uppercase tracking-[0.2em] italic">Biometria</h3>
+                </div>
+                <Link href="/profile/evolution" className="text-[9px] font-black text-primary uppercase tracking-widest hover:underline italic">
+                  Ver Histórico
+                </Link>
               </div>
               <div className="grid grid-cols-2 gap-6">
                 {biometrics.map((stat, i) => (

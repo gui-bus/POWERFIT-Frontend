@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   getNotifications,
   markNotificationAsRead,
@@ -17,7 +17,10 @@ import {
   UserCircleIcon,
   StarIcon,
   TrophyIcon,
-  SwordIcon
+  SwordIcon,
+  ChatTeardropTextIcon,
+  TagIcon,
+  FireIcon
 } from "@phosphor-icons/react";
 import {
   DropdownMenu,
@@ -40,28 +43,45 @@ dayjs.locale("pt-br");
 
 export function NotificationCenter() {
   const [notifications, setNotifications] = useState<GetNotifications200Item[]>([]);
-  const [unreadCount, setUnreadCount] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const fetchNotifications = useCallback(async () => {
-    try {
-      const response = await getNotifications();
-      if (response.status === 200) {
-        setNotifications(response.data);
-        setUnreadCount(response.data.filter((n) => !n.isRead).length);
-      }
-    } catch (error) {
-      console.error("Failed to fetch notifications", error);
-    }
-  }, []);
+  // Contador derivado para performance otimizada
+  const unreadCount = useMemo(() => 
+    notifications.filter((n) => !n.isRead).length, 
+  [notifications]);
 
   useEffect(() => {
-    fetchNotifications();
-    // Refresh notifications every minute
-    const interval = setInterval(fetchNotifications, 60000);
-    return () => clearInterval(interval);
-  }, [fetchNotifications]);
+    let isMounted = true;
+
+    const fetchInitialNotifications = async () => {
+      try {
+        const response = await getNotifications();
+        if (response.status === 200 && isMounted) {
+          setNotifications(response.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch notifications", error);
+      }
+    };
+
+    fetchInitialNotifications();
+
+    const interval = setInterval(async () => {
+      try {
+        const response = await getNotifications();
+        if (response.status === 200 && isMounted) {
+          setNotifications(response.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch notifications", error);
+      }
+    }, 60000);
+
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, []);
 
   const handleMarkAsRead = async (id: string) => {
     try {
@@ -69,7 +89,6 @@ export function NotificationCenter() {
       setNotifications((prev) =>
         prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
       );
-      setUnreadCount((prev) => Math.max(0, prev - 1));
     } catch (error) {
       console.error("Failed to mark notification as read", error);
     }
@@ -79,7 +98,6 @@ export function NotificationCenter() {
     try {
       await markAllNotificationsAsRead();
       setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
-      setUnreadCount(0);
     } catch (error) {
       console.error("Failed to mark all notifications as read", error);
     }
@@ -99,8 +117,29 @@ export function NotificationCenter() {
         return <TrophyIcon weight="duotone" className="size-4 text-orange-500" />;
       case "CHALLENGE_INVITE":
         return <SwordIcon weight="duotone" className="size-4 text-red-500" />;
+      case "COMMENT_RECEIVED":
+        return <ChatTeardropTextIcon weight="duotone" className="size-4 text-blue-400" />;
+      case "TAGGED_IN_ACTIVITY":
+        return <TagIcon weight="duotone" className="size-4 text-purple-500" />;
+      case "PERSONAL_RECORD_BROKEN":
+        return <FireIcon weight="fill" className="size-4 text-orange-600" />;
       default:
         return <BellIcon weight="duotone" className="size-4 text-muted-foreground" />;
+    }
+  };
+
+  const getNotificationMessage = (notification: GetNotifications200Item) => {
+    switch (notification.type) {
+      case "FRIEND_REQUEST": return "enviou um pedido de amizade.";
+      case "FRIEND_ACCEPTED": return "aceitou seu pedido de amizade.";
+      case "POWERUP_RECEIVED": return "deu um Powerup no seu treino!";
+      case "LEVEL_UP": return "Parabéns! Você subiu de nível!";
+      case "ACHIEVEMENT_UNLOCKED": return "Você desbloqueou uma nova conquista!";
+      case "CHALLENGE_INVITE": return "convidou você para um desafio!";
+      case "COMMENT_RECEIVED": return "comentou na sua atividade!";
+      case "TAGGED_IN_ACTIVITY": return "marcou você em um treino!";
+      case "PERSONAL_RECORD_BROKEN": return "quebrou um recorde pessoal! 🔥";
+      default: return "enviou uma notificação.";
     }
   };
 
@@ -113,11 +152,14 @@ export function NotificationCenter() {
       case "FRIEND_REQUEST":
         router.push("/friends");
         break;
+      case "COMMENT_RECEIVED":
+      case "TAGGED_IN_ACTIVITY":
       case "POWERUP_RECEIVED":
         router.push("/feed");
         break;
       case "LEVEL_UP":
       case "ACHIEVEMENT_UNLOCKED":
+      case "PERSONAL_RECORD_BROKEN":
         router.push("/achievements");
         break;
       case "CHALLENGE_INVITE":
@@ -199,12 +241,7 @@ export function NotificationCenter() {
                     <span className="font-black uppercase italic text-[11px] tracking-tight mr-1">
                       {notification.sender?.name || "PowerFit"}:
                     </span>
-                    {notification.type === "FRIEND_REQUEST" && "enviou um pedido de amizade."}
-                    {notification.type === "FRIEND_ACCEPTED" && "aceitou seu pedido de amizade."}
-                    {notification.type === "POWERUP_RECEIVED" && "deu um Powerup no seu treino!"}
-                    {notification.type === "LEVEL_UP" && "Parabéns! Você subiu de nível!"}
-                    {notification.type === "ACHIEVEMENT_UNLOCKED" && "Você desbloqueou uma nova conquista!"}
-                    {notification.type === "CHALLENGE_INVITE" && "convidou você para um desafio!"}
+                    {getNotificationMessage(notification)}
                   </p>
                   <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
                     {dayjs(notification.createdAt).fromNow()}
