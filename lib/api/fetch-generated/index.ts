@@ -758,6 +758,93 @@ export type DeleteActivity500 = {
   code: string;
 };
 
+export type GetNotifications200ItemType =
+  (typeof GetNotifications200ItemType)[keyof typeof GetNotifications200ItemType];
+
+export const GetNotifications200ItemType = {
+  FRIEND_REQUEST: "FRIEND_REQUEST",
+  FRIEND_ACCEPTED: "FRIEND_ACCEPTED",
+  POWERUP_RECEIVED: "POWERUP_RECEIVED",
+} as const;
+
+/**
+ * @nullable
+ */
+export type GetNotifications200ItemSender = {
+  id: string;
+  name: string;
+  /** @nullable */
+  image: string | null;
+} | null;
+
+export type GetNotifications200Item = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  type: GetNotifications200ItemType;
+  isRead: boolean;
+  createdAt: string;
+  /**
+   * @nullable
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  activityId: string | null;
+  /** @nullable */
+  sender: GetNotifications200ItemSender;
+};
+
+export type GetNotifications401 = {
+  error: string;
+  code: string;
+};
+
+export type GetNotifications500 = {
+  error: string;
+  code: string;
+};
+
+/**
+ * @nullable
+ */
+export type MarkAllNotificationsAsRead204 =
+  | (typeof MarkAllNotificationsAsRead204)[keyof typeof MarkAllNotificationsAsRead204]
+  | null;
+
+export const MarkAllNotificationsAsRead204 = {} as const;
+
+export type MarkAllNotificationsAsRead401 = {
+  error: string;
+  code: string;
+};
+
+export type MarkAllNotificationsAsRead500 = {
+  error: string;
+  code: string;
+};
+
+/**
+ * @nullable
+ */
+export type MarkNotificationAsRead204 =
+  | (typeof MarkNotificationAsRead204)[keyof typeof MarkNotificationAsRead204]
+  | null;
+
+export const MarkNotificationAsRead204 = {} as const;
+
+export type MarkNotificationAsRead401 = {
+  error: string;
+  code: string;
+};
+
+export type MarkNotificationAsRead404 = {
+  error: string;
+  code: string;
+};
+
+export type MarkNotificationAsRead500 = {
+  error: string;
+  code: string;
+};
+
 export type GetStreakRanking200RankingItem = {
   id: string;
   name: string;
@@ -1896,6 +1983,156 @@ export const deleteActivity = async (
     ...options,
     method: "DELETE",
   });
+};
+
+/**
+ * @summary Get my notifications
+ */
+export type getNotificationsResponse200 = {
+  data: GetNotifications200Item[];
+  status: 200;
+};
+
+export type getNotificationsResponse401 = {
+  data: GetNotifications401;
+  status: 401;
+};
+
+export type getNotificationsResponse500 = {
+  data: GetNotifications500;
+  status: 500;
+};
+
+export type getNotificationsResponseSuccess = getNotificationsResponse200 & {
+  headers: Headers;
+};
+export type getNotificationsResponseError = (
+  | getNotificationsResponse401
+  | getNotificationsResponse500
+) & {
+  headers: Headers;
+};
+
+export type getNotificationsResponse =
+  | getNotificationsResponseSuccess
+  | getNotificationsResponseError;
+
+export const getGetNotificationsUrl = () => {
+  return `/notifications/`;
+};
+
+export const getNotifications = async (
+  options?: RequestInit,
+): Promise<getNotificationsResponse> => {
+  return customFetch<getNotificationsResponse>(getGetNotificationsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Mark all my notifications as read
+ */
+export type markAllNotificationsAsReadResponse204 = {
+  data: MarkAllNotificationsAsRead204;
+  status: 204;
+};
+
+export type markAllNotificationsAsReadResponse401 = {
+  data: MarkAllNotificationsAsRead401;
+  status: 401;
+};
+
+export type markAllNotificationsAsReadResponse500 = {
+  data: MarkAllNotificationsAsRead500;
+  status: 500;
+};
+
+export type markAllNotificationsAsReadResponseSuccess =
+  markAllNotificationsAsReadResponse204 & {
+    headers: Headers;
+  };
+export type markAllNotificationsAsReadResponseError = (
+  | markAllNotificationsAsReadResponse401
+  | markAllNotificationsAsReadResponse500
+) & {
+  headers: Headers;
+};
+
+export type markAllNotificationsAsReadResponse =
+  | markAllNotificationsAsReadResponseSuccess
+  | markAllNotificationsAsReadResponseError;
+
+export const getMarkAllNotificationsAsReadUrl = () => {
+  return `/notifications/read-all`;
+};
+
+export const markAllNotificationsAsRead = async (
+  options?: RequestInit,
+): Promise<markAllNotificationsAsReadResponse> => {
+  return customFetch<markAllNotificationsAsReadResponse>(
+    getMarkAllNotificationsAsReadUrl(),
+    {
+      ...options,
+      method: "PATCH",
+    },
+  );
+};
+
+/**
+ * @summary Mark a notification as read
+ */
+export type markNotificationAsReadResponse204 = {
+  data: MarkNotificationAsRead204;
+  status: 204;
+};
+
+export type markNotificationAsReadResponse401 = {
+  data: MarkNotificationAsRead401;
+  status: 401;
+};
+
+export type markNotificationAsReadResponse404 = {
+  data: MarkNotificationAsRead404;
+  status: 404;
+};
+
+export type markNotificationAsReadResponse500 = {
+  data: MarkNotificationAsRead500;
+  status: 500;
+};
+
+export type markNotificationAsReadResponseSuccess =
+  markNotificationAsReadResponse204 & {
+    headers: Headers;
+  };
+export type markNotificationAsReadResponseError = (
+  | markNotificationAsReadResponse401
+  | markNotificationAsReadResponse404
+  | markNotificationAsReadResponse500
+) & {
+  headers: Headers;
+};
+
+export type markNotificationAsReadResponse =
+  | markNotificationAsReadResponseSuccess
+  | markNotificationAsReadResponseError;
+
+export const getMarkNotificationAsReadUrl = (id: string) => {
+  return `/notifications/${id}/read`;
+};
+
+export const markNotificationAsRead = async (
+  id: string,
+  options?: RequestInit,
+): Promise<markNotificationAsReadResponse> => {
+  return customFetch<markNotificationAsReadResponse>(
+    getMarkNotificationAsReadUrl(id),
+    {
+      ...options,
+      method: "PATCH",
+    },
+  );
 };
 
 /**

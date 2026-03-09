@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { UserNav } from "./userNav";
+import { NotificationCenter } from "./notificationCenter";
 
 interface PageHeaderProps {
   title: string;
@@ -45,11 +46,14 @@ export function PageHeader({ title, subtitle, user }: PageHeaderProps) {
         </p>
       </div>
 
-      {user && (
-        <div className="flex items-center">
-          <UserNav user={user} />
-        </div>
-      )}
+      <div className="flex items-center gap-4 mt-4 lg:mt-0">
+        <NotificationCenter />
+        {user && (
+          <div className="flex items-center">
+            <UserNav user={user} />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
