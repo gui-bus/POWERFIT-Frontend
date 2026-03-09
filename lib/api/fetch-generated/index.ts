@@ -334,8 +334,9 @@ export type StartWorkoutSession500 = {
   code: string;
 };
 
-export type CompleteWorkoutSessionParams = {
+export type CompleteWorkoutSessionBody = {
   statusMessage?: string;
+  taggedUserIds?: string[];
 };
 
 export type CompleteWorkoutSession200 = {
@@ -639,6 +640,24 @@ export type DeclineFriendRequest500 = {
   code: string;
 };
 
+export type GetFeed200ItemCommentsItem = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  userId: string;
+  userName: string;
+  /** @nullable */
+  userImage: string | null;
+  content: string;
+  createdAt: string;
+};
+
+export type GetFeed200ItemTaggedUsersItem = {
+  id: string;
+  name: string;
+  /** @nullable */
+  image: string | null;
+};
+
 export type GetFeed200Item = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
@@ -657,6 +676,8 @@ export type GetFeed200Item = {
   powerupsCount: number;
   hasPowerupByMe: boolean;
   createdAt: string;
+  comments: GetFeed200ItemCommentsItem[];
+  taggedUsers: GetFeed200ItemTaggedUsersItem[];
 };
 
 export type GetFeed401 = {
@@ -667,6 +688,24 @@ export type GetFeed401 = {
 export type GetFeed500 = {
   error: string;
   code: string;
+};
+
+export type GetUserFeed200ItemCommentsItem = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  userId: string;
+  userName: string;
+  /** @nullable */
+  userImage: string | null;
+  content: string;
+  createdAt: string;
+};
+
+export type GetUserFeed200ItemTaggedUsersItem = {
+  id: string;
+  name: string;
+  /** @nullable */
+  image: string | null;
 };
 
 export type GetUserFeed200Item = {
@@ -687,6 +726,8 @@ export type GetUserFeed200Item = {
   powerupsCount: number;
   hasPowerupByMe: boolean;
   createdAt: string;
+  comments: GetUserFeed200ItemCommentsItem[];
+  taggedUsers: GetUserFeed200ItemTaggedUsersItem[];
 };
 
 export type GetUserFeed401 = {
@@ -733,6 +774,38 @@ export type TogglePowerup500 = {
   code: string;
 };
 
+export type AddCommentBody = {
+  /**
+   * @minLength 1
+   * @maxLength 500
+   */
+  content: string;
+};
+
+/**
+ * @nullable
+ */
+export type AddComment204 =
+  | (typeof AddComment204)[keyof typeof AddComment204]
+  | null;
+
+export const AddComment204 = {} as const;
+
+export type AddComment401 = {
+  error: string;
+  code: string;
+};
+
+export type AddComment404 = {
+  error: string;
+  code: string;
+};
+
+export type AddComment500 = {
+  error: string;
+  code: string;
+};
+
 /**
  * @nullable
  */
@@ -772,6 +845,9 @@ export const GetNotifications200ItemType = {
   LEVEL_UP: "LEVEL_UP",
   ACHIEVEMENT_UNLOCKED: "ACHIEVEMENT_UNLOCKED",
   CHALLENGE_INVITE: "CHALLENGE_INVITE",
+  COMMENT_RECEIVED: "COMMENT_RECEIVED",
+  TAGGED_IN_ACTIVITY: "TAGGED_IN_ACTIVITY",
+  PERSONAL_RECORD_BROKEN: "PERSONAL_RECORD_BROKEN",
 } as const;
 
 /**
@@ -954,6 +1030,7 @@ export const GetXpHistory200ItemReason = {
   FRIEND_ACCEPTED: "FRIEND_ACCEPTED",
   CHALLENGE_COMPLETED: "CHALLENGE_COMPLETED",
   CHALLENGE_WON: "CHALLENGE_WON",
+  COMMENT_GIVEN: "COMMENT_GIVEN",
 } as const;
 
 export type GetXpHistory200Item = {
@@ -970,6 +1047,121 @@ export type GetXpHistory401 = {
 };
 
 export type GetXpHistory500 = {
+  error: string;
+  code: string;
+};
+
+export type GetPersonalRecords200Item = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  exerciseName: string;
+  weightInGrams: number;
+  reps: number;
+  achievedAt: string;
+};
+
+export type GetPersonalRecords401 = {
+  error: string;
+  code: string;
+};
+
+export type GetPersonalRecords500 = {
+  error: string;
+  code: string;
+};
+
+export type UpsertPersonalRecordBody = {
+  /** @minLength 1 */
+  exerciseName: string;
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  weightInGrams: number;
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  reps: number;
+};
+
+/**
+ * @nullable
+ */
+export type UpsertPersonalRecord204 =
+  | (typeof UpsertPersonalRecord204)[keyof typeof UpsertPersonalRecord204]
+  | null;
+
+export const UpsertPersonalRecord204 = {} as const;
+
+export type UpsertPersonalRecord401 = {
+  error: string;
+  code: string;
+};
+
+export type UpsertPersonalRecord500 = {
+  error: string;
+  code: string;
+};
+
+export type GetBodyProgressHistory200Item = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  weightInGrams: number;
+  heightInCentimeters: number;
+  age: number;
+  bodyFatPercentage: number;
+  loggedAt: string;
+};
+
+export type GetBodyProgressHistory401 = {
+  error: string;
+  code: string;
+};
+
+export type GetBodyProgressHistory500 = {
+  error: string;
+  code: string;
+};
+
+export type LogBodyProgressBody = {
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  weightInGrams: number;
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  heightInCentimeters: number;
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  age: number;
+  /**
+   * @minimum 0
+   * @maximum 1
+   */
+  bodyFatPercentage: number;
+};
+
+/**
+ * @nullable
+ */
+export type LogBodyProgress204 =
+  | (typeof LogBodyProgress204)[keyof typeof LogBodyProgress204]
+  | null;
+
+export const LogBodyProgress204 = {} as const;
+
+export type LogBodyProgress401 = {
+  error: string;
+  code: string;
+};
+
+export type LogBodyProgress500 = {
   error: string;
   code: string;
 };
@@ -1471,40 +1663,24 @@ export const getCompleteWorkoutSessionUrl = (
   workoutPlanId: string,
   workoutDayId: string,
   sessionId: string,
-  params?: CompleteWorkoutSessionParams,
 ) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? "null" : value.toString());
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0
-    ? `/workout-plans/${workoutPlanId}/days/${workoutDayId}/sessions/${sessionId}?${stringifiedParams}`
-    : `/workout-plans/${workoutPlanId}/days/${workoutDayId}/sessions/${sessionId}`;
+  return `/workout-plans/${workoutPlanId}/days/${workoutDayId}/sessions/${sessionId}`;
 };
 
 export const completeWorkoutSession = async (
   workoutPlanId: string,
   workoutDayId: string,
   sessionId: string,
-  params?: CompleteWorkoutSessionParams,
+  completeWorkoutSessionBody: CompleteWorkoutSessionBody,
   options?: RequestInit,
 ): Promise<completeWorkoutSessionResponse> => {
   return customFetch<completeWorkoutSessionResponse>(
-    getCompleteWorkoutSessionUrl(
-      workoutPlanId,
-      workoutDayId,
-      sessionId,
-      params,
-    ),
+    getCompleteWorkoutSessionUrl(workoutPlanId, workoutDayId, sessionId),
     {
       ...options,
       method: "PATCH",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(completeWorkoutSessionBody),
     },
   );
 };
@@ -2071,6 +2247,61 @@ export const togglePowerup = async (
 };
 
 /**
+ * @summary Add a comment to an activity
+ */
+export type addCommentResponse204 = {
+  data: AddComment204;
+  status: 204;
+};
+
+export type addCommentResponse401 = {
+  data: AddComment401;
+  status: 401;
+};
+
+export type addCommentResponse404 = {
+  data: AddComment404;
+  status: 404;
+};
+
+export type addCommentResponse500 = {
+  data: AddComment500;
+  status: 500;
+};
+
+export type addCommentResponseSuccess = addCommentResponse204 & {
+  headers: Headers;
+};
+export type addCommentResponseError = (
+  | addCommentResponse401
+  | addCommentResponse404
+  | addCommentResponse500
+) & {
+  headers: Headers;
+};
+
+export type addCommentResponse =
+  | addCommentResponseSuccess
+  | addCommentResponseError;
+
+export const getAddCommentUrl = (id: string) => {
+  return `/feed/activities/${id}/comments`;
+};
+
+export const addComment = async (
+  id: string,
+  addCommentBody: AddCommentBody,
+  options?: RequestInit,
+): Promise<addCommentResponse> => {
+  return customFetch<addCommentResponse>(getAddCommentUrl(id), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(addCommentBody),
+  });
+};
+
+/**
  * @summary Delete an activity
  */
 export type deleteActivityResponse204 = {
@@ -2462,6 +2693,201 @@ export const getXpHistory = async (
   return customFetch<getXpHistoryResponse>(getGetXpHistoryUrl(), {
     ...options,
     method: "GET",
+  });
+};
+
+/**
+ * @summary Get user personal records
+ */
+export type getPersonalRecordsResponse200 = {
+  data: GetPersonalRecords200Item[];
+  status: 200;
+};
+
+export type getPersonalRecordsResponse401 = {
+  data: GetPersonalRecords401;
+  status: 401;
+};
+
+export type getPersonalRecordsResponse500 = {
+  data: GetPersonalRecords500;
+  status: 500;
+};
+
+export type getPersonalRecordsResponseSuccess =
+  getPersonalRecordsResponse200 & {
+    headers: Headers;
+  };
+export type getPersonalRecordsResponseError = (
+  | getPersonalRecordsResponse401
+  | getPersonalRecordsResponse500
+) & {
+  headers: Headers;
+};
+
+export type getPersonalRecordsResponse =
+  | getPersonalRecordsResponseSuccess
+  | getPersonalRecordsResponseError;
+
+export const getGetPersonalRecordsUrl = () => {
+  return `/personal-records`;
+};
+
+export const getPersonalRecords = async (
+  options?: RequestInit,
+): Promise<getPersonalRecordsResponse> => {
+  return customFetch<getPersonalRecordsResponse>(getGetPersonalRecordsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Upsert a personal record
+ */
+export type upsertPersonalRecordResponse204 = {
+  data: UpsertPersonalRecord204;
+  status: 204;
+};
+
+export type upsertPersonalRecordResponse401 = {
+  data: UpsertPersonalRecord401;
+  status: 401;
+};
+
+export type upsertPersonalRecordResponse500 = {
+  data: UpsertPersonalRecord500;
+  status: 500;
+};
+
+export type upsertPersonalRecordResponseSuccess =
+  upsertPersonalRecordResponse204 & {
+    headers: Headers;
+  };
+export type upsertPersonalRecordResponseError = (
+  | upsertPersonalRecordResponse401
+  | upsertPersonalRecordResponse500
+) & {
+  headers: Headers;
+};
+
+export type upsertPersonalRecordResponse =
+  | upsertPersonalRecordResponseSuccess
+  | upsertPersonalRecordResponseError;
+
+export const getUpsertPersonalRecordUrl = () => {
+  return `/personal-records`;
+};
+
+export const upsertPersonalRecord = async (
+  upsertPersonalRecordBody: UpsertPersonalRecordBody,
+  options?: RequestInit,
+): Promise<upsertPersonalRecordResponse> => {
+  return customFetch<upsertPersonalRecordResponse>(
+    getUpsertPersonalRecordUrl(),
+    {
+      ...options,
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(upsertPersonalRecordBody),
+    },
+  );
+};
+
+/**
+ * @summary Get body progress history
+ */
+export type getBodyProgressHistoryResponse200 = {
+  data: GetBodyProgressHistory200Item[];
+  status: 200;
+};
+
+export type getBodyProgressHistoryResponse401 = {
+  data: GetBodyProgressHistory401;
+  status: 401;
+};
+
+export type getBodyProgressHistoryResponse500 = {
+  data: GetBodyProgressHistory500;
+  status: 500;
+};
+
+export type getBodyProgressHistoryResponseSuccess =
+  getBodyProgressHistoryResponse200 & {
+    headers: Headers;
+  };
+export type getBodyProgressHistoryResponseError = (
+  | getBodyProgressHistoryResponse401
+  | getBodyProgressHistoryResponse500
+) & {
+  headers: Headers;
+};
+
+export type getBodyProgressHistoryResponse =
+  | getBodyProgressHistoryResponseSuccess
+  | getBodyProgressHistoryResponseError;
+
+export const getGetBodyProgressHistoryUrl = () => {
+  return `/body-progress`;
+};
+
+export const getBodyProgressHistory = async (
+  options?: RequestInit,
+): Promise<getBodyProgressHistoryResponse> => {
+  return customFetch<getBodyProgressHistoryResponse>(
+    getGetBodyProgressHistoryUrl(),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+/**
+ * @summary Log a new body progress entry
+ */
+export type logBodyProgressResponse204 = {
+  data: LogBodyProgress204;
+  status: 204;
+};
+
+export type logBodyProgressResponse401 = {
+  data: LogBodyProgress401;
+  status: 401;
+};
+
+export type logBodyProgressResponse500 = {
+  data: LogBodyProgress500;
+  status: 500;
+};
+
+export type logBodyProgressResponseSuccess = logBodyProgressResponse204 & {
+  headers: Headers;
+};
+export type logBodyProgressResponseError = (
+  | logBodyProgressResponse401
+  | logBodyProgressResponse500
+) & {
+  headers: Headers;
+};
+
+export type logBodyProgressResponse =
+  | logBodyProgressResponseSuccess
+  | logBodyProgressResponseError;
+
+export const getLogBodyProgressUrl = () => {
+  return `/body-progress`;
+};
+
+export const logBodyProgress = async (
+  logBodyProgressBody: LogBodyProgressBody,
+  options?: RequestInit,
+): Promise<logBodyProgressResponse> => {
+  return customFetch<logBodyProgressResponse>(getLogBodyProgressUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(logBodyProgressBody),
   });
 };
 

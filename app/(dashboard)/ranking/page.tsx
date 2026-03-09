@@ -93,7 +93,11 @@ export default async function RankingPage({ searchParams }: RankingPageProps) {
       </header>
 
       <section>
-        <RankingPodium items={top3} type={rankingType as "STREAK" | "XP"} />
+        <RankingPodium 
+          items={top3} 
+          type={rankingType as "STREAK" | "XP"} 
+          currentUserId={currentUserId}
+        />
       </section>
 
       <section className="space-y-8">
