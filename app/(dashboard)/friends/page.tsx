@@ -4,7 +4,8 @@ import {
   getMe, 
   getFriendsResponseSuccess,
   getFriendRequestsResponseSuccess,
-  getMeResponseSuccess
+  getMeResponseSuccess,
+  GetFriendRequestsType
 } from "@/lib/api/fetch-generated";
 import { authClient } from "@/lib/authClient";
 import { headers } from "next/headers";
@@ -13,6 +14,7 @@ import { PageHeader } from "@/components/pageHeader";
 import { Container } from "@/components/common/container";
 import { FriendsList } from "@/components/friends/friendsList";
 import { FriendRequests } from "@/components/friends/friendRequests";
+import { FriendSentRequests } from "@/components/friends/friendSentRequests";
 import { AddFriendForm } from "@/components/friends/addFriendForm";
 import { GlobalSearch } from "@/components/friends/globalSearch";
 import { ActivityIcon } from "@phosphor-icons/react/ssr";
@@ -24,9 +26,10 @@ export default async function FriendsPage() {
 
   if (!session.data?.user) redirect("/auth");
 
-  const [friendsRes, requestsRes, meRes] = await Promise.all([
+  const [friendsRes, requestsRes, sentRequestsRes, meRes] = await Promise.all([
     getFriends(),
-    getFriendRequests(),
+    getFriendRequests({ type: GetFriendRequestsType.RECEIVED }),
+    getFriendRequests({ type: GetFriendRequestsType.SENT }),
     getMe()
   ]);
 
@@ -44,6 +47,7 @@ export default async function FriendsPage() {
 
   const { data: friends } = friendsRes as getFriendsResponseSuccess;
   const { data: requests } = requestsRes as getFriendRequestsResponseSuccess;
+  const sentRequests = sentRequestsRes.status === 200 ? (sentRequestsRes as getFriendRequestsResponseSuccess).data : [];
   const { data: me } = meRes as getMeResponseSuccess;
 
   return (
@@ -67,9 +71,11 @@ export default async function FriendsPage() {
           <div className="md:col-span-2">
             <AddFriendForm myFriendCode={me.friendCode} />
           </div>
-          <div className="md:col-span-3">
+          <div className="md:col-span-3 space-y-8">
             <FriendRequests requests={requests} />
-            {requests.length === 0 && (
+            <FriendSentRequests requests={sentRequests} />
+            
+            {requests.length === 0 && sentRequests.length === 0 && (
               <div className="bg-muted/30 border border-dashed border-border rounded-[2.5rem] p-10 flex flex-col items-center justify-center text-center space-y-3 h-full">
                 <ActivityIcon weight="duotone" className="size-8 text-muted-foreground/50" />
                 <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest italic">Nenhuma solicitação pendente</p>

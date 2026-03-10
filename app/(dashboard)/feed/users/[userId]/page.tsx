@@ -65,7 +65,7 @@ export default async function UserFeedPage({ params }: UserFeedPageProps) {
         />
       </header>
 
-      <div className="max-w-3xl mx-auto w-full space-y-8">
+      <div className="w-full space-y-8">
         {/* Profile Card */}
         {userProfile && (
           <div className="bg-card border border-border rounded-[3rem] p-8 flex flex-col sm:flex-row items-center gap-8 shadow-sm border-primary/10 relative overflow-hidden group">

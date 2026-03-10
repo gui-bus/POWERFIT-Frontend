@@ -13,8 +13,10 @@ import { cn } from "@/lib/utils";
 import { useDebounce } from "@/hooks/use-debounce";
 import Link from "next/link";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export function GlobalSearch() {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchUsers200Item[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -49,6 +51,7 @@ export function GlobalSearch() {
       if (response.status === 200) {
         toast.success(`Pedido enviado para ${name}!`);
         setResults(prev => prev.map(u => u.id === id ? { ...u, isPending: true } : u));
+        router.refresh(); // Sincroniza a lista de pedidos enviados instantaneamente
       }
     } catch (error) {
       toast.error("Erro ao enviar pedido.");

@@ -561,6 +561,18 @@ export type AddFriend500 = {
   code: string;
 };
 
+export type GetFriendRequestsParams = {
+  type?: GetFriendRequestsType;
+};
+
+export type GetFriendRequestsType =
+  (typeof GetFriendRequestsType)[keyof typeof GetFriendRequestsType];
+
+export const GetFriendRequestsType = {
+  RECEIVED: "RECEIVED",
+  SENT: "SENT",
+} as const;
+
 export type GetFriendRequests200ItemStatus =
   (typeof GetFriendRequests200ItemStatus)[keyof typeof GetFriendRequests200ItemStatus];
 
@@ -2102,17 +2114,33 @@ export type getFriendRequestsResponse =
   | getFriendRequestsResponseSuccess
   | getFriendRequestsResponseError;
 
-export const getGetFriendRequestsUrl = () => {
-  return `/friendships/requests`;
+export const getGetFriendRequestsUrl = (params?: GetFriendRequestsParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/friendships/requests?${stringifiedParams}`
+    : `/friendships/requests`;
 };
 
 export const getFriendRequests = async (
+  params?: GetFriendRequestsParams,
   options?: RequestInit,
 ): Promise<getFriendRequestsResponse> => {
-  return customFetch<getFriendRequestsResponse>(getGetFriendRequestsUrl(), {
-    ...options,
-    method: "GET",
-  });
+  return customFetch<getFriendRequestsResponse>(
+    getGetFriendRequestsUrl(params),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
 };
 
 /**
@@ -2172,7 +2200,7 @@ export const acceptFriendRequest = async (
 };
 
 /**
- * @summary Decline a friend request
+ * @summary Decline or cancel a friend request
  */
 export type declineFriendRequestResponse204 = {
   data: DeclineFriendRequest204;
