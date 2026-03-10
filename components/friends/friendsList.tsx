@@ -2,7 +2,7 @@
 
 import { GetFriends200Item } from "@/lib/api/fetch-generated";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { UsersIcon, EyeIcon } from "@phosphor-icons/react";
+import { UsersIcon, EyeIcon, ActivityIcon } from "@phosphor-icons/react";
 import dayjs from "dayjs";
 import Link from "next/link";
 
@@ -81,6 +81,15 @@ export function FriendsList({ friends }: FriendsListProps) {
                 <button
                   className="p-3 bg-muted/50 hover:bg-primary hover:text-primary-foreground rounded-2xl transition-all active:scale-90 cursor-pointer"
                   title="Ver Atividades"
+                >
+                  <ActivityIcon weight="duotone" className="size-5" />
+                </button>
+              </Link>
+
+              <Link href={`/profile/${friend.id}`}>
+                <button
+                  className="p-3 bg-muted/50 hover:bg-primary hover:text-primary-foreground rounded-2xl transition-all active:scale-90 cursor-pointer"
+                  title="Ver perfil público"
                 >
                   <EyeIcon weight="duotone" className="size-5" />
                 </button>

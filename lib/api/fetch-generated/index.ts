@@ -480,6 +480,8 @@ export type GetMe200 = {
   friendCode: string | null;
   xp: number;
   level: number;
+  isPublicProfile: boolean;
+  showStats: boolean;
 };
 
 export type GetMe401 = {
@@ -535,6 +537,8 @@ export type AddFriend200 = {
   friendCode: string | null;
   xp: number;
   level: number;
+  isPublicProfile: boolean;
+  showStats: boolean;
 };
 
 export type AddFriend400 = {
@@ -1067,6 +1071,113 @@ export type GetXpHistory401 = {
 };
 
 export type GetXpHistory500 = {
+  error: string;
+  code: string;
+};
+
+export type SearchUsersParams = {
+  /**
+   * @minLength 1
+   */
+  query: string;
+};
+
+export type SearchUsers200Item = {
+  id: string;
+  name: string;
+  /** @nullable */
+  image: string | null;
+  /** @nullable */
+  friendCode: string | null;
+  level: number;
+  isFriend: boolean;
+  isPending: boolean;
+};
+
+export type SearchUsers401 = {
+  error: string;
+  code: string;
+};
+
+export type SearchUsers500 = {
+  error: string;
+  code: string;
+};
+
+/**
+ * @nullable
+ */
+export type GetUserProfile200Stats = {
+  weightInGrams: number;
+  heightInCentimeters: number;
+  age: number;
+  bodyFatPercentage: number;
+} | null;
+
+export type GetUserProfile200AchievementsItem = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+  /** @nullable */
+  iconUrl: string | null;
+  unlockedAt: string;
+};
+
+export type GetUserProfile200 = {
+  id: string;
+  name: string;
+  /** @nullable */
+  image: string | null;
+  level: number;
+  xp: number;
+  streak: number;
+  isFriend: boolean;
+  isPending: boolean;
+  /** @nullable */
+  stats: GetUserProfile200Stats;
+  achievements: GetUserProfile200AchievementsItem[];
+};
+
+export type GetUserProfile401 = {
+  error: string;
+  code: string;
+};
+
+export type GetUserProfile403 = {
+  error: string;
+  code: string;
+};
+
+export type GetUserProfile404 = {
+  error: string;
+  code: string;
+};
+
+export type GetUserProfile500 = {
+  error: string;
+  code: string;
+};
+
+export type UpdatePrivacySettingsBody = {
+  isPublicProfile?: boolean;
+  showStats?: boolean;
+};
+
+/**
+ * @nullable
+ */
+export type UpdatePrivacySettings204 =
+  | (typeof UpdatePrivacySettings204)[keyof typeof UpdatePrivacySettings204]
+  | null;
+
+export const UpdatePrivacySettings204 = {} as const;
+
+export type UpdatePrivacySettings401 = {
+  error: string;
+  code: string;
+};
+
+export type UpdatePrivacySettings500 = {
   error: string;
   code: string;
 };
@@ -2714,6 +2825,174 @@ export const getXpHistory = async (
     ...options,
     method: "GET",
   });
+};
+
+/**
+ * @summary Search for users
+ */
+export type searchUsersResponse200 = {
+  data: SearchUsers200Item[];
+  status: 200;
+};
+
+export type searchUsersResponse401 = {
+  data: SearchUsers401;
+  status: 401;
+};
+
+export type searchUsersResponse500 = {
+  data: SearchUsers500;
+  status: 500;
+};
+
+export type searchUsersResponseSuccess = searchUsersResponse200 & {
+  headers: Headers;
+};
+export type searchUsersResponseError = (
+  | searchUsersResponse401
+  | searchUsersResponse500
+) & {
+  headers: Headers;
+};
+
+export type searchUsersResponse =
+  | searchUsersResponseSuccess
+  | searchUsersResponseError;
+
+export const getSearchUsersUrl = (params: SearchUsersParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/search?${stringifiedParams}`
+    : `/search`;
+};
+
+export const searchUsers = async (
+  params: SearchUsersParams,
+  options?: RequestInit,
+): Promise<searchUsersResponse> => {
+  return customFetch<searchUsersResponse>(getSearchUsersUrl(params), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Get a user's public profile
+ */
+export type getUserProfileResponse200 = {
+  data: GetUserProfile200;
+  status: 200;
+};
+
+export type getUserProfileResponse401 = {
+  data: GetUserProfile401;
+  status: 401;
+};
+
+export type getUserProfileResponse403 = {
+  data: GetUserProfile403;
+  status: 403;
+};
+
+export type getUserProfileResponse404 = {
+  data: GetUserProfile404;
+  status: 404;
+};
+
+export type getUserProfileResponse500 = {
+  data: GetUserProfile500;
+  status: 500;
+};
+
+export type getUserProfileResponseSuccess = getUserProfileResponse200 & {
+  headers: Headers;
+};
+export type getUserProfileResponseError = (
+  | getUserProfileResponse401
+  | getUserProfileResponse403
+  | getUserProfileResponse404
+  | getUserProfileResponse500
+) & {
+  headers: Headers;
+};
+
+export type getUserProfileResponse =
+  | getUserProfileResponseSuccess
+  | getUserProfileResponseError;
+
+export const getGetUserProfileUrl = (userId: string) => {
+  return `/profile/${userId}`;
+};
+
+export const getUserProfile = async (
+  userId: string,
+  options?: RequestInit,
+): Promise<getUserProfileResponse> => {
+  return customFetch<getUserProfileResponse>(getGetUserProfileUrl(userId), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Update privacy settings
+ */
+export type updatePrivacySettingsResponse204 = {
+  data: UpdatePrivacySettings204;
+  status: 204;
+};
+
+export type updatePrivacySettingsResponse401 = {
+  data: UpdatePrivacySettings401;
+  status: 401;
+};
+
+export type updatePrivacySettingsResponse500 = {
+  data: UpdatePrivacySettings500;
+  status: 500;
+};
+
+export type updatePrivacySettingsResponseSuccess =
+  updatePrivacySettingsResponse204 & {
+    headers: Headers;
+  };
+export type updatePrivacySettingsResponseError = (
+  | updatePrivacySettingsResponse401
+  | updatePrivacySettingsResponse500
+) & {
+  headers: Headers;
+};
+
+export type updatePrivacySettingsResponse =
+  | updatePrivacySettingsResponseSuccess
+  | updatePrivacySettingsResponseError;
+
+export const getUpdatePrivacySettingsUrl = () => {
+  return `/me/privacy`;
+};
+
+export const updatePrivacySettings = async (
+  updatePrivacySettingsBody: UpdatePrivacySettingsBody,
+  options?: RequestInit,
+): Promise<updatePrivacySettingsResponse> => {
+  return customFetch<updatePrivacySettingsResponse>(
+    getUpdatePrivacySettingsUrl(),
+    {
+      ...options,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(updatePrivacySettingsBody),
+    },
+  );
 };
 
 /**

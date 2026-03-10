@@ -14,8 +14,8 @@ import { Container } from "@/components/common/container";
 import { FriendsList } from "@/components/friends/friendsList";
 import { FriendRequests } from "@/components/friends/friendRequests";
 import { AddFriendForm } from "@/components/friends/addFriendForm";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { UsersIcon, ActivityIcon } from "@phosphor-icons/react/ssr";
+import { GlobalSearch } from "@/components/friends/globalSearch";
+import { ActivityIcon } from "@phosphor-icons/react/ssr";
 
 export default async function FriendsPage() {
   const session = await authClient.getSession({
@@ -48,60 +48,21 @@ export default async function FriendsPage() {
 
   return (
     <Container className="space-y-12 pb-24">
-      <header>
+      <header className="space-y-10">
         <PageHeader
           title="CONEXÕES"
-          subtitle="Gerencie sua rede de atletas"
+          subtitle="Busque e gerencie sua rede"
           user={{
             name: me.name,
             email: me.email,
             image: me.image,
           }}
         />
+        
+        <GlobalSearch />
       </header>
 
-      <div className="max-w-4xl mx-auto w-full space-y-12">
-        {/* Profile Stats Header - Integrated from Sidebar */}
-        <section className="bg-card border border-border rounded-[3rem] p-8 sm:p-10 shadow-sm relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform duration-700">
-            <UsersIcon weight="fill" className="size-32 text-primary" />
-          </div>
-          
-          <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
-            <div className="relative">
-              <Avatar className="size-28 border-4 border-primary/10 shadow-2xl rounded-[2rem] group-hover:scale-105 transition-transform duration-500">
-                <AvatarImage src={me.image || ""} alt={me.name} className="object-cover" />
-                <AvatarFallback className="bg-primary text-primary-foreground font-black text-3xl uppercase italic">
-                  {me.name.substring(0, 2)}
-                </AvatarFallback>
-              </Avatar>
-              <div className="absolute -bottom-2 -right-2 size-10 bg-primary rounded-2xl flex items-center justify-center border-4 border-card shadow-lg">
-                <span className="font-anton text-lg text-primary-foreground leading-none">{me.level}</span>
-              </div>
-            </div>
-            
-            <div className="flex-1 text-center md:text-left space-y-6">
-              <div className="space-y-1">
-                <h3 className="text-3xl font-black uppercase italic tracking-tight text-foreground">{me.name}</h3>
-                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Seu Perfil de Atleta</p>
-              </div>
-              
-              <div className="flex items-center justify-center md:justify-start gap-8">
-                <div className="text-center md:text-left">
-                  <p className="text-2xl font-black italic text-foreground leading-none">{friends.length}</p>
-                  <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1.5">Amigos</p>
-                </div>
-                <div className="w-px h-8 bg-border hidden md:block" />
-                <div className="text-center md:text-left">
-                  <p className="text-2xl font-black italic text-primary leading-none">{me.xp}</p>
-                  <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1.5">XP Total</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Action Section: Invite & Requests */}
+      <div className="w-full space-y-12">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
           <div className="md:col-span-2">
             <AddFriendForm myFriendCode={me.friendCode} />

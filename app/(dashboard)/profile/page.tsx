@@ -10,7 +10,7 @@ import {
   getFeedResponseSuccess,
   GetXpHistory200ItemReason,
   getPersonalRecords,
-  getPersonalRecordsResponseSuccess
+  getPersonalRecordsResponseSuccess,
 } from "@/lib/api/fetch-generated";
 import { authClient } from "@/lib/authClient";
 import { headers } from "next/headers";
@@ -23,18 +23,15 @@ import {
   UserIcon,
   PencilSimpleIcon,
   StarIcon,
-  LightningIcon,
   TrendUpIcon,
   CheckCircleIcon,
   ShareNetworkIcon,
-  MedalIcon,
-  TrophyIcon
+  TrophyIcon,
 } from "@phosphor-icons/react/ssr";
 import { LogoutButton } from "./logout-button";
 import { EditProfileDialog } from "@/components/profile/editProfileDialog";
+import { PrivacySettings } from "@/components/profile/privacySettings";
 import dayjs from "dayjs";
-import { cn } from "@/lib/utils";
-import { Container } from "@/components/common/container";
 import Link from "next/link";
 
 const translateXpReason = (reason: GetXpHistory200ItemReason): string => {
@@ -61,14 +58,15 @@ export default async function ProfilePage() {
 
   if (!session.data?.user) redirect("/auth");
 
-  const [trainDataRes, meRes, xpRes, friendsRes, feedRes, prRes] = await Promise.all([
-    getUserTrainData(),
-    getMe(),
-    getXpHistory(),
-    getFriends(),
-    getFeed(),
-    getPersonalRecords()
-  ]);
+  const [trainDataRes, meRes, xpRes, friendsRes, feedRes, prRes] =
+    await Promise.all([
+      getUserTrainData(),
+      getMe(),
+      getXpHistory(),
+      getFriends(),
+      getFeed(),
+      getPersonalRecords(),
+    ]);
 
   if (trainDataRes.status !== 200 || meRes.status !== 200) {
     return (
@@ -82,47 +80,95 @@ export default async function ProfilePage() {
 
   const trainData = (trainDataRes as getUserTrainDataResponseSuccess).data;
   const userData = meRes.data;
-  const xpHistory = xpRes.status === 200 ? (xpRes as getXpHistoryResponseSuccess).data : [];
-  const friendsCount = friendsRes.status === 200 ? (friendsRes as getFriendsResponseSuccess).data.length : 0;
-  const workoutsCount = feedRes.status === 200 ? (feedRes as getFeedResponseSuccess).data.filter(i => i.userId === userData.id).length : 0;
-  const personalRecords = prRes.status === 200 ? (prRes as getPersonalRecordsResponseSuccess).data : [];
+  const xpHistory =
+    xpRes.status === 200 ? (xpRes as getXpHistoryResponseSuccess).data : [];
+  const friendsCount =
+    friendsRes.status === 200
+      ? (friendsRes as getFriendsResponseSuccess).data.length
+      : 0;
+  const workoutsCount =
+    feedRes.status === 200
+      ? (feedRes as getFeedResponseSuccess).data.filter(
+          (i) => i.userId === userData.id,
+        ).length
+      : 0;
+  const personalRecords =
+    prRes.status === 200
+      ? (prRes as getPersonalRecordsResponseSuccess).data
+      : [];
 
   const biometrics = [
-    { label: "Peso", value: trainData?.weightInGrams ? (trainData.weightInGrams / 1000).toFixed(1) : "--", unit: "kg", icon: PersonIcon },
-    { label: "Altura", value: trainData?.heightInCentimeters || "--", unit: "cm", icon: RulerIcon },
-    { label: "Gordura", value: trainData?.bodyFatPercentage ? `${(trainData.bodyFatPercentage * 100).toFixed(1)}%` : "--", unit: "%", icon: BarbellIcon },
-    { label: "Idade", value: trainData?.age || "--", unit: "anos", icon: UserIcon },
+    {
+      label: "Peso",
+      value: trainData?.weightInGrams
+        ? (trainData.weightInGrams / 1000).toFixed(1)
+        : "--",
+      unit: "kg",
+      icon: PersonIcon,
+    },
+    {
+      label: "Altura",
+      value: trainData?.heightInCentimeters || "--",
+      unit: "cm",
+      icon: RulerIcon,
+    },
+    {
+      label: "Gordura",
+      value: trainData?.bodyFatPercentage
+        ? `${(trainData.bodyFatPercentage * 100).toFixed(1)}%`
+        : "--",
+      unit: "%",
+      icon: BarbellIcon,
+    },
+    {
+      label: "Idade",
+      value: trainData?.age || "--",
+      unit: "anos",
+      icon: UserIcon,
+    },
   ];
 
   return (
-     <main className="pb-10">
-      {/* Social Profile Header Section */}
+    <main className="pb-10">
       <section className="relative">
+        {/* Cover Image / Banner */}
         <div className="h-48 sm:h-64 w-full bg-linear-to-br from-primary/30 via-primary/10 to-background relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('/images/background.png')] opacity-10 bg-center bg-cover" />
           <div className="absolute inset-0 bg-linear-to-t from-background to-transparent" />
         </div>
 
-        <div className="max-w-5xl mx-auto px-6 sm:px-8">
+        {/* Profile Content Overlay */}
+        <div className="px-6 sm:px-8">
           <div className="relative -mt-20 sm:-mt-24 flex flex-col md:flex-row items-end gap-6 pb-8 border-b border-border">
+            {/* Avatar with Ring */}
             <div className="relative group">
               <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full scale-110 group-hover:bg-primary/30 transition-all duration-500" />
               <div className="relative size-32 sm:size-44 rounded-[2.5rem] p-1.5 bg-background shadow-2xl border border-border">
                 <div className="relative size-full rounded-[2rem] overflow-hidden bg-muted">
                   {userData.image ? (
-                    <Image src={userData.image} alt={userData.name} fill className="object-cover" />
+                    <Image
+                      src={userData.image}
+                      alt={userData.name}
+                      fill
+                      className="object-cover"
+                    />
                   ) : (
                     <div className="size-full bg-linear-to-br from-primary to-orange-600 flex items-center justify-center text-white text-6xl font-black italic">
                       {userData.name.charAt(0)}
                     </div>
                   )}
                 </div>
+                {/* Online/Verified Badge */}
                 <div className="absolute -bottom-1 -right-1 size-10 bg-background rounded-2xl flex items-center justify-center shadow-xl border border-border">
-                  <CheckCircleIcon weight="fill" className="size-6 text-green-500" />
+                  <CheckCircleIcon
+                    weight="fill"
+                    className="size-6 text-green-500"
+                  />
                 </div>
               </div>
             </div>
 
+            {/* Basic Info & Actions */}
             <div className="flex-1 flex flex-col sm:flex-row items-center sm:items-end justify-between gap-6 w-full pb-4">
               <div className="text-center sm:text-left space-y-2">
                 <h1 className="text-4xl sm:text-5xl font-anton text-foreground uppercase tracking-tight italic leading-none">
@@ -132,68 +178,118 @@ export default async function ProfilePage() {
                   <span className="text-[10px] font-black uppercase tracking-[0.2em] bg-primary/10 text-primary px-3 py-1 rounded-full border border-primary/20">
                     Nível {userData.level} · Atleta Elite
                   </span>
-                  <span className="text-[10px] font-bold uppercase tracking-widest">{userData.email}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest">
+                    {userData.email}
+                  </span>
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
                 <EditProfileDialog initialData={trainData}>
                   <button className="px-6 py-3 bg-card border border-border hover:border-primary/50 rounded-2xl font-black uppercase italic tracking-widest text-[10px] flex items-center gap-2 transition-all active:scale-95 shadow-sm cursor-pointer">
-                    <PencilSimpleIcon weight="bold" className="size-4 text-primary" />
+                    <PencilSimpleIcon
+                      weight="bold"
+                      className="size-4 text-primary"
+                    />
                     Editar Perfil
                   </button>
                 </EditProfileDialog>
                 <button className="p-3 bg-card border border-border hover:border-primary/50 rounded-2xl transition-all active:scale-95 group cursor-pointer">
-                  <ShareNetworkIcon weight="bold" className="size-5 text-muted-foreground group-hover:text-primary" />
+                  <ShareNetworkIcon
+                    weight="bold"
+                    className="size-5 text-muted-foreground group-hover:text-primary"
+                  />
                 </button>
               </div>
             </div>
           </div>
 
+          {/* Social Stats Row */}
           <div className="flex items-center justify-around sm:justify-start sm:gap-16 py-8">
             <div className="text-center sm:text-left cursor-default group">
-              <p className="text-2xl font-anton italic text-foreground group-hover:text-primary transition-colors leading-none">{workoutsCount}</p>
-              <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest mt-1.5">Treinos</p>
+              <p className="text-2xl font-anton italic text-foreground group-hover:text-primary transition-colors leading-none">
+                {workoutsCount}
+              </p>
+              <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest mt-1.5">
+                Treinos
+              </p>
             </div>
             <div className="text-center sm:text-left cursor-default group">
-              <p className="text-2xl font-anton italic text-foreground group-hover:text-primary transition-colors leading-none">{friendsCount}</p>
-              <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest mt-1.5">Conexões</p>
+              <p className="text-2xl font-anton italic text-foreground group-hover:text-primary transition-colors leading-none">
+                {friendsCount}
+              </p>
+              <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest mt-1.5">
+                Conexões
+              </p>
             </div>
             <div className="text-center sm:text-left cursor-default group">
-              <p className="text-2xl font-anton italic text-primary leading-none">{userData.xp}</p>
-              <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest mt-1.5">XP Acumulado</p>
+              <p className="text-2xl font-anton italic text-primary leading-none">
+                {userData.xp}
+              </p>
+              <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest mt-1.5">
+                XP Acumulado
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Main Content Grid */}
-      <section className="max-w-5xl mx-auto px-6 sm:px-8 mt-8">
+      <section className="px-6 sm:px-8 mt-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          
           {/* Left Column: Biometrics & PRs */}
           <div className="space-y-8 lg:col-span-1">
             {/* Biometrics Card */}
             <div className="bg-card border border-border rounded-[2.5rem] p-8 shadow-sm space-y-8">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <BarbellIcon weight="duotone" className="size-5 text-primary" />
-                  <h3 className="text-xs font-black uppercase tracking-[0.2em] italic">Biometria</h3>
+                  <BarbellIcon
+                    weight="duotone"
+                    className="size-5 text-primary"
+                  />
+                  <h3 className="text-xs font-black uppercase tracking-[0.2em] italic">
+                    Biometria
+                  </h3>
                 </div>
-                <Link href="/profile/evolution" className="text-[9px] font-black text-primary uppercase tracking-widest hover:underline italic">
+                <Link
+                  href="/profile/evolution"
+                  className="text-[9px] font-black text-primary uppercase tracking-widest hover:underline italic"
+                >
                   Ver Histórico
                 </Link>
               </div>
               <div className="grid grid-cols-2 gap-6">
                 {biometrics.map((stat, i) => (
                   <div key={i} className="space-y-1">
-                    <p className="text-[8px] font-black text-muted-foreground uppercase tracking-widest">{stat.label}</p>
+                    <p className="text-[8px] font-black text-muted-foreground uppercase tracking-widest">
+                      {stat.label}
+                    </p>
                     <div className="flex items-baseline gap-1">
-                      <p className="text-xl font-anton italic text-foreground leading-none">{stat.value}</p>
-                      <span className="text-[9px] font-black text-primary uppercase italic">{stat.unit}</span>
+                      <p className="text-xl font-anton italic text-foreground leading-none">
+                        {stat.value}
+                      </p>
+                      <span className="text-[9px] font-black text-primary uppercase italic">
+                        {stat.unit}
+                      </span>
                     </div>
                   </div>
                 ))}
+              </div>
+
+              <div className="pt-6 border-t border-border/50">
+                <div className="flex justify-between items-end mb-3">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground italic">
+                    Próximo Nível
+                  </p>
+                  <p className="text-[10px] font-black text-primary italic">
+                    {userData.xp % 1000} / 1000 XP
+                  </p>
+                </div>
+                <div className="h-2 bg-muted rounded-full overflow-hidden p-0.5 border border-border shadow-inner">
+                  <div
+                    className="h-full bg-primary rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(255,100,0,0.3)]"
+                    style={{ width: `${(userData.xp % 1000) / 10}%` }}
+                  />
+                </div>
               </div>
             </div>
 
@@ -201,29 +297,56 @@ export default async function ProfilePage() {
             <div className="bg-card border border-border rounded-[2.5rem] p-8 shadow-sm space-y-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <TrophyIcon weight="duotone" className="size-5 text-amber-500" />
-                  <h3 className="text-xs font-black uppercase tracking-[0.2em] italic">Recordes</h3>
+                  <TrophyIcon
+                    weight="duotone"
+                    className="size-5 text-amber-500"
+                  />
+                  <h3 className="text-xs font-black uppercase tracking-[0.2em] italic">
+                    Recordes
+                  </h3>
                 </div>
-                <Link href="/profile/records" className="text-[9px] font-black text-primary uppercase tracking-widest hover:underline italic">
+                <Link
+                  href="/profile/records"
+                  className="text-[9px] font-black text-primary uppercase tracking-widest hover:underline italic"
+                >
                   Ver Tudo
                 </Link>
               </div>
               <div className="space-y-4">
                 {personalRecords.length > 0 ? (
                   personalRecords.slice(0, 3).map((pr) => (
-                    <div key={pr.id} className="bg-muted/30 p-4 rounded-2xl border border-border/50">
-                      <p className="text-[8px] font-black text-muted-foreground uppercase tracking-widest mb-1">{pr.exerciseName}</p>
+                    <div
+                      key={pr.id}
+                      className="bg-muted/30 p-4 rounded-2xl border border-border/50"
+                    >
+                      <p className="text-[8px] font-black text-muted-foreground uppercase tracking-widest mb-1">
+                        {pr.exerciseName}
+                      </p>
                       <div className="flex items-center justify-between">
-                        <p className="font-anton text-lg italic text-foreground">{pr.weightInGrams / 1000}kg</p>
-                        <span className="text-[10px] font-bold text-primary uppercase">{pr.reps} Reps</span>
+                        <p className="font-anton text-lg italic text-foreground">
+                          {pr.weightInGrams / 1000}kg
+                        </p>
+                        <span className="text-[10px] font-bold text-primary uppercase">
+                          {pr.reps} Reps
+                        </span>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <p className="text-center py-4 text-[9px] font-bold text-muted-foreground uppercase italic">Nenhum recorde registrado.</p>
+                  <p className="text-center py-4 text-[9px] font-bold text-muted-foreground uppercase italic">
+                    Nenhum recorde registrado.
+                  </p>
                 )}
               </div>
             </div>
+
+            {/* Privacy Settings */}
+            <PrivacySettings
+              initialSettings={{
+                isPublicProfile: userData.isPublicProfile,
+                showStats: userData.showStats,
+              }}
+            />
           </div>
 
           {/* Right Column: XP History */}
@@ -231,26 +354,38 @@ export default async function ProfilePage() {
             <div className="flex items-center justify-between px-2">
               <div className="flex items-center gap-3">
                 <TrendUpIcon weight="duotone" className="size-6 text-primary" />
-                <h3 className="text-base font-black uppercase tracking-[0.2em] italic">Atividades de Experiência</h3>
+                <h3 className="text-base font-black uppercase tracking-[0.2em] italic">
+                  Atividades de Experiência
+                </h3>
               </div>
-              <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Recentes</span>
+              <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+                Últimos 30 dias
+              </span>
             </div>
 
             <div className="bg-card border border-border rounded-[2.5rem] overflow-hidden shadow-sm">
               <div className="divide-y divide-border/50">
                 {xpHistory.length > 0 ? (
                   xpHistory.slice(0, 10).map((item) => (
-                    <div key={item.id} className="flex items-center justify-between p-6 hover:bg-primary/[0.02] transition-colors group">
+                    <div
+                      key={item.id}
+                      className="flex items-center justify-between p-6 hover:bg-primary/2 transition-colors group"
+                    >
                       <div className="flex items-center gap-4">
                         <div className="size-12 rounded-2xl bg-muted flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                          <StarIcon weight="duotone" className="size-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                          <StarIcon
+                            weight="duotone"
+                            className="size-5 text-muted-foreground group-hover:text-primary transition-colors"
+                          />
                         </div>
                         <div className="space-y-0.5">
                           <p className="text-xs font-black uppercase italic tracking-tight text-foreground group-hover:text-primary transition-colors">
                             {translateXpReason(item.reason)}
                           </p>
                           <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
-                            {dayjs(item.createdAt).format("DD MMM, YYYY · HH:mm")}
+                            {dayjs(item.createdAt).format(
+                              "DD MMM, YYYY · HH:mm",
+                            )}
                           </p>
                         </div>
                       </div>
@@ -261,7 +396,9 @@ export default async function ProfilePage() {
                   ))
                 ) : (
                   <div className="py-20 text-center">
-                    <p className="text-muted-foreground font-medium uppercase italic tracking-widest text-xs">Nenhum registro encontrado.</p>
+                    <p className="text-muted-foreground font-medium uppercase italic tracking-widest text-xs">
+                      Nenhum registro encontrado.
+                    </p>
                   </div>
                 )}
               </div>
@@ -270,7 +407,7 @@ export default async function ProfilePage() {
         </div>
       </section>
 
-      <div className="max-w-5xl mx-auto px-6 sm:px-8 pt-16 flex flex-col items-center gap-8">
+      <div className="px-6 sm:px-8 pt-16 flex flex-col items-center gap-8">
         <div className="h-px w-24 bg-linear-to-r from-transparent via-border to-transparent" />
         <LogoutButton />
         <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.5em] opacity-50 italic">
