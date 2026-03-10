@@ -24,6 +24,9 @@ import { completeWorkoutAction } from "@/app/(dashboard)/workout-plans/[planId]/
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
+import { motion, AnimatePresence } from "framer-motion";
+import { playSoftPing } from "@/lib/utils/audio";
+
 interface CompleteWorkoutDialogProps {
   planId: string;
   dayId: string;
@@ -37,6 +40,7 @@ export function CompleteWorkoutDialog({ planId, dayId, sessionId, trigger }: Com
   const [selectedFriends, setSelectedSelectedFriends] = useState<string[]>([]);
   const [statusMessage, setStatusMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -65,8 +69,16 @@ export function CompleteWorkoutDialog({ planId, dayId, sessionId, trigger }: Com
       });
 
       if (!("error" in response)) {
+        playSoftPing();
+        if ("vibrate" in navigator) window.navigator.vibrate([100, 50, 100]);
+        
+        setShowCelebration(true);
         toast.success("Treino concluído com sucesso! Disciplina é tudo. 🔥");
-        setOpen(false);
+        
+        setTimeout(() => {
+          setOpen(false);
+          setShowCelebration(false);
+        }, 2000);
       } else {
         toast.error("Erro ao concluir treino.");
       }
@@ -83,11 +95,47 @@ export function CompleteWorkoutDialog({ planId, dayId, sessionId, trigger }: Com
         {trigger}
       </DialogTrigger>
       <DialogContent className="bg-card border-border rounded-[2.5rem] sm:max-w-md p-0 overflow-hidden">
-        <div className="p-8 space-y-8">
+        <div className="p-8 space-y-8 relative">
+          <AnimatePresence>
+            {showCelebration && (
+              <div className="absolute inset-0 pointer-events-none z-50 overflow-hidden">
+                {Array.from({ length: 30 }).map((_, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ 
+                      opacity: 1, 
+                      scale: 0, 
+                      x: "50%", 
+                      y: "50%",
+                      rotate: 0 
+                    }}
+                    animate={{ 
+                      opacity: 0, 
+                      scale: Math.random() * 1.5 + 0.5, 
+                      x: `${Math.random() * 200 - 50}%`, 
+                      y: `${Math.random() * -200 - 50}%`,
+                      rotate: Math.random() * 360 
+                    }}
+                    transition={{ duration: 1.5, ease: "easeOut" }}
+                    className="absolute size-3 rounded-sm bg-primary"
+                    style={{ 
+                      backgroundColor: i % 2 === 0 ? "var(--primary)" : "var(--foreground)",
+                      left: "45%",
+                      top: "45%"
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+          </AnimatePresence>
+
           <DialogHeader>
-            <div className="size-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+            <motion.div 
+              animate={showCelebration ? { scale: [1, 1.2, 1] } : {}}
+              className="size-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4"
+            >
               <CheckCircleIcon weight="duotone" className="size-8 text-primary" />
-            </div>
+            </motion.div>
             <DialogTitle className="font-anton text-3xl italic uppercase tracking-wider text-foreground leading-none">Missão Cumprida</DialogTitle>
             <DialogDescription className="text-muted-foreground font-medium text-xs uppercase tracking-widest pt-1">
               Finalize sua sessão e registre o esforço
@@ -169,10 +217,10 @@ export function CompleteWorkoutDialog({ planId, dayId, sessionId, trigger }: Com
         <div className="p-8 pt-0">
           <Button 
             onClick={handleComplete} 
-            disabled={isLoading}
+            disabled={isLoading || showCelebration}
             className="w-full h-16 rounded-[1.5rem] font-anton text-lg italic uppercase tracking-widest shadow-2xl shadow-primary/20"
           >
-            {isLoading ? "Salvando..." : "CONCLUIR SESSÃO"}
+            {isLoading ? "Salvando..." : showCelebration ? "FINALIZADO! 🔥" : "CONCLUIR SESSÃO"}
           </Button>
         </div>
       </DialogContent>
