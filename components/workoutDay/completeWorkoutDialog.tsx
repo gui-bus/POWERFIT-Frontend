@@ -118,22 +118,22 @@ export function CompleteWorkoutDialog({ planId, dayId, sessionId, trigger }: Com
               "x-session-token": token 
             }
           });
-
-          if (uploadRes && uploadRes[0]) {
-            imageUrl = uploadRes[0].url;
-            toast.success("Foto enviada!", { id: uploadToastId });
-          } else {
-            throw new Error("Resposta de upload vazia");
-          }
-        } catch (uploadError: any) {
-          console.error("Erro técnico no upload:", uploadError);
-          toast.error(`Falha no upload: ${uploadError.message || "403 Forbidden"}`, { id: uploadToastId });
-          setIsLoading(false);
-          setIsUploading(false);
-          return; // CANCELA O ENVIO
-        } finally {
-          setIsUploading(false);
-        }
+if (uploadRes && uploadRes[0]) {
+  imageUrl = uploadRes[0].url;
+  toast.success("Foto enviada!", { id: uploadToastId });
+} else {
+  throw new Error("Resposta de upload vazia");
+}
+} catch (uploadError: unknown) {
+console.error("Erro técnico no upload:", uploadError);
+const errorMessage = uploadError instanceof Error ? uploadError.message : "403 Forbidden";
+toast.error(`Falha no upload: ${errorMessage}`, { id: uploadToastId });
+setIsLoading(false);
+setIsUploading(false);
+return; // CANCELA O ENVIO
+} finally {
+setIsUploading(false);
+}
       }
 
       // 2. Finaliza a sessão com todos os dados

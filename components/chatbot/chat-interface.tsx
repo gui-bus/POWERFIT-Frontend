@@ -16,6 +16,8 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { getWorkoutPlans } from "@/lib/api/fetch-generated";
 
 const SUGGESTED_MESSAGES = ["Monte meu plano de treino"];
 
@@ -31,16 +33,48 @@ interface ChatProps {
 }
 
 export function Chat({ embedded = false, initialMessage }: ChatProps) {
+  const router = useRouter();
   const [chatParams, setChatParams] = useQueryStates({
     chat_open: parseAsBoolean.withDefault(false),
     chat_initial_message: parseAsString,
   });
+
+  const handleClose = () => {
+    setChatParams({ chat_open: false, chat_initial_message: null });
+  };
 
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
       api: `${process.env.NEXT_PUBLIC_API_URL}/ai`,
       credentials: "include",
     }),
+    onFinish: async (message) => {
+      // Verifica se a resposta do bot menciona que o plano foi criado/gerado
+      const lowerContent = message.parts
+        .filter((p) => p.type === "text")
+        .map((p) => (p as { text: string }).text)
+        .join(" ")
+        .toLowerCase();
+
+      const indicatesSuccess = 
+        lowerContent.includes("plano de treino") && 
+        (lowerContent.includes("criado") || 
+         lowerContent.includes("gerado") || 
+         lowerContent.includes("pronto") ||
+         lowerContent.includes("finalizado"));
+
+      if (indicatesSuccess) {
+        // Busca o plano ativo mais recente
+        const plansRes = await getWorkoutPlans({ active: "true" });
+        if (plansRes.status === 200 && plansRes.data.length > 0) {
+          const activePlan = plansRes.data[0];
+          router.push(`/workout-plans/${activePlan.id}`);
+          if (!embedded) {
+            handleClose();
+          }
+        }
+      }
+    },
   });
 
   const form = useForm<ChatFormValues>({
@@ -86,10 +120,6 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
-  const handleClose = () => {
-    setChatParams({ chat_open: false, chat_initial_message: null });
-  };
 
   const onSubmit = (values: ChatFormValues) => {
     sendMessage({ text: values.message });
