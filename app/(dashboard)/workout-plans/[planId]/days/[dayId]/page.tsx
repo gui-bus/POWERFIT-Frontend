@@ -19,8 +19,6 @@ import {
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/common/container";
 import { PageHeader } from "@/components/pageHeader";
-import { MuscleHeatmap } from "@/components/gamification/muscleHeatmap";
-import { getWorkoutMuscles } from "@/lib/utils/muscleMapper";
 
 interface PageProps {
   params: Promise<{
@@ -61,7 +59,6 @@ export default async function WorkoutDayPage({ params }: PageProps) {
   }
 
   const workoutDay = response.data;
-  const activeMuscles = getWorkoutMuscles(workoutDay.exercises);
 
   const activeSession = workoutDay.sessions.find((s) => !s.completedAt);
   const isCompleted = workoutDay.sessions.some((s) => !!s.completedAt);
@@ -250,14 +247,6 @@ export default async function WorkoutDayPage({ params }: PageProps) {
             </div>
           </div>
         </section>
-      </div>
-
-      <div className="mt-8">
-        <MuscleHeatmap 
-          activeMuscles={activeMuscles} 
-          title="Foco de Ativação"
-          subtitle={`Distribuição Anatômica para ${workoutDay.name}`}
-        />
       </div>
 
       <div className="mt-12 space-y-10">
