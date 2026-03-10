@@ -274,6 +274,7 @@ export default async function WorkoutDayPage({ params }: PageProps) {
                 <ExerciseItem 
                   exercise={exercise} 
                   canMarkAsCompleted={!!activeSession}
+                  activeSessionId={activeSession?.id}
                 />
               </div>
             </div>

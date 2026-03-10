@@ -538,6 +538,7 @@ export type GetStats200 = {
   completedRestDays: number;
   conclusionRate: number;
   totalTimeInSeconds: number;
+  totalVolumeInGrams: number;
 };
 
 export type GetStats401 = {
