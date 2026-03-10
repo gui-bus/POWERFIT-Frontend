@@ -6,7 +6,7 @@ export type OurFileRouter = {
     input: void;
     output: { url: string };
   };
-  activityImage: {
+  workoutImage: {
     input: void;
     output: { url: string };
   };
@@ -41,4 +41,8 @@ export const UploadDropzone = generateUploadDropzone<OurFileRouter>({
 
 export const { useUploadThing, uploadFiles } = generateReactHelpers<OurFileRouter>({
   url,
+  // @ts-expect-error - requestConfig is necessary for cross-origin credentials
+  requestConfig: {
+    credentials: "include",
+  },
 });

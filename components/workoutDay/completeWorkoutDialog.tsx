@@ -26,7 +26,7 @@ import { getFriends, GetFriends200Item } from "@/lib/api/fetch-generated";
 import { completeWorkoutAction } from "@/app/(dashboard)/workout-plans/[planId]/days/[dayId]/actions";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { useUploadThing } from "@/lib/uploadthing";
+import { uploadFiles } from "@/lib/uploadthing";
 import { authClient } from "@/lib/authClient";
 
 import { motion, AnimatePresence } from "framer-motion";
@@ -47,23 +47,11 @@ export function CompleteWorkoutDialog({ planId, dayId, sessionId, trigger }: Com
   const [statusMessage, setStatusMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
-
+  
   // Image states
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
-  const { startUpload, isUploading } = useUploadThing("activityImage", {
-    onUploadBegin: () => {
-      toast.loading("Enviando foto do treino...", { id: "workout-upload" });
-    },
-    onClientUploadComplete: () => {
-      toast.success("Foto enviada!", { id: "workout-upload" });
-    },
-    onUploadError: (error) => {
-      console.error("Upload error:", error);
-      toast.error(`Erro no upload: ${error.message}`, { id: "workout-upload" });
-    },
-  });
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -105,22 +93,46 @@ export function CompleteWorkoutDialog({ planId, dayId, sessionId, trigger }: Com
     try {
       // 1. Se houver foto, faz o upload primeiro
       if (selectedFile) {
+        setIsUploading(true);
+        const uploadToastId = "workout-upload-toast";
+        toast.loading("Enviando foto do treino...", { id: uploadToastId });
+
         const session = await authClient.getSession();
         const token = session.data?.session?.token;
 
-        const uploadRes = await startUpload([selectedFile], {
-          // @ts-expect-error Typescript handshake
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Cookie": `better-auth.session-token=${token}`,
-            "x-session-token": token 
-          }
-        });
+        if (!token) {
+          toast.error("Sessão não encontrada. Faça login novamente.", { id: uploadToastId });
+          setIsLoading(false);
+          setIsUploading(false);
+          return;
+        }
 
-        if (uploadRes && uploadRes[0]) {
-          imageUrl = uploadRes[0].url;
-        } else {
-          toast.error("Falha no upload da imagem. Continuando sem foto...");
+        try {
+          // Usamos uploadFiles diretamente para garantir que os cabeçalhos sejam enviados como HTTP Headers reais
+          // e não como 'input' no corpo da requisição.
+          const uploadRes = await uploadFiles("workoutImage", {
+            files: [selectedFile],
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "Cookie": `better-auth.session-token=${token}`,
+              "x-session-token": token 
+            }
+          });
+
+          if (uploadRes && uploadRes[0]) {
+            imageUrl = uploadRes[0].url;
+            toast.success("Foto enviada!", { id: uploadToastId });
+          } else {
+            throw new Error("Resposta de upload vazia");
+          }
+        } catch (uploadError: any) {
+          console.error("Erro técnico no upload:", uploadError);
+          toast.error(`Falha no upload: ${uploadError.message || "403 Forbidden"}`, { id: uploadToastId });
+          setIsLoading(false);
+          setIsUploading(false);
+          return; // CANCELA O ENVIO
+        } finally {
+          setIsUploading(false);
         }
       }
 
@@ -317,7 +329,7 @@ export function CompleteWorkoutDialog({ planId, dayId, sessionId, trigger }: Com
           <Button 
             onClick={handleComplete} 
             disabled={isLoading || isUploading || showCelebration}
-            className="w-full h-16 rounded-[1.5rem] font-anton text-lg italic uppercase tracking-widest shadow-2xl shadow-primary/20 gap-3"
+            className="w-full h-16 rounded-[1.5rem] font-anton text-lg italic uppercase tracking-widest shadow-2xl shadow-primary/20 gap-3 cursor-pointer"
           >
             {isLoading || isUploading ? (
               <>
