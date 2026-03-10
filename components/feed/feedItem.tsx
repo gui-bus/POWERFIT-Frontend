@@ -1,10 +1,10 @@
 "use client";
 
 import { 
-  GetFeed200Item, 
+  GetFeed200ActivitiesItem, 
   togglePowerup, 
   addComment, 
-  GetFeed200ItemCommentsItem 
+  GetFeed200ActivitiesItemCommentsItem 
 } from "@/lib/api/fetch-generated";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
@@ -31,7 +31,7 @@ dayjs.extend(relativeTime);
 dayjs.locale("pt-br");
 
 interface FeedItemProps {
-  item: GetFeed200Item;
+  item: GetFeed200ActivitiesItem;
 }
 
 export function FeedItem({ item }: FeedItemProps) {

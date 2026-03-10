@@ -12,6 +12,7 @@
     "@ai-sdk/react": "3.0.51",
     "@hookform/resolvers": "^3.9.0",
     "@phosphor-icons/react": "^2.1.10",
+    "@uploadthing/react": "^7.3.3",
     "ai": "6.0.49",
     "better-auth": "1.4.18",
     "class-variance-authority": "^0.7.1",
@@ -31,6 +32,7 @@
     "sonner": "^2.0.7",
     "streamdown": "2.4.0",
     "tailwind-merge": "^3.5.0",
+    "uploadthing": "^7.7.4",
     "zod": "^3.23.8"
   },
   "devDependencies": {

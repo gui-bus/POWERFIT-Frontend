@@ -7,7 +7,7 @@ import { headers } from "next/headers";
 import { redirect, notFound } from "next/navigation";
 import { PageHeader } from "@/components/pageHeader";
 import { Container } from "@/components/common/container";
-import { FeedItem } from "@/components/feed/feedItem";
+import { FeedList } from "@/components/feed/feedList";
 import { CaretLeftIcon, ActivityIcon } from "@phosphor-icons/react/ssr";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -27,7 +27,7 @@ export default async function UserFeedPage({ params }: UserFeedPageProps) {
 
   if (!session.data?.user) redirect("/auth");
 
-  const feedResponse = await getUserFeed(userId);
+  const feedResponse = await getUserFeed(userId, { limit: 5 });
 
   if (feedResponse.status !== 200) {
     if ((feedResponse.status as number) === 404) notFound();
@@ -43,12 +43,12 @@ export default async function UserFeedPage({ params }: UserFeedPageProps) {
     );
   }
 
-  const { data: feedItems } = feedResponse as getUserFeedResponseSuccess;
+  const { data } = feedResponse as getUserFeedResponseSuccess;
   
   // Try to get user info from first feed item if available
-  const userProfile = feedItems.length > 0 ? {
-    name: feedItems[0].userName,
-    image: feedItems[0].userImage,
+  const userProfile = data.activities.length > 0 ? {
+    name: data.activities[0].userName,
+    image: data.activities[0].userImage,
   } : null;
 
   return (
@@ -93,7 +93,7 @@ export default async function UserFeedPage({ params }: UserFeedPageProps) {
               
               <div className="flex items-center justify-center sm:justify-start gap-6">
                 <div className="text-center sm:text-left">
-                  <p className="text-xl font-black italic text-foreground leading-none">{feedItems.length}</p>
+                  <p className="text-xl font-black italic text-foreground leading-none">{data.activities.length}</p>
                   <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1.5">Treinos</p>
                 </div>
                 <div className="w-px h-8 bg-border hidden sm:block" />
@@ -106,25 +106,11 @@ export default async function UserFeedPage({ params }: UserFeedPageProps) {
           </div>
         )}
 
-        {feedItems.length > 0 ? (
-          <div className="flex flex-col gap-8">
-            {feedItems.map((item) => (
-              <FeedItem key={item.id} item={item} />
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center p-16 text-center bg-card/50 border border-dashed border-border rounded-[3rem] space-y-6">
-            <div className="size-24 bg-muted rounded-full flex items-center justify-center opacity-50">
-              <ActivityIcon weight="duotone" className="size-12 text-muted-foreground" />
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-xl font-black uppercase italic tracking-tight opacity-80">Sem treinos recentes</h3>
-              <p className="text-sm text-muted-foreground font-medium max-w-xs mx-auto">
-                Este atleta ainda não registrou atividades públicas no feed.
-              </p>
-            </div>
-          </div>
-        )}
+        <FeedList 
+          initialItems={data.activities} 
+          initialNextCursor={data.nextCursor} 
+          userId={userId}
+        />
       </div>
     </Container>
   );

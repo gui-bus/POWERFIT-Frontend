@@ -88,7 +88,7 @@ export default async function ProfilePage() {
       : 0;
   const workoutsCount =
     feedRes.status === 200
-      ? (feedRes as getFeedResponseSuccess).data.filter(
+      ? (feedRes as getFeedResponseSuccess).data.activities.filter(
           (i) => i.userId === userData.id,
         ).length
       : 0;
@@ -185,7 +185,13 @@ export default async function ProfilePage() {
               </div>
 
               <div className="flex items-center gap-3">
-                <EditProfileDialog initialData={trainData}>
+                <EditProfileDialog 
+                  initialData={trainData} 
+                  user={{ 
+                    name: userData.name, 
+                    image: userData.image 
+                  }}
+                >
                   <button className="px-6 py-3 bg-card border border-border hover:border-primary/50 rounded-2xl font-black uppercase italic tracking-widest text-[10px] flex items-center gap-2 transition-all active:scale-95 shadow-sm cursor-pointer">
                     <PencilSimpleIcon
                       weight="bold"

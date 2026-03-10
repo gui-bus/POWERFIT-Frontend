@@ -337,6 +337,7 @@ export type StartWorkoutSession500 = {
 export type CompleteWorkoutSessionBody = {
   statusMessage?: string;
   taggedUserIds?: string[];
+  imageUrl?: string;
 };
 
 export type CompleteWorkoutSession200 = {
@@ -738,7 +739,19 @@ export type DeclineFriendRequest500 = {
   code: string;
 };
 
-export type GetFeed200ItemCommentsItem = {
+export type GetFeedParams = {
+  /**
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  cursor?: string;
+  /**
+   * @minimum 1
+   * @maximum 100
+   */
+  limit?: number;
+};
+
+export type GetFeed200ActivitiesItemCommentsItem = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
   userId: string;
@@ -749,14 +762,14 @@ export type GetFeed200ItemCommentsItem = {
   createdAt: string;
 };
 
-export type GetFeed200ItemTaggedUsersItem = {
+export type GetFeed200ActivitiesItemTaggedUsersItem = {
   id: string;
   name: string;
   /** @nullable */
   image: string | null;
 };
 
-export type GetFeed200Item = {
+export type GetFeed200ActivitiesItem = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
   userId: string;
@@ -774,8 +787,17 @@ export type GetFeed200Item = {
   powerupsCount: number;
   hasPowerupByMe: boolean;
   createdAt: string;
-  comments: GetFeed200ItemCommentsItem[];
-  taggedUsers: GetFeed200ItemTaggedUsersItem[];
+  comments: GetFeed200ActivitiesItemCommentsItem[];
+  taggedUsers: GetFeed200ActivitiesItemTaggedUsersItem[];
+};
+
+export type GetFeed200 = {
+  activities: GetFeed200ActivitiesItem[];
+  /**
+   * @nullable
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  nextCursor: string | null;
 };
 
 export type GetFeed401 = {
@@ -788,7 +810,19 @@ export type GetFeed500 = {
   code: string;
 };
 
-export type GetUserFeed200ItemCommentsItem = {
+export type GetUserFeedParams = {
+  /**
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  cursor?: string;
+  /**
+   * @minimum 1
+   * @maximum 100
+   */
+  limit?: number;
+};
+
+export type GetUserFeed200ActivitiesItemCommentsItem = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
   userId: string;
@@ -799,14 +833,14 @@ export type GetUserFeed200ItemCommentsItem = {
   createdAt: string;
 };
 
-export type GetUserFeed200ItemTaggedUsersItem = {
+export type GetUserFeed200ActivitiesItemTaggedUsersItem = {
   id: string;
   name: string;
   /** @nullable */
   image: string | null;
 };
 
-export type GetUserFeed200Item = {
+export type GetUserFeed200ActivitiesItem = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
   userId: string;
@@ -824,8 +858,17 @@ export type GetUserFeed200Item = {
   powerupsCount: number;
   hasPowerupByMe: boolean;
   createdAt: string;
-  comments: GetUserFeed200ItemCommentsItem[];
-  taggedUsers: GetUserFeed200ItemTaggedUsersItem[];
+  comments: GetUserFeed200ActivitiesItemCommentsItem[];
+  taggedUsers: GetUserFeed200ActivitiesItemTaggedUsersItem[];
+};
+
+export type GetUserFeed200 = {
+  activities: GetUserFeed200ActivitiesItem[];
+  /**
+   * @nullable
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  nextCursor: string | null;
 };
 
 export type GetUserFeed401 = {
@@ -933,10 +976,22 @@ export type DeleteActivity500 = {
   code: string;
 };
 
-export type GetNotifications200ItemType =
-  (typeof GetNotifications200ItemType)[keyof typeof GetNotifications200ItemType];
+export type GetNotificationsParams = {
+  /**
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  cursor?: string;
+  /**
+   * @minimum 1
+   * @maximum 100
+   */
+  limit?: number;
+};
 
-export const GetNotifications200ItemType = {
+export type GetNotifications200NotificationsItemType =
+  (typeof GetNotifications200NotificationsItemType)[keyof typeof GetNotifications200NotificationsItemType];
+
+export const GetNotifications200NotificationsItemType = {
   FRIEND_REQUEST: "FRIEND_REQUEST",
   FRIEND_ACCEPTED: "FRIEND_ACCEPTED",
   POWERUP_RECEIVED: "POWERUP_RECEIVED",
@@ -951,7 +1006,7 @@ export const GetNotifications200ItemType = {
 /**
  * @nullable
  */
-export type GetNotifications200ItemSender = {
+export type GetNotifications200NotificationsItemSender = {
   id: string;
   name: string;
   /** @nullable */
@@ -961,7 +1016,7 @@ export type GetNotifications200ItemSender = {
 /**
  * @nullable
  */
-export type GetNotifications200ItemAchievement = {
+export type GetNotifications200NotificationsItemAchievement = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12} | 00000000-0000-0000-0000-000000000000 | ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
   name: string;
@@ -969,10 +1024,10 @@ export type GetNotifications200ItemAchievement = {
   iconUrl: string | null;
 } | null;
 
-export type GetNotifications200Item = {
+export type GetNotifications200NotificationsItem = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
-  type: GetNotifications200ItemType;
+  type: GetNotifications200NotificationsItemType;
   isRead: boolean;
   createdAt: string;
   /**
@@ -988,9 +1043,18 @@ export type GetNotifications200Item = {
   /** @nullable */
   content: string | null;
   /** @nullable */
-  sender: GetNotifications200ItemSender;
+  sender: GetNotifications200NotificationsItemSender;
   /** @nullable */
-  achievement: GetNotifications200ItemAchievement;
+  achievement: GetNotifications200NotificationsItemAchievement;
+};
+
+export type GetNotifications200 = {
+  notifications: GetNotifications200NotificationsItem[];
+  /**
+   * @nullable
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  nextCursor: string | null;
 };
 
 export type GetNotifications401 = {
@@ -1165,6 +1229,107 @@ export type GetXpHistory401 = {
 };
 
 export type GetXpHistory500 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateProfileBody = {
+  /** @minLength 1 */
+  name?: string;
+  image?: string;
+};
+
+export type UpdateProfile200 = {
+  id: string;
+  name: string;
+  /** @nullable */
+  image: string | null;
+};
+
+export type UpdateProfile401 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateProfile500 = {
+  error: string;
+  code: string;
+};
+
+/**
+ * @nullable
+ */
+export type GetUserTrainData200 = {
+  userId: string;
+  userName: string;
+  weightInGrams: number;
+  heightInCentimeters: number;
+  age: number;
+  bodyFatPercentage: number;
+} | null;
+
+export type GetUserTrainData401 = {
+  error: string;
+  code: string;
+};
+
+export type GetUserTrainData500 = {
+  error: string;
+  code: string;
+};
+
+export type UpsertUserTrainDataBody = {
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  weightInGrams: number;
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  heightInCentimeters: number;
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  age: number;
+  /**
+   * @minimum 0
+   * @maximum 1
+   */
+  bodyFatPercentage: number;
+};
+
+export type UpsertUserTrainData200 = {
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  weightInGrams: number;
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  heightInCentimeters: number;
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  age: number;
+  /**
+   * @minimum 0
+   * @maximum 1
+   */
+  bodyFatPercentage: number;
+};
+
+export type UpsertUserTrainData401 = {
+  error: string;
+  code: string;
+};
+
+export type UpsertUserTrainData500 = {
   error: string;
   code: string;
 };
@@ -1425,84 +1590,6 @@ export type GetRanking401 = {
 };
 
 export type GetRanking500 = {
-  error: string;
-  code: string;
-};
-
-/**
- * @nullable
- */
-export type GetUserTrainData200 = {
-  userId: string;
-  userName: string;
-  weightInGrams: number;
-  heightInCentimeters: number;
-  age: number;
-  bodyFatPercentage: number;
-} | null;
-
-export type GetUserTrainData401 = {
-  error: string;
-  code: string;
-};
-
-export type GetUserTrainData500 = {
-  error: string;
-  code: string;
-};
-
-export type UpsertUserTrainDataBody = {
-  /**
-   * @minimum 1
-   * @maximum 9007199254740991
-   */
-  weightInGrams: number;
-  /**
-   * @minimum 1
-   * @maximum 9007199254740991
-   */
-  heightInCentimeters: number;
-  /**
-   * @minimum 1
-   * @maximum 9007199254740991
-   */
-  age: number;
-  /**
-   * @minimum 0
-   * @maximum 1
-   */
-  bodyFatPercentage: number;
-};
-
-export type UpsertUserTrainData200 = {
-  /**
-   * @minimum 1
-   * @maximum 9007199254740991
-   */
-  weightInGrams: number;
-  /**
-   * @minimum 1
-   * @maximum 9007199254740991
-   */
-  heightInCentimeters: number;
-  /**
-   * @minimum 1
-   * @maximum 9007199254740991
-   */
-  age: number;
-  /**
-   * @minimum 0
-   * @maximum 1
-   */
-  bodyFatPercentage: number;
-};
-
-export type UpsertUserTrainData401 = {
-  error: string;
-  code: string;
-};
-
-export type UpsertUserTrainData500 = {
   error: string;
   code: string;
 };
@@ -2455,7 +2542,7 @@ export const declineFriendRequest = async (
  * @summary Get activities feed
  */
 export type getFeedResponse200 = {
-  data: GetFeed200Item[];
+  data: GetFeed200;
   status: 200;
 };
 
@@ -2478,14 +2565,27 @@ export type getFeedResponseError = (getFeedResponse401 | getFeedResponse500) & {
 
 export type getFeedResponse = getFeedResponseSuccess | getFeedResponseError;
 
-export const getGetFeedUrl = () => {
-  return `/feed/`;
+export const getGetFeedUrl = (params?: GetFeedParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/feed/?${stringifiedParams}`
+    : `/feed/`;
 };
 
 export const getFeed = async (
+  params?: GetFeedParams,
   options?: RequestInit,
 ): Promise<getFeedResponse> => {
-  return customFetch<getFeedResponse>(getGetFeedUrl(), {
+  return customFetch<getFeedResponse>(getGetFeedUrl(params), {
     ...options,
     method: "GET",
   });
@@ -2495,7 +2595,7 @@ export const getFeed = async (
  * @summary Get activities feed for a specific user
  */
 export type getUserFeedResponse200 = {
-  data: GetUserFeed200Item[];
+  data: GetUserFeed200;
   status: 200;
 };
 
@@ -2529,15 +2629,31 @@ export type getUserFeedResponse =
   | getUserFeedResponseSuccess
   | getUserFeedResponseError;
 
-export const getGetUserFeedUrl = (userId: string) => {
-  return `/feed/users/${userId}`;
+export const getGetUserFeedUrl = (
+  userId: string,
+  params?: GetUserFeedParams,
+) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/feed/users/${userId}?${stringifiedParams}`
+    : `/feed/users/${userId}`;
 };
 
 export const getUserFeed = async (
   userId: string,
+  params?: GetUserFeedParams,
   options?: RequestInit,
 ): Promise<getUserFeedResponse> => {
-  return customFetch<getUserFeedResponse>(getGetUserFeedUrl(userId), {
+  return customFetch<getUserFeedResponse>(getGetUserFeedUrl(userId, params), {
     ...options,
     method: "GET",
   });
@@ -2714,11 +2830,39 @@ export const deleteActivity = async (
   });
 };
 
+export type getNotificationsStreamResponse200 = {
+  data: void;
+  status: 200;
+};
+
+export type getNotificationsStreamResponseSuccess =
+  getNotificationsStreamResponse200 & {
+    headers: Headers;
+  };
+export type getNotificationsStreamResponse =
+  getNotificationsStreamResponseSuccess;
+
+export const getGetNotificationsStreamUrl = () => {
+  return `/notifications/stream`;
+};
+
+export const getNotificationsStream = async (
+  options?: RequestInit,
+): Promise<getNotificationsStreamResponse> => {
+  return customFetch<getNotificationsStreamResponse>(
+    getGetNotificationsStreamUrl(),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
 /**
  * @summary Get my notifications
  */
 export type getNotificationsResponse200 = {
-  data: GetNotifications200Item[];
+  data: GetNotifications200;
   status: 200;
 };
 
@@ -2746,14 +2890,27 @@ export type getNotificationsResponse =
   | getNotificationsResponseSuccess
   | getNotificationsResponseError;
 
-export const getGetNotificationsUrl = () => {
-  return `/notifications/`;
+export const getGetNotificationsUrl = (params?: GetNotificationsParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/notifications/?${stringifiedParams}`
+    : `/notifications/`;
 };
 
 export const getNotifications = async (
+  params?: GetNotificationsParams,
   options?: RequestInit,
 ): Promise<getNotificationsResponse> => {
-  return customFetch<getNotificationsResponse>(getGetNotificationsUrl(), {
+  return customFetch<getNotificationsResponse>(getGetNotificationsUrl(params), {
     ...options,
     method: "GET",
   });
@@ -3048,6 +3205,148 @@ export const getXpHistory = async (
   return customFetch<getXpHistoryResponse>(getGetXpHistoryUrl(), {
     ...options,
     method: "GET",
+  });
+};
+
+/**
+ * @summary Update my profile
+ */
+export type updateProfileResponse200 = {
+  data: UpdateProfile200;
+  status: 200;
+};
+
+export type updateProfileResponse401 = {
+  data: UpdateProfile401;
+  status: 401;
+};
+
+export type updateProfileResponse500 = {
+  data: UpdateProfile500;
+  status: 500;
+};
+
+export type updateProfileResponseSuccess = updateProfileResponse200 & {
+  headers: Headers;
+};
+export type updateProfileResponseError = (
+  | updateProfileResponse401
+  | updateProfileResponse500
+) & {
+  headers: Headers;
+};
+
+export type updateProfileResponse =
+  | updateProfileResponseSuccess
+  | updateProfileResponseError;
+
+export const getUpdateProfileUrl = () => {
+  return `/me`;
+};
+
+export const updateProfile = async (
+  updateProfileBody: UpdateProfileBody,
+  options?: RequestInit,
+): Promise<updateProfileResponse> => {
+  return customFetch<updateProfileResponse>(getUpdateProfileUrl(), {
+    ...options,
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(updateProfileBody),
+  });
+};
+
+/**
+ * @summary Get user training data
+ */
+export type getUserTrainDataResponse200 = {
+  data: GetUserTrainData200;
+  status: 200;
+};
+
+export type getUserTrainDataResponse401 = {
+  data: GetUserTrainData401;
+  status: 401;
+};
+
+export type getUserTrainDataResponse500 = {
+  data: GetUserTrainData500;
+  status: 500;
+};
+
+export type getUserTrainDataResponseSuccess = getUserTrainDataResponse200 & {
+  headers: Headers;
+};
+export type getUserTrainDataResponseError = (
+  | getUserTrainDataResponse401
+  | getUserTrainDataResponse500
+) & {
+  headers: Headers;
+};
+
+export type getUserTrainDataResponse =
+  | getUserTrainDataResponseSuccess
+  | getUserTrainDataResponseError;
+
+export const getGetUserTrainDataUrl = () => {
+  return `/me`;
+};
+
+export const getUserTrainData = async (
+  options?: RequestInit,
+): Promise<getUserTrainDataResponse> => {
+  return customFetch<getUserTrainDataResponse>(getGetUserTrainDataUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Upsert user training data
+ */
+export type upsertUserTrainDataResponse200 = {
+  data: UpsertUserTrainData200;
+  status: 200;
+};
+
+export type upsertUserTrainDataResponse401 = {
+  data: UpsertUserTrainData401;
+  status: 401;
+};
+
+export type upsertUserTrainDataResponse500 = {
+  data: UpsertUserTrainData500;
+  status: 500;
+};
+
+export type upsertUserTrainDataResponseSuccess =
+  upsertUserTrainDataResponse200 & {
+    headers: Headers;
+  };
+export type upsertUserTrainDataResponseError = (
+  | upsertUserTrainDataResponse401
+  | upsertUserTrainDataResponse500
+) & {
+  headers: Headers;
+};
+
+export type upsertUserTrainDataResponse =
+  | upsertUserTrainDataResponseSuccess
+  | upsertUserTrainDataResponseError;
+
+export const getUpsertUserTrainDataUrl = () => {
+  return `/me`;
+};
+
+export const upsertUserTrainData = async (
+  upsertUserTrainDataBody: UpsertUserTrainDataBody,
+  options?: RequestInit,
+): Promise<upsertUserTrainDataResponse> => {
+  return customFetch<upsertUserTrainDataResponse>(getUpsertUserTrainDataUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(upsertUserTrainDataBody),
   });
 };
 
@@ -3469,100 +3768,6 @@ export const getRanking = async (
   return customFetch<getRankingResponse>(getGetRankingUrl(params), {
     ...options,
     method: "GET",
-  });
-};
-
-/**
- * @summary Get user training data
- */
-export type getUserTrainDataResponse200 = {
-  data: GetUserTrainData200;
-  status: 200;
-};
-
-export type getUserTrainDataResponse401 = {
-  data: GetUserTrainData401;
-  status: 401;
-};
-
-export type getUserTrainDataResponse500 = {
-  data: GetUserTrainData500;
-  status: 500;
-};
-
-export type getUserTrainDataResponseSuccess = getUserTrainDataResponse200 & {
-  headers: Headers;
-};
-export type getUserTrainDataResponseError = (
-  | getUserTrainDataResponse401
-  | getUserTrainDataResponse500
-) & {
-  headers: Headers;
-};
-
-export type getUserTrainDataResponse =
-  | getUserTrainDataResponseSuccess
-  | getUserTrainDataResponseError;
-
-export const getGetUserTrainDataUrl = () => {
-  return `/me`;
-};
-
-export const getUserTrainData = async (
-  options?: RequestInit,
-): Promise<getUserTrainDataResponse> => {
-  return customFetch<getUserTrainDataResponse>(getGetUserTrainDataUrl(), {
-    ...options,
-    method: "GET",
-  });
-};
-
-/**
- * @summary Upsert user training data
- */
-export type upsertUserTrainDataResponse200 = {
-  data: UpsertUserTrainData200;
-  status: 200;
-};
-
-export type upsertUserTrainDataResponse401 = {
-  data: UpsertUserTrainData401;
-  status: 401;
-};
-
-export type upsertUserTrainDataResponse500 = {
-  data: UpsertUserTrainData500;
-  status: 500;
-};
-
-export type upsertUserTrainDataResponseSuccess =
-  upsertUserTrainDataResponse200 & {
-    headers: Headers;
-  };
-export type upsertUserTrainDataResponseError = (
-  | upsertUserTrainDataResponse401
-  | upsertUserTrainDataResponse500
-) & {
-  headers: Headers;
-};
-
-export type upsertUserTrainDataResponse =
-  | upsertUserTrainDataResponseSuccess
-  | upsertUserTrainDataResponseError;
-
-export const getUpsertUserTrainDataUrl = () => {
-  return `/me`;
-};
-
-export const upsertUserTrainData = async (
-  upsertUserTrainDataBody: UpsertUserTrainDataBody,
-  options?: RequestInit,
-): Promise<upsertUserTrainDataResponse> => {
-  return customFetch<upsertUserTrainDataResponse>(getUpsertUserTrainDataUrl(), {
-    ...options,
-    method: "POST",
-    headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(upsertUserTrainDataBody),
   });
 };
 

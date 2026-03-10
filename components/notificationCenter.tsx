@@ -5,8 +5,8 @@ import {
   getNotifications,
   markNotificationAsRead,
   markAllNotificationsAsRead,
-  GetNotifications200Item,
-  GetNotifications200ItemType,
+  GetNotifications200NotificationsItem,
+  GetNotifications200NotificationsItemType,
 } from "@/lib/api/fetch-generated";
 import {
   BellIcon,
@@ -41,7 +41,9 @@ dayjs.extend(relativeTime);
 dayjs.locale("pt-br");
 
 export function NotificationCenter() {
-  const [notifications, setNotifications] = useState<GetNotifications200Item[]>([]);
+  const [notifications, setNotifications] = useState<GetNotifications200NotificationsItem[]>([]);
+  const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const router = useRouter();
 
   // Contador derivado para performance otimizada
@@ -49,30 +51,41 @@ export function NotificationCenter() {
     notifications.filter((n) => !n.isRead).length, 
   [notifications]);
 
+  const fetchNotifications = async (cursor?: string) => {
+    try {
+      const response = await getNotifications({ 
+        limit: 10,
+        cursor 
+      });
+      
+      if (response.status === 200) {
+        if (cursor) {
+          setNotifications((prev) => [...prev, ...response.data.notifications]);
+        } else {
+          setNotifications(response.data.notifications);
+        }
+        setNextCursor(response.data.nextCursor);
+      }
+    } catch (error) {
+      console.error("Failed to fetch notifications", error);
+    }
+  };
+
   useEffect(() => {
     let isMounted = true;
 
-    const fetchInitialNotifications = async () => {
-      try {
-        const response = await getNotifications();
-        if (response.status === 200 && isMounted) {
-          setNotifications(response.data);
-        }
-      } catch (error) {
-        console.error("Failed to fetch notifications", error);
+    // Call fetchNotifications after mount to avoid cascading renders lint error
+    const init = async () => {
+      if (isMounted) {
+        await fetchNotifications();
       }
     };
-
-    fetchInitialNotifications();
+    init();
 
     const interval = setInterval(async () => {
-      try {
-        const response = await getNotifications();
-        if (response.status === 200 && isMounted) {
-          setNotifications(response.data);
-        }
-      } catch (error) {
-        console.error("Failed to fetch notifications", error);
+      if (isMounted) {
+        // Recarregar apenas a primeira página para checar novas notificações
+        await fetchNotifications();
       }
     }, 60000);
 
@@ -81,6 +94,16 @@ export function NotificationCenter() {
       clearInterval(interval);
     };
   }, []);
+
+  const handleLoadMore = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isLoadingMore || !nextCursor) return;
+
+    setIsLoadingMore(true);
+    await fetchNotifications(nextCursor);
+    setIsLoadingMore(false);
+  };
 
   const handleMarkAsRead = async (id: string) => {
     try {
@@ -102,7 +125,7 @@ export function NotificationCenter() {
     }
   };
 
-  const getIcon = (type: GetNotifications200ItemType) => {
+  const getIcon = (type: GetNotifications200NotificationsItemType) => {
     switch (type) {
       case "FRIEND_REQUEST":
         return <UserPlusIcon weight="duotone" className="size-4 text-blue-500" />;
@@ -127,7 +150,7 @@ export function NotificationCenter() {
     }
   };
 
-  const getNotificationMessage = (notification: GetNotifications200Item) => {
+  const getNotificationMessage = (notification: GetNotifications200NotificationsItem) => {
     switch (notification.type) {
       case "FRIEND_REQUEST": return "enviou um pedido de amizade.";
       case "FRIEND_ACCEPTED": return "aceitou seu pedido de amizade.";
@@ -142,7 +165,7 @@ export function NotificationCenter() {
     }
   };
 
-  const handleNotificationClick = (notification: GetNotifications200Item) => {
+  const handleNotificationClick = (notification: GetNotifications200NotificationsItem) => {
     if (!notification.isRead) {
       handleMarkAsRead(notification.id);
     }
@@ -259,6 +282,27 @@ export function NotificationCenter() {
               <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
                 Tudo em ordem por aqui!
               </p>
+            </div>
+          )}
+
+          {nextCursor && (
+            <div className="p-2 pt-0">
+              <Button
+                variant="ghost"
+                size="sm"
+                disabled={isLoadingMore}
+                onClick={handleLoadMore}
+                className="w-full h-10 rounded-xl text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all"
+              >
+                {isLoadingMore ? (
+                  <div className="flex items-center gap-2">
+                    <div className="size-3 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+                    Carregando...
+                  </div>
+                ) : (
+                  "Ver notificações anteriores"
+                )}
+              </Button>
             </div>
           )}
         </div>
