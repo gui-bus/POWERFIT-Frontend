@@ -16,10 +16,9 @@ import { useQueryState, parseAsBoolean, parseAsString } from "nuqs";
 import { useState, useMemo, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { RestTimer } from "./restTimer";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { playSoftPing } from "@/lib/utils/audio";
 import { toast } from "sonner";
-import { createPortal } from "react-dom";
 
 interface ExerciseItemProps {
   exercise: GetWorkoutDayById200ExercisesItem;
@@ -36,16 +35,14 @@ export function ExerciseItem({
   const [history, setHistory] = useState<HistoryItem[]>([]);
 
   // Estados para os inputs de cada série
-  const [setInputs, setSetInputs] = useState<
-    { weight: string; reps: string }[]
-  >(
-    new Array(exercise.sets).fill({
+  const [setInputs, setSetInputs] = useState<{ weight: string; reps: string }[]>(
+    Array.from({ length: exercise.sets }, () => ({
       weight: "",
       reps: exercise.reps.toString(),
-    }),
+    })),
   );
 
-  // Efeito 2: Apenas para busca de histórico
+  // Efeito para busca de histórico
   useEffect(() => {
     let ignore = false;
 
@@ -83,7 +80,7 @@ export function ExerciseItem({
     parseAsString.withDefault(new Array(exercise.sets).fill("0").join(",")),
   );
 
-  const [chatOpen, setChatOpen] = useQueryState(
+  const [, setChatOpen] = useQueryState(
     "chat_open",
     parseAsBoolean.withDefault(false),
   );

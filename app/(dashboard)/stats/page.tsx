@@ -101,6 +101,7 @@ export default async function StatsPage() {
           completedRestDays={stats.completedRestDays}
           conclusionRate={stats.conclusionRate}
           totalTimeInSeconds={stats.totalTimeInSeconds}
+          totalVolumeInGrams={stats.totalVolumeInGrams}
         />
       </div>
 
