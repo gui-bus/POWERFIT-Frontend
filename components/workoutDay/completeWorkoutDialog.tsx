@@ -150,7 +150,7 @@ export function CompleteWorkoutDialog({ planId, dayId, sessionId, trigger }: Com
                           )}
                         </div>
                         <span className={cn(
-                          "text-[8px] font-black uppercase tracking-tighter max-w-[60px] truncate transition-colors",
+                          "text-[8px] font-black uppercase tracking-tighter max-w-15 truncate transition-colors",
                           isSelected ? "text-primary" : "text-muted-foreground"
                         )}>
                           {friend.name.split(' ')[0]}
