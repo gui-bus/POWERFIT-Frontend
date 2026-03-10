@@ -61,8 +61,6 @@ export function PremiumSidebar({ homeData, userData }: PremiumSidebarProps) {
   return (
     <aside className="hidden 2xl:flex w-120 xl:w-130 bg-card border-l border-border flex-col h-screen overflow-y-auto custom-scrollbar sticky top-0">
       <div className="p-12 space-y-12">
-        
-        {/* User Level Card */}
         <div className="bg-primary border border-primary/20 rounded-[2.5rem] p-8 shadow-lg shadow-primary/10 overflow-hidden relative group">
           <div className="absolute -bottom-4 -right-4 opacity-20 group-hover:scale-110 transition-transform duration-700">
             <StarIcon weight="fill" className="size-32 text-primary-foreground" />
@@ -94,29 +92,28 @@ export function PremiumSidebar({ homeData, userData }: PremiumSidebarProps) {
           </div>
         </div>
 
-        {/* Quick Social & Gamification Links */}
         <div className="grid grid-cols-3 gap-4">
           <Link href="/ranking">
-            <button className="w-full bg-background border border-border hover:border-primary/30 rounded-3xl p-4 text-center transition-all hover:shadow-xl group cursor-pointer">
+            <button className="w-full bg-background dark:bg-zinc-800 border border-border hover:border-primary/30 rounded-3xl p-4 text-center transition-all hover:shadow-xl group cursor-pointer">
               <TrophyIcon weight="duotone" className="size-6 text-primary mx-auto mb-2 group-hover:scale-110 transition-transform" />
               <p className="text-[9px] font-black uppercase italic tracking-widest text-foreground">Ranking</p>
             </button>
           </Link>
           <Link href="/friends">
-            <button className="w-full bg-background border border-border hover:border-primary/30 rounded-3xl p-4 text-center transition-all hover:shadow-xl group cursor-pointer">
+            <button className="w-full bg-background dark:bg-zinc-800 border border-border hover:border-primary/30 rounded-3xl p-4 text-center transition-all hover:shadow-xl group cursor-pointer">
               <UsersIcon weight="duotone" className="size-6 text-primary mx-auto mb-2 group-hover:scale-110 transition-transform" />
               <p className="text-[9px] font-black uppercase italic tracking-widest text-foreground">Amigos</p>
             </button>
           </Link>
           <Link href="/achievements">
-            <button className="w-full bg-background border border-border hover:border-primary/30 rounded-3xl p-4 text-center transition-all hover:shadow-xl group cursor-pointer">
+            <button className="w-full bg-background dark:bg-zinc-800 border border-border hover:border-primary/30 rounded-3xl p-4 text-center transition-all hover:shadow-xl group cursor-pointer">
               <StarIcon weight="duotone" className="size-6 text-primary mx-auto mb-2 group-hover:scale-110 transition-transform" />
               <p className="text-[9px] font-black uppercase italic tracking-widest text-foreground">Conquistas</p>
             </button>
           </Link>
         </div>
 
-        <div className="bg-background rounded-[2.5rem] border border-border overflow-hidden shadow-sm">
+        <div className="bg-background dark:bg-zinc-800 rounded-[2.5rem] border border-border overflow-hidden shadow-sm">
           <ConsistencyGrid 
             consistencyByDay={homeData.consistencyByDay} 
             streak={homeData.workoutStreak} 
@@ -141,7 +138,7 @@ export function PremiumSidebar({ homeData, userData }: PremiumSidebarProps) {
             {MOCK_POSTS.map((post) => (
               <Link key={post.id} href={`/blog/${post.slug}`}>
                 <article 
-                  className="group bg-background rounded-[2.5rem] border border-border hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/5 transition-all cursor-pointer overflow-hidden flex items-center"
+                  className="group bg-background dark:bg-zinc-800 rounded-[2.5rem] border border-border hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/5 transition-all cursor-pointer overflow-hidden flex items-center"
                 >
                   <div className="relative aspect-square size-32 min-w-32 overflow-hidden">
                     <Image 

@@ -10,7 +10,6 @@ import {
 } from "@/lib/api/fetch-generated";
 import {
   BellIcon,
-  CheckIcon,
   ChecksIcon,
   UserPlusIcon,
   LightningIcon,
@@ -174,7 +173,7 @@ export function NotificationCenter() {
         <Button
           variant="ghost"
           size="icon"
-          className="relative size-12 rounded-2xl hover:bg-primary/5 transition-all group"
+          className="relative size-12 rounded-2xl hover:bg-primary/5 transition-all group cursor-pointer"
         >
           <BellIcon
             weight={unreadCount > 0 ? "fill" : "duotone"}
@@ -232,7 +231,7 @@ export function NotificationCenter() {
                       {notification.sender?.name.substring(0, 2).toUpperCase() || "FIT"}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="absolute -bottom-1 -right-1 bg-background rounded-full p-0.5 border border-border">
+                  <div className="absolute -bottom-1 -right-1 rounded-full">
                     {getIcon(notification.type)}
                   </div>
                 </div>

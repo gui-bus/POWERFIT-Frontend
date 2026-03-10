@@ -2,7 +2,7 @@
 
 import { GetRanking200RankingItem } from "@/lib/api/fetch-generated";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { FireIcon, StarIcon, MedalIcon } from "@phosphor-icons/react";
+import { FireIcon, StarIcon } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { fadeIn, containerStagger } from "@/lib/utils/animations";
@@ -33,7 +33,7 @@ export function RankingList({ items, type, currentUserId }: RankingListProps) {
               "flex items-center justify-between p-4 rounded-[2rem] border transition-all duration-300",
               isCurrentUser 
                 ? "bg-primary/5 border-primary/30 shadow-lg shadow-primary/5 scale-[1.01]" 
-                : "bg-card border-border/50 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/[0.02]"
+                : "bg-card border-border/50 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/2"
             )}
           >
             <div className="flex items-center gap-4">
@@ -44,7 +44,7 @@ export function RankingList({ items, type, currentUserId }: RankingListProps) {
               </div>
               
               <div className="relative">
-                <Avatar className="size-12 rounded-2xl border border-border shadow-sm">
+                <Avatar className="size-12 rounded-full border border-border shadow-sm">
                   <AvatarImage src={item.image || ""} alt={item.name} className="object-cover" />
                   <AvatarFallback className="bg-muted text-xs font-black uppercase">
                     {item.name.substring(0, 2)}
@@ -71,7 +71,7 @@ export function RankingList({ items, type, currentUserId }: RankingListProps) {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 bg-muted/30 px-5 py-2.5 rounded-2xl border border-border/50 shadow-inner min-w-[100px] justify-center">
+            <div className="flex items-center gap-2 bg-muted/30 px-5 py-2.5 rounded-2xl border border-border/50 shadow-inner min-w-25 justify-center">
               {type === "STREAK" ? (
                 <>
                   <FireIcon weight="fill" className="size-4 text-primary" />

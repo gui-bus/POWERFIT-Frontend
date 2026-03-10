@@ -68,7 +68,7 @@ export default async function UserFeedPage({ params }: UserFeedPageProps) {
       <div className="w-full space-y-8">
         {/* Profile Card */}
         {userProfile && (
-          <div className="bg-card border border-border rounded-[3rem] p-8 flex flex-col sm:flex-row items-center gap-8 shadow-sm border-primary/10 relative overflow-hidden group">
+          <div className="bg-card border border-border rounded-[3rem] p-8 flex flex-col sm:flex-row items-center gap-8 shadow-sm  relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform duration-700">
               <ActivityIcon weight="fill" className="size-32 text-primary" />
             </div>

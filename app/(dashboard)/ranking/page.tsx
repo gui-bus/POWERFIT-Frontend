@@ -132,13 +132,18 @@ export default async function RankingPage({ searchParams }: RankingPageProps) {
                       {rankingType === "STREAK" ? (
                         <>
                           <FireIcon weight="fill" className="size-5 text-primary" />
-                          <span className="font-anton text-xl italic text-foreground leading-none">{userStreak}</span>
+                          <span className="font-anton text-xl italic text-foreground leading-none">{userStreak} DIAS</span>
                         </>
                       ) : (
-                        <>
-                          <StarIcon weight="fill" className="size-5 text-primary" />
-                          <span className="font-anton text-xl italic text-foreground leading-none">{(rankingResponse.data.ranking.find(r => r.id === currentUserId)?.xp || 0)} XP</span>
-                        </>
+                        <div className="flex items-center gap-4">
+                          <div className="flex flex-col items-end">
+                            <span className="text-[8px] font-black text-primary uppercase tracking-widest leading-none mb-1">Nível {rankingResponse.data.ranking.find(r => r.id === currentUserId)?.level || 0}</span>
+                            <div className="flex items-center gap-2">
+                              <StarIcon weight="fill" className="size-4 text-primary" />
+                              <span className="font-anton text-xl italic text-foreground leading-none">{(rankingResponse.data.ranking.find(r => r.id === currentUserId)?.xp || 0)} XP</span>
+                            </div>
+                          </div>
+                        </div>
                       )}
                    </div>
                 </div>

@@ -379,6 +379,87 @@ export type CompleteWorkoutSession500 = {
   code: string;
 };
 
+export type UpsertWorkoutSetBody = {
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  weightInGrams: number;
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  reps: number;
+};
+
+/**
+ * @nullable
+ */
+export type UpsertWorkoutSet204 =
+  | (typeof UpsertWorkoutSet204)[keyof typeof UpsertWorkoutSet204]
+  | null;
+
+export const UpsertWorkoutSet204 = {} as const;
+
+export type UpsertWorkoutSet401 = {
+  error: string;
+  code: string;
+};
+
+export type UpsertWorkoutSet404 = {
+  error: string;
+  code: string;
+};
+
+export type UpsertWorkoutSet500 = {
+  error: string;
+  code: string;
+};
+
+export type Item = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  sessionId: string;
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  workoutExerciseId: string;
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  setIndex: number;
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  weightInGrams: number;
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  reps: number;
+  createdAt: string;
+};
+
+/**
+ * @nullable
+ */
+export type GetWorkoutExerciseHistory200 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12} | 00000000-0000-0000-0000-000000000000 | ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  exerciseId: string;
+  lastSets: Item[];
+} | null;
+
+export type GetWorkoutExerciseHistory401 = {
+  error: string;
+  code: string;
+};
+
+export type GetWorkoutExerciseHistory500 = {
+  error: string;
+  code: string;
+};
+
 /**
  * @nullable
  */
@@ -1824,6 +1905,120 @@ export const completeWorkoutSession = async (
       method: "PATCH",
       headers: { "Content-Type": "application/json", ...options?.headers },
       body: JSON.stringify(completeWorkoutSessionBody),
+    },
+  );
+};
+
+/**
+ * @summary Log or update a workout set
+ */
+export type upsertWorkoutSetResponse204 = {
+  data: UpsertWorkoutSet204;
+  status: 204;
+};
+
+export type upsertWorkoutSetResponse401 = {
+  data: UpsertWorkoutSet401;
+  status: 401;
+};
+
+export type upsertWorkoutSetResponse404 = {
+  data: UpsertWorkoutSet404;
+  status: 404;
+};
+
+export type upsertWorkoutSetResponse500 = {
+  data: UpsertWorkoutSet500;
+  status: 500;
+};
+
+export type upsertWorkoutSetResponseSuccess = upsertWorkoutSetResponse204 & {
+  headers: Headers;
+};
+export type upsertWorkoutSetResponseError = (
+  | upsertWorkoutSetResponse401
+  | upsertWorkoutSetResponse404
+  | upsertWorkoutSetResponse500
+) & {
+  headers: Headers;
+};
+
+export type upsertWorkoutSetResponse =
+  | upsertWorkoutSetResponseSuccess
+  | upsertWorkoutSetResponseError;
+
+export const getUpsertWorkoutSetUrl = (
+  sessionId: string,
+  exerciseId: string,
+  setIndex: number,
+) => {
+  return `/workout-plans/sessions/${sessionId}/exercises/${exerciseId}/sets/${setIndex}`;
+};
+
+export const upsertWorkoutSet = async (
+  sessionId: string,
+  exerciseId: string,
+  setIndex: number,
+  upsertWorkoutSetBody: UpsertWorkoutSetBody,
+  options?: RequestInit,
+): Promise<upsertWorkoutSetResponse> => {
+  return customFetch<upsertWorkoutSetResponse>(
+    getUpsertWorkoutSetUrl(sessionId, exerciseId, setIndex),
+    {
+      ...options,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(upsertWorkoutSetBody),
+    },
+  );
+};
+
+/**
+ * @summary Get the last log for a specific exercise
+ */
+export type getWorkoutExerciseHistoryResponse200 = {
+  data: GetWorkoutExerciseHistory200;
+  status: 200;
+};
+
+export type getWorkoutExerciseHistoryResponse401 = {
+  data: GetWorkoutExerciseHistory401;
+  status: 401;
+};
+
+export type getWorkoutExerciseHistoryResponse500 = {
+  data: GetWorkoutExerciseHistory500;
+  status: 500;
+};
+
+export type getWorkoutExerciseHistoryResponseSuccess =
+  getWorkoutExerciseHistoryResponse200 & {
+    headers: Headers;
+  };
+export type getWorkoutExerciseHistoryResponseError = (
+  | getWorkoutExerciseHistoryResponse401
+  | getWorkoutExerciseHistoryResponse500
+) & {
+  headers: Headers;
+};
+
+export type getWorkoutExerciseHistoryResponse =
+  | getWorkoutExerciseHistoryResponseSuccess
+  | getWorkoutExerciseHistoryResponseError;
+
+export const getGetWorkoutExerciseHistoryUrl = (exerciseId: string) => {
+  return `/workout-plans/exercises/${exerciseId}/history`;
+};
+
+export const getWorkoutExerciseHistory = async (
+  exerciseId: string,
+  options?: RequestInit,
+): Promise<getWorkoutExerciseHistoryResponse> => {
+  return customFetch<getWorkoutExerciseHistoryResponse>(
+    getGetWorkoutExerciseHistoryUrl(exerciseId),
+    {
+      ...options,
+      method: "GET",
     },
   );
 };

@@ -64,10 +64,10 @@ export function UserNav({ user }: UserNavProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-14 w-auto rounded-2xl px-3 flex items-center gap-3 cursor-pointer hover:bg-primary/5 transition-all">
-          <Avatar className="h-10 w-10 rounded-2xl p-0.5">
-            <AvatarImage src={user.image || ""} alt={user.name} className="rounded-[10px] object-cover" />
-            <AvatarFallback className="rounded-[10px] bg-primary text-primary-foreground text-[10px] font-black uppercase">
+        <Button variant="ghost" className="relative h-14 w-auto rounded-full px-3 flex items-center gap-3 cursor-pointer hover:bg-primary/5 transition-all">
+          <Avatar className="h-10 w-10 rounded-full p-0.5">
+            <AvatarImage src={user.image || ""} alt={user.name} className="rounded-full object-cover" />
+            <AvatarFallback className="rounded-full bg-primary text-primary-foreground text-[10px] font-black uppercase">
               {user.name.substring(0, 2)}
             </AvatarFallback>
           </Avatar>

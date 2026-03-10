@@ -2,7 +2,7 @@
 
 import { GetRanking200RankingItem } from "@/lib/api/fetch-generated";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CrownIcon, TrophyIcon, MedalIcon, StarIcon, FireIcon } from "@phosphor-icons/react";
+import { CrownIcon, MedalIcon, StarIcon, FireIcon } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { springUp, containerStagger, floatingBadge } from "@/lib/utils/animations";
@@ -68,7 +68,7 @@ export function RankingPodium({ items, type, currentUserId }: RankingPodiumProps
       animate="animate"
       className="relative pt-12 pb-8"
     >
-      <div className="flex items-end justify-center gap-2 sm:gap-8 max-w-4xl mx-auto px-4 relative z-10">
+      <div className="flex items-end justify-end gap-2 sm:gap-8 px-4 relative z-10">
         {podiumSlots.map((slot) => {
           if (!slot.item) return <div key={`empty-${slot.position}`} className={cn("flex-1", slot.order)} />;
           
@@ -80,7 +80,7 @@ export function RankingPodium({ items, type, currentUserId }: RankingPodiumProps
               className={cn(
                 "flex flex-col items-center flex-1 transition-all duration-700",
                 slot.order,
-                slot.position === 1 ? "z-20 scale-110 sm:scale-125 mb-4" : "z-10"
+                slot.position === 1 ? "z-20" : "z-10"
               )}
             >
               <motion.div variants={springUp} className="relative mb-6">
@@ -93,11 +93,11 @@ export function RankingPodium({ items, type, currentUserId }: RankingPodiumProps
                 </motion.div>
 
                 <div className={cn(
-                  "relative rounded-[2rem] p-1 transition-all duration-500",
+                  "relative rounded-full p-1 transition-all duration-500",
                   slot.avatarSize,
                   isMe ? "ring-4 ring-primary ring-offset-4 ring-offset-background shadow-2xl" : "ring-2 ring-border/50"
                 )}>
-                  <div className="size-full rounded-[1.8rem] overflow-hidden border-2 border-background bg-card">
+                  <div className="size-full rounded-full overflow-hidden border-2 border-background bg-card">
                     <Avatar className="size-full rounded-none">
                       <AvatarImage src={slot.item.image || ""} alt={slot.item.name} className="object-cover" />
                       <AvatarFallback className="bg-muted text-xl font-black italic">
@@ -133,7 +133,7 @@ export function RankingPodium({ items, type, currentUserId }: RankingPodiumProps
                   ) : (
                     <>
                       <StarIcon weight="fill" className="size-3.5 text-primary" />
-                      <span>{slot.item.xp} XP</span>
+                      <span>Lvl {slot.item.level} - {slot.item.xp} XP</span>
                     </>
                   )}
                 </div>
@@ -151,7 +151,7 @@ export function RankingPodium({ items, type, currentUserId }: RankingPodiumProps
                   slot.height,
                   slot.border,
                   "bg-linear-to-b from-card/80 to-muted/10 backdrop-blur-sm",
-                  isMe && "border-primary/40 bg-primary/[0.03]"
+                  isMe && "border-primary/40 bg-primary/3"
                 )}>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <span className={cn(
@@ -159,13 +159,6 @@ export function RankingPodium({ items, type, currentUserId }: RankingPodiumProps
                       slot.isGold ? "text-amber-500" : "text-foreground"
                     )}>
                       {slot.position}
-                    </span>
-                  </div>
-                  
-                  {/* Level Tag on Pedestal */}
-                  <div className="absolute bottom-4 left-0 right-0 text-center">
-                    <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-widest opacity-30">
-                      Lvl {slot.item.level}
                     </span>
                   </div>
                 </div>
