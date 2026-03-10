@@ -24,11 +24,11 @@ export function ConsistencyGrid({ consistencyByDay, streak }: ConsistencyGridPro
     if (currentDate.isAfter(today, 'day')) continue;
     
     const status = consistencyByDay[date];
-    const isCompleted = status.workoutDayCompleted || (currentDate.isBefore(today, 'day') && status.workoutDayStarted);
+    const isCompleted = status.workoutDayCompleted;
     
     if (isCompleted) {
       calculatedStreak++;
-    } else if (currentDate.isSame(today, 'day')) {
+    } else if (currentDate.isSame(today, "day")) {
       continue;
     } else {
       break;
@@ -58,7 +58,7 @@ export function ConsistencyGrid({ consistencyByDay, streak }: ConsistencyGridPro
           const isToday = currentDate.isSame(today, "day");
           const isPast = currentDate.isBefore(today, "day");
           
-          const isCompleted = status?.workoutDayCompleted || (isPast && status?.workoutDayStarted);
+          const isCompleted = status?.workoutDayCompleted;
           const isStarted = status?.workoutDayStarted;
 
           return (
