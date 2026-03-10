@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { TimerIcon, XIcon, MinusIcon, ArrowsInSimpleIcon } from "@phosphor-icons/react";
+import { TimerIcon, XIcon, ArrowsInSimpleIcon } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { createPortal } from "react-dom";
@@ -99,7 +99,7 @@ export function RestTimer({ initialSeconds, onFinish, onClose }: RestTimerProps)
   if (!mounted) return null;
 
   const timerContent = (
-    <div className="fixed bottom-24 right-6 z-[100] pointer-events-none flex flex-col items-end gap-4">
+    <div className="fixed bottom-12 left-12 z-100 pointer-events-none flex flex-col items-end gap-4">
       <AnimatePresence mode="wait">
         {isMinimized ? (
           <motion.button
@@ -108,7 +108,7 @@ export function RestTimer({ initialSeconds, onFinish, onClose }: RestTimerProps)
             animate={{ scale: 1, opacity: 1, x: 0 }}
             exit={{ scale: 0.8, opacity: 0, x: 20 }}
             onClick={() => setIsMinimized(false)}
-            className="pointer-events-auto group relative size-16 rounded-2xl bg-primary text-primary-foreground shadow-2xl shadow-primary/40 flex items-center justify-center active:scale-95 transition-all overflow-hidden"
+            className="pointer-events-auto group relative size-16 rounded-full bg-primary text-primary-foreground shadow-2xl shadow-primary/40 flex items-center justify-center active:scale-95 transition-all overflow-hidden"
           >
              <div className="absolute inset-0 bg-black/10 translate-y-full group-hover:translate-y-0 transition-transform" />
              <div className="flex flex-col items-center gap-0.5 relative z-10">
@@ -136,7 +136,7 @@ export function RestTimer({ initialSeconds, onFinish, onClose }: RestTimerProps)
             initial={{ opacity: 0, scale: 0.9, y: 20, x: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20, x: 20 }}
-            className="pointer-events-auto w-[280px] bg-card border-2 border-primary/20 rounded-[2.5rem] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.3)] overflow-hidden relative"
+            className="pointer-events-auto w-70 bg-card border-2 border-primary/20 rounded-[2.5rem] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.3)] overflow-hidden relative"
           >
              <div className="absolute top-0 right-0 p-4 flex items-center gap-2">
                 <button 
