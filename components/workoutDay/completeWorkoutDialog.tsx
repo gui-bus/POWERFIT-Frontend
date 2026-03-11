@@ -10,27 +10,21 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
-  UsersIcon, 
   CheckCircleIcon, 
-  ChatTeardropTextIcon, 
-  PlusIcon,
-  CheckIcon,
-  CameraIcon,
-  XIcon,
   SpinnerGapIcon
 } from "@phosphor-icons/react";
 import { getFriends, GetFriends200Item } from "@/lib/api/fetch-generated";
 import { completeWorkoutAction } from "@/app/(dashboard)/workout-plans/[planId]/days/[dayId]/actions";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
 import { uploadFiles } from "@/lib/uploadthing";
 import { authClient } from "@/lib/authClient";
-
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { playSoftPing } from "@/lib/utils/audio";
-import Image from "next/image";
+import { CelebrationEffect } from "./completeWorkoutDialog/celebrationEffect";
+import { PhotoUploader } from "./completeWorkoutDialog/photoUploader";
+import { StatusMessageInput } from "./completeWorkoutDialog/statusMessageInput";
+import { TagFriendsSection } from "./completeWorkoutDialog/tagFriendsSection";
 
 interface CompleteWorkoutDialogProps {
   planId: string;
@@ -47,7 +41,6 @@ export function CompleteWorkoutDialog({ planId, dayId, sessionId, trigger }: Com
   const [isLoading, setIsLoading] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
   
-
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -90,7 +83,6 @@ export function CompleteWorkoutDialog({ planId, dayId, sessionId, trigger }: Com
     let imageUrl = undefined;
 
     try {
-
       if (selectedFile) {
         setIsUploading(true);
         const uploadToastId = "workout-upload-toast";
@@ -107,8 +99,6 @@ export function CompleteWorkoutDialog({ planId, dayId, sessionId, trigger }: Com
         }
 
         try {
-
-
           const uploadRes = await uploadFiles("workoutImage", {
             files: [selectedFile],
             headers: {
@@ -117,24 +107,24 @@ export function CompleteWorkoutDialog({ planId, dayId, sessionId, trigger }: Com
               "x-session-token": token 
             }
           });
-if (uploadRes && uploadRes[0]) {
-  imageUrl = uploadRes[0].url;
-  toast.success("Foto enviada!", { id: uploadToastId });
-} else {
-  throw new Error("Resposta de upload vazia");
-}
-} catch (uploadError: unknown) {
-console.error("Erro técnico no upload:", uploadError);
-const errorMessage = uploadError instanceof Error ? uploadError.message : "403 Forbidden";
-toast.error(`Falha no upload: ${errorMessage}`, { id: uploadToastId });
-setIsLoading(false);
-setIsUploading(false);
-return;
-} finally {
-setIsUploading(false);
-}
-      }
 
+          if (uploadRes && uploadRes[0]) {
+            imageUrl = uploadRes[0].url;
+            toast.success("Foto enviada!", { id: uploadToastId });
+          } else {
+            throw new Error("Resposta de upload vazia");
+          }
+        } catch (uploadError: unknown) {
+          console.error("Erro técnico no upload:", uploadError);
+          const errorMessage = uploadError instanceof Error ? uploadError.message : "Erro desconhecido";
+          toast.error(`Falha no upload: ${errorMessage}`, { id: uploadToastId });
+          setIsLoading(false);
+          setIsUploading(false);
+          return;
+        } finally {
+          setIsUploading(false);
+        }
+      }
 
       const response = await completeWorkoutAction(planId, dayId, sessionId, {
         statusMessage: statusMessage.trim() || undefined,
@@ -152,7 +142,6 @@ setIsUploading(false);
         setTimeout(() => {
           setOpen(false);
           setShowCelebration(false);
-
           setSelectedFile(null);
           setPreviewUrl(null);
           setStatusMessage("");
@@ -176,38 +165,7 @@ setIsUploading(false);
       </DialogTrigger>
       <DialogContent className="bg-card border-border rounded-[2.5rem] sm:max-w-md p-0 overflow-hidden outline-hidden">
         <div className="p-8 space-y-8 relative max-h-[85vh] overflow-y-auto custom-scrollbar">
-          <AnimatePresence>
-            {showCelebration && (
-              <div className="absolute inset-0 pointer-events-none z-50 overflow-hidden">
-                {Array.from({ length: 30 }).map((_, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ 
-                      opacity: 1, 
-                      scale: 0, 
-                      x: "50%", 
-                      y: "50%",
-                      rotate: 0 
-                    }}
-                    animate={{ 
-                      opacity: 0, 
-                      scale: Math.random() * 1.5 + 0.5, 
-                      x: `${Math.random() * 200 - 50}%`, 
-                      y: `${Math.random() * -200 - 50}%`,
-                      rotate: Math.random() * 360 
-                    }}
-                    transition={{ duration: 1.5, ease: "easeOut" }}
-                    className="absolute size-3 rounded-sm bg-primary"
-                    style={{ 
-                      backgroundColor: i % 2 === 0 ? "var(--primary)" : "var(--foreground)",
-                      left: "45%",
-                      top: "45%"
-                    }}
-                  />
-                ))}
-              </div>
-            )}
-          </AnimatePresence>
+          <CelebrationEffect show={showCelebration} />
 
           <DialogHeader>
             <motion.div 
@@ -223,104 +181,22 @@ setIsUploading(false);
           </DialogHeader>
 
           <div className="space-y-6">
-            {/* Photo Section */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 text-muted-foreground px-1">
-                <CameraIcon weight="duotone" className="size-4" />
-                <span className="text-[10px] font-black uppercase tracking-widest">Foto do Treino (Opcional)</span>
-              </div>
-              
-              {!previewUrl ? (
-                <label className="relative group flex flex-col items-center justify-center w-full h-32 bg-muted/20 border-2 border-dashed border-border/50 rounded-[1.5rem] hover:bg-primary/5 hover:border-primary/30 transition-all cursor-pointer overflow-hidden">
-                  <div className="flex flex-col items-center gap-2 text-muted-foreground group-hover:text-primary transition-colors">
-                    <PlusIcon weight="bold" className="size-6" />
-                    <span className="text-[9px] font-black uppercase tracking-widest italic">Adicionar Prova de Esforço</span>
-                  </div>
-                  <input type="file" accept="image/*" className="hidden" onChange={handleFileSelect} />
-                </label>
-              ) : (
-                <div className="relative w-full h-48 rounded-[1.5rem] overflow-hidden border border-border shadow-lg group">
-                  <Image src={previewUrl} alt="Preview" fill className="object-cover" />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <button 
-                      onClick={removePhoto}
-                      className="size-10 rounded-xl bg-red-500 text-white flex items-center justify-center shadow-lg active:scale-95 transition-transform"
-                    >
-                      <XIcon weight="bold" className="size-5" />
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
+            <PhotoUploader
+              previewUrl={previewUrl}
+              onFileSelect={handleFileSelect}
+              onRemovePhoto={removePhoto}
+            />
 
-            {/* Status Message */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 text-muted-foreground px-1">
-                <ChatTeardropTextIcon weight="duotone" className="size-4" />
-                <span className="text-[10px] font-black uppercase tracking-widest">Como foi o treino?</span>
-              </div>
-              <textarea
-                value={statusMessage}
-                onChange={(e) => setStatusMessage(e.target.value)}
-                placeholder="Ex: Treino insano de pernas! Foco total."
-                className="w-full bg-muted/30 border border-border/50 rounded-[1.5rem] p-4 text-xs font-medium focus:outline-hidden focus:border-primary/50 transition-colors min-h-24 resize-none"
-              />
-            </div>
+            <StatusMessageInput
+              value={statusMessage}
+              onChange={setStatusMessage}
+            />
 
-            {/* Tag Friends */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between px-1">
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <UsersIcon weight="duotone" className="size-4" />
-                  <span className="text-[10px] font-black uppercase tracking-widest">Treinou com alguém?</span>
-                </div>
-                {selectedFriends.length > 0 && (
-                  <span className="text-[9px] font-black text-primary uppercase tracking-widest bg-primary/10 px-2 py-0.5 rounded-full">
-                    {selectedFriends.length} marcados
-                  </span>
-                )}
-              </div>
-
-              <div className="flex gap-3 overflow-x-auto pb-2 custom-scrollbar mask-fade-right p-1">
-                {friends.length > 0 ? (
-                  friends.map((friend) => {
-                    const isSelected = selectedFriends.includes(friend.id);
-                    return (
-                      <button
-                        key={friend.id}
-                        onClick={() => toggleFriend(friend.id)}
-                        className="flex flex-col items-center gap-2 group shrink-0"
-                      >
-                        <div className={cn(
-                          "relative size-14 rounded-2xl p-0.5 transition-all duration-300",
-                          isSelected ? "bg-primary shadow-lg shadow-primary/20 scale-110" : "bg-border/50 hover:bg-primary/30"
-                        )}>
-                          <div className="size-full rounded-[0.9rem] bg-card overflow-hidden">
-                            <Avatar className="size-full rounded-none">
-                              <AvatarImage src={friend.image || ""} className="object-cover" />
-                              <AvatarFallback className="text-[10px] font-bold">{friend.name.substring(0, 2)}</AvatarFallback>
-                            </Avatar>
-                          </div>
-                          {isSelected && (
-                            <div className="absolute -top-1 -right-1 size-5 bg-primary text-white rounded-full flex items-center justify-center border-2 border-card shadow-sm">
-                              <CheckIcon weight="bold" className="size-2.5" />
-                            </div>
-                          )}
-                        </div>
-                        <span className={cn(
-                          "text-[8px] font-black uppercase tracking-tighter max-w-15 truncate transition-colors",
-                          isSelected ? "text-primary" : "text-muted-foreground"
-                        )}>
-                          {friend.name.split(' ')[0]}
-                        </span>
-                      </button>
-                    );
-                  })
-                ) : (
-                  <p className="text-[9px] font-bold text-muted-foreground italic px-1 uppercase tracking-widest py-4">Nenhum amigo para marcar.</p>
-                )}
-              </div>
-            </div>
+            <TagFriendsSection
+              friends={friends}
+              selectedFriends={selectedFriends}
+              onToggleFriend={toggleFriend}
+            />
           </div>
         </div>
 
