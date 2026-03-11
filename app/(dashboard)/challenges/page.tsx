@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 import { Container } from "@/components/common/container";
 import { PageHeader } from "@/components/pageHeader";
 import { ChallengeCard } from "@/components/gamification/challengeCard";
-import { SwordIcon, TrophyIcon, FireIcon } from "@phosphor-icons/react/ssr";
+import { SwordIcon, TrophyIcon } from "@phosphor-icons/react/ssr";
 
 export default async function ChallengesPage() {
   const session = await authClient.getSession({

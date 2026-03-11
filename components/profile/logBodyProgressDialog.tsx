@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ScalesIcon, PlusIcon, RulerIcon, BarbellIcon } from "@phosphor-icons/react";
+import { ScalesIcon, PlusIcon } from "@phosphor-icons/react";
 import { logBodyProgress } from "@/lib/api/fetch-generated";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -68,7 +68,7 @@ export function LogBodyProgressDialog() {
       } else {
         toast.error("Erro ao registrar medição.");
       }
-    } catch (error) {
+    } catch {
       toast.error("Erro de conexão.");
     } finally {
       setIsLoading(false);

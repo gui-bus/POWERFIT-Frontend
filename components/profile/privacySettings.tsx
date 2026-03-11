@@ -35,7 +35,7 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
         setIsPublic(newValue);
         toast.success(newValue ? "Perfil agora é público!" : "Perfil agora é privado.");
       }
-    } catch (error) {
+    } catch {
       toast.error("Erro ao atualizar privacidade.");
     } finally {
       setIsLoading(false);
@@ -51,7 +51,7 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
         setShowStats(newValue);
         toast.success(newValue ? "Estatísticas visíveis." : "Estatísticas ocultas.");
       }
-    } catch (error) {
+    } catch {
       toast.error("Erro ao atualizar visibilidade.");
     } finally {
       setIsLoading(false);

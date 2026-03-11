@@ -27,7 +27,6 @@ import { TrophyIcon, PlusIcon, BarbellIcon, TargetIcon } from "@phosphor-icons/r
 import { upsertPersonalRecord } from "@/lib/api/fetch-generated";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   exerciseName: z.string().min(2, "Nome do exercício é obrigatório"),
@@ -68,7 +67,7 @@ export function UpsertPersonalRecordDialog({ children }: { children?: React.Reac
       } else {
         toast.error("Erro ao registrar recorde.");
       }
-    } catch (error) {
+    } catch {
       toast.error("Erro de conexão com o servidor.");
     } finally {
       setIsLoading(false);

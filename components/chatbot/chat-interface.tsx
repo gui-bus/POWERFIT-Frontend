@@ -7,7 +7,7 @@ import { useQueryStates, parseAsBoolean, parseAsString } from "nuqs";
 import { SparkleIcon, XIcon, ArrowUpIcon } from "@phosphor-icons/react";
 import { Streamdown } from "streamdown";
 import "streamdown/styles.css";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -80,6 +80,11 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
   const form = useForm<ChatFormValues>({
     resolver: zodResolver(chatFormSchema),
     defaultValues: { message: "" },
+  });
+
+  const messageValue = useWatch({
+    control: form.control,
+    name: "message",
   });
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -277,7 +282,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
             />
             <Button
               type="submit"
-              disabled={!form.watch("message").trim() || isLoading}
+              disabled={!messageValue?.trim() || isLoading}
               size="icon"
               className="absolute right-1.5 top-1.5 size-11 rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
             >

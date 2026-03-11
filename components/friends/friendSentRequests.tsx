@@ -27,7 +27,7 @@ export function FriendSentRequests({ requests }: FriendSentRequestsProps) {
         toast.success("Solicitação cancelada.");
         router.refresh(); // Sincroniza a lista instantaneamente após cancelar
       }
-    } catch (error) {
+    } catch {
       toast.error("Erro ao cancelar solicitação.");
     } finally {
       setLoadingId(null);

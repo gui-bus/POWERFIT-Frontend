@@ -12,7 +12,6 @@ import {
 } from "@phosphor-icons/react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { authClient } from "@/lib/authClient";
 import { useEffect, useState } from "react";
 import { getHomeData } from "@/lib/api/fetch-generated";
 import dayjs from "dayjs";
@@ -20,7 +19,6 @@ import { useQueryState, parseAsBoolean } from "nuqs";
 
 export function BottomNav() {
   const pathname = usePathname();
-  const { data: session } = authClient.useSession();
 
   const [, setIsOpen] = useQueryState(
     "chat_open",

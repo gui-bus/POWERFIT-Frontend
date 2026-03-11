@@ -8,7 +8,6 @@ import { UpsertPersonalRecordDialog } from "@/components/profile/upsertPersonalR
 import { TrophyIcon, BarbellIcon, CalendarIcon, TrendUpIcon, CaretLeftIcon } from "@phosphor-icons/react/ssr";
 import dayjs from "dayjs";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 
 export default async function PersonalRecordsPage() {
   const session = await authClient.getSession({

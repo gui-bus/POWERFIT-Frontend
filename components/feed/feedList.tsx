@@ -9,7 +9,6 @@ import {
 import { FeedItem } from "@/components/feed/feedItem";
 import { UsersIcon, PlusIcon, UserPlusIcon, SpinnerIcon, ActivityIcon } from "@phosphor-icons/react";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 
 interface FeedListProps {
   initialItems: GetFeed200ActivitiesItem[];
@@ -57,6 +56,7 @@ export function FeedList({ initialItems, initialNextCursor, userId }: FeedListPr
   }, [isLoading, nextCursor, userId]);
 
   useEffect(() => {
+    const target = observerTarget.current;
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && nextCursor && !isLoading) {
@@ -66,13 +66,13 @@ export function FeedList({ initialItems, initialNextCursor, userId }: FeedListPr
       { threshold: 0.1 }
     );
 
-    if (observerTarget.current) {
-      observer.observe(observerTarget.current);
+    if (target) {
+      observer.observe(target);
     }
 
     return () => {
-      if (observerTarget.current) {
-        observer.unobserve(observerTarget.current);
+      if (target) {
+        observer.unobserve(target);
       }
     };
   }, [fetchMore, nextCursor, isLoading]);

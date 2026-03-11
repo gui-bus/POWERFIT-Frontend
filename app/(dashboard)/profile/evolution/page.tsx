@@ -1,4 +1,4 @@
-import { getBodyProgressHistory, getBodyProgressHistoryResponseSuccess, getMe } from "@/lib/api/fetch-generated";
+import { getBodyProgressHistory, getBodyProgressHistoryResponseSuccess } from "@/lib/api/fetch-generated";
 import { authClient } from "@/lib/authClient";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";

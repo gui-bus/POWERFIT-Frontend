@@ -56,7 +56,6 @@ export function ConsistencyGrid({ consistencyByDay, streak }: ConsistencyGridPro
           const status = consistencyByDay[dateKey];
           
           const isToday = currentDate.isSame(today, "day");
-          const isPast = currentDate.isBefore(today, "day");
           
           const isCompleted = status?.workoutDayCompleted;
           const isStarted = status?.workoutDayStarted;

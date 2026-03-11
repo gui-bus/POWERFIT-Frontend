@@ -18,7 +18,7 @@ import { useQueryState, parseAsBoolean, parseAsString } from "nuqs";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { RestTimer } from "./restTimer";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { playSoftPing } from "@/lib/utils/audio";
 import { toast } from "sonner";
 
@@ -177,7 +177,7 @@ export function ExerciseItem({
           });
         }
 
-      } catch (error) {
+      } catch {
         toast.error("Erro de conexão ao salvar série.");
         return;
       }

@@ -2,7 +2,6 @@
 
 import { GetChallenges200Item, joinChallenge } from "@/lib/api/fetch-generated";
 import { 
-  SwordIcon, 
   UsersIcon, 
   StarIcon, 
   CalendarIcon,
@@ -45,8 +44,6 @@ export function ChallengeCard({ challenge }: ChallengeCardProps) {
   };
 
   const isGlobal = challenge.type === "GLOBAL";
-  const isActive = challenge.status === "ACTIVE";
-  const isPending = challenge.status === "PENDING";
   const isCompleted = challenge.status === "COMPLETED";
 
   return (
