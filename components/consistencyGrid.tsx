@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { FireIcon, CheckIcon, PlayIcon } from "@phosphor-icons/react/ssr";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
+import { calculateStreak } from "@/lib/utils/consistency";
 
 dayjs.locale("pt-br");
 
@@ -17,23 +18,7 @@ export function ConsistencyGrid({ consistencyByDay, streak }: ConsistencyGridPro
   const today = dayjs().startOf('day');
   const startOfWeek = today.startOf('week').add(1, 'day').subtract(today.day() === 0 ? 7 : 0, 'day');
 
-  const dates = Object.keys(consistencyByDay).sort().reverse();
-  let calculatedStreak = 0;
-  for (const date of dates) {
-    const currentDate = dayjs(date);
-    if (currentDate.isAfter(today, 'day')) continue;
-    
-    const status = consistencyByDay[date];
-    const isCompleted = status.workoutDayCompleted;
-    
-    if (isCompleted) {
-      calculatedStreak++;
-    } else if (currentDate.isSame(today, "day")) {
-      continue;
-    } else {
-      break;
-    }
-  }
+  const calculatedStreak = calculateStreak(consistencyByDay, today);
   const finalStreak = Math.max(streak, calculatedStreak);
 
   return (
