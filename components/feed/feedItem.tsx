@@ -22,11 +22,9 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeIn } from "@/lib/utils/animations";
 import { toast } from "sonner";
+import { formatRelativeTime } from "@/lib/utils/date";
 
 import { authClient } from "@/lib/authClient";
-
-dayjs.extend(relativeTime);
-dayjs.locale("pt-br");
 
 interface FeedItemProps {
   item: GetFeed200ActivitiesItem;
@@ -95,7 +93,7 @@ export function FeedItem({ item }: FeedItemProps) {
     }
   };
 
-  const timeAgo = dayjs(item.completedAt).fromNow();
+  const timeAgo = formatRelativeTime(item.completedAt);
 
   return (
     <motion.article
@@ -265,7 +263,7 @@ export function FeedItem({ item }: FeedItemProps) {
                           {comment.userName}
                         </p>
                         <p className="text-[8px] font-bold text-muted-foreground uppercase">
-                          {dayjs(comment.createdAt).fromNow()}
+                          {formatRelativeTime(comment.createdAt)}
                         </p>
                       </div>
                       <p className="text-xs text-muted-foreground font-medium leading-relaxed">

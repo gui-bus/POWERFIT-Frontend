@@ -21,6 +21,7 @@ import { RestTimer } from "./restTimer";
 import { AnimatePresence } from "framer-motion";
 import { playSoftPing } from "@/lib/utils/audio";
 import { toast } from "sonner";
+import { checkIsPersonalRecord, gramsToKg } from "@/lib/utils/workout";
 
 interface ExerciseItemProps {
   exercise: GetWorkoutDayById200ExercisesItem;
@@ -55,12 +56,12 @@ export function ExerciseItem({
         if (response.status === 200 && response.data && !ignore) {
           setHistory(response.data.lastSets);
 
-          const lastWeight = response.data.lastSets[0]?.weightInGrams / 1000;
+          const lastWeight = gramsToKg(response.data.lastSets[0]?.weightInGrams);
           if (lastWeight) {
             setSetInputs((prev) =>
               prev.map((input) => ({
                 ...input,
-                weight: input.weight || lastWeight.toString(),
+                weight: input.weight || lastWeight,
               })),
             );
           }
@@ -102,8 +103,7 @@ export function ExerciseItem({
   const isPersonalRecord = (index: number) => {
     const currentWeight = parseFloat(setInputs[index].weight) || 0;
     const historyWeights = history.map((h) => h.weightInGrams / 1000);
-    const bestHistorical = historyWeights.length > 0 ? Math.max(...historyWeights) : 0;
-    return currentWeight > bestHistorical && bestHistorical > 0;
+    return checkIsPersonalRecord(currentWeight, historyWeights);
   };
 
   const handleHelpClick = (e: React.MouseEvent) => {
