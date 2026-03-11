@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { formatRelativeTime, formatDisplayDate } from '@/lib/utils/date'
+import { formatRelativeTime, formatDisplayDate, WEEKDAY_TRANSLATIONS, WEEKDAYS_LABELS } from '@/lib/utils/date'
 import dayjs from 'dayjs'
 
 describe('Date Utils', () => {
@@ -40,6 +40,31 @@ describe('Date Utils', () => {
 
     it('should return empty string for empty input', () => {
       expect(formatDisplayDate('')).toBe('')
+    })
+  })
+
+  describe('WEEKDAY_TRANSLATIONS', () => {
+    it('should have correct translations for each day', () => {
+      expect(WEEKDAY_TRANSLATIONS.MONDAY).toBe('Segunda-feira')
+      expect(WEEKDAY_TRANSLATIONS.TUESDAY).toBe('Terça-feira')
+      expect(WEEKDAY_TRANSLATIONS.WEDNESDAY).toBe('Quarta-feira')
+      expect(WEEKDAY_TRANSLATIONS.THURSDAY).toBe('Quinta-feira')
+      expect(WEEKDAY_TRANSLATIONS.FRIDAY).toBe('Sexta-feira')
+      expect(WEEKDAY_TRANSLATIONS.SATURDAY).toBe('Sábado')
+      expect(WEEKDAY_TRANSLATIONS.SUNDAY).toBe('Domingo')
+    })
+  })
+
+  describe('WEEKDAYS_LABELS', () => {
+    it('should have 7 labels starting with S (Segunda)', () => {
+      expect(WEEKDAYS_LABELS).toHaveLength(7)
+      expect(WEEKDAYS_LABELS[0]).toBe('S') // Segunda
+      expect(WEEKDAYS_LABELS[1]).toBe('T') // Terça
+      expect(WEEKDAYS_LABELS[2]).toBe('Q') // Quarta
+      expect(WEEKDAYS_LABELS[3]).toBe('Q') // Quinta
+      expect(WEEKDAYS_LABELS[4]).toBe('S') // Sexta
+      expect(WEEKDAYS_LABELS[5]).toBe('S') // Sábado
+      expect(WEEKDAYS_LABELS[6]).toBe('D') // Domingo
     })
   })
 })
