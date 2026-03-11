@@ -17,7 +17,7 @@ test.describe('Authentication Page', () => {
 
   test('should have the correct metadata', async ({ page }) => {
     await page.goto('/auth');
-    // PowerFit should be in the title (assuming it's set in layout)
-    await expect(page).toHaveTitle(/PowerFit/i);
+    // POWER.FIT should be in the title
+    await expect(page).toHaveTitle(/POWER\.FIT/i);
   });
 });
