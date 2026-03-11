@@ -30,7 +30,7 @@ export function AddFriendForm({ myFriendCode }: AddFriendFormProps) {
   const [errorMessage, setErrorMessage] = useState("");
 
   const form = useForm<AddFriendBody>({
-    // @ts-expect-error - zod resolver
+
     resolver: zodResolver(formSchema) as unknown as Resolver<AddFriendBody>,
     defaultValues: {
       codeOrEmail: "",

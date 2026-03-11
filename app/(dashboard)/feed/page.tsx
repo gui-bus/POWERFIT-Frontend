@@ -18,7 +18,7 @@ export default async function FeedPage() {
 
   if (!session.data?.user) redirect("/auth");
 
-  // Busca inicial com limite de 5 itens
+
   const feedRes = await getFeed({ limit: 5 });
 
   if (feedRes.status !== 200) {

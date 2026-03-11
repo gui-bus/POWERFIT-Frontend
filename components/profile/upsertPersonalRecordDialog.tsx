@@ -58,8 +58,8 @@ export function UpsertPersonalRecordDialog({ children }: { children?: React.Reac
       });
 
       if (response.status === 204) {
-        // API retornou 204: ou salvou com sucesso ou ignorou por ser peso menor
-        // A API retorna 204 para ambos os casos de sucesso/ignorar conforme regra de ouro
+
+
         toast.success("Recorde processado! Se for seu novo máximo, o XP já caiu na conta! 🔥");
         setOpen(false);
         form.reset();

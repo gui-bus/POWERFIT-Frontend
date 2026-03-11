@@ -53,8 +53,8 @@ interface PremiumSidebarProps {
 }
 
 export function PremiumSidebar({ homeData, userData }: PremiumSidebarProps) {
-  // Simple level calculation for the progress bar
-  // Assuming each level is 1000 XP
+
+
   const xpInCurrentLevel = userData.xp % 1000;
   const progressPercent = (xpInCurrentLevel / 1000) * 100;
 

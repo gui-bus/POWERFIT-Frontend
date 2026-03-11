@@ -1,9 +1,9 @@
-//#region Imports
+
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-//#endregion
 
-//#region Interfaces
+
+
 interface BackgroundImagesProps {
   className?: string;
 }
@@ -19,7 +19,7 @@ interface BackgroundImagesProps {
  * - **Optimized LCP:** Uses the `priority` attribute to ensure backgrounds are loaded immediately as they are critical for the page's visual integrity.
  * - **Layering:** Uses `fixed` positioning and a negative z-index (`-z-10`) to remain static behind all page content without interfering with user interactions.
  * * @example
- * // Usage in a Layout or Page:
+ *
  * return (
  * <>
  * <BackgroundImages />

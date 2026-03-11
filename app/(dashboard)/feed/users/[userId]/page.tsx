@@ -45,7 +45,7 @@ export default async function UserFeedPage({ params }: UserFeedPageProps) {
 
   const { data } = feedResponse as getUserFeedResponseSuccess;
   
-  // Try to get user info from first feed item if available
+
   const userProfile = data.activities.length > 0 ? {
     name: data.activities[0].userName,
     image: data.activities[0].userImage,

@@ -25,7 +25,7 @@ export function RestTimer({ initialSeconds, onFinish, onClose }: RestTimerProps)
     return () => clearTimeout(timer);
   }, []);
 
-  // Função para tocar um beep senoidal sutil sem any
+
   const playSound = (frequency: number, duration: number, volume: number) => {
     try {
       if (!audioContextRef.current) {

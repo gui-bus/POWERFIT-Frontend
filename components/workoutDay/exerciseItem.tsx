@@ -37,7 +37,7 @@ export function ExerciseItem({
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  // Estados para os inputs de cada série
+
   const [setInputs, setSetInputs] = useState<{ weight: string; reps: string }[]>(
     Array.from({ length: exercise.sets }, () => ({
       weight: "",
@@ -45,7 +45,7 @@ export function ExerciseItem({
     })),
   );
 
-  // Efeito para busca de histórico
+
   useEffect(() => {
     let ignore = false;
 
@@ -98,7 +98,7 @@ export function ExerciseItem({
 
   const isAllCompleted = completedSets.every((set) => set);
 
-  // Calcula se o peso atual é um recorde pessoal comparado ao histórico
+
   const isPersonalRecord = (index: number) => {
     const currentWeight = parseFloat(setInputs[index].weight) || 0;
     const historyWeights = history.map((h) => h.weightInGrams / 1000);
@@ -163,7 +163,7 @@ export function ExerciseItem({
           return;
         }
 
-        // Smart Focus: Foca no próximo input de peso após concluir a série
+
         if (index < exercise.sets - 1) {
           setTimeout(() => {
             inputRefs.current[index + 1]?.focus();

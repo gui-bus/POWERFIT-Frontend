@@ -83,7 +83,7 @@ export function EditProfileDialog({
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(
-      // @ts-expect-error - zod resolver
+
       profileSchema,
     ) as unknown as Resolver<ProfileFormValues>,
     defaultValues: {
@@ -167,7 +167,7 @@ export function EditProfileDialog({
                   setIsUploading(true);
                   toast.loading("Enviando sua nova foto...", { id: "upload-toast" });
                 }}
-                // @ts-expect-error Typescript bug
+
                 headers={async () => {
                   const session = await authClient.getSession();
                   const token = session.data?.session?.token;

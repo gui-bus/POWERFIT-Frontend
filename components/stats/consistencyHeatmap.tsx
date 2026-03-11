@@ -12,7 +12,7 @@ interface ConsistencyHeatmapProps {
 }
 
 export function ConsistencyHeatmap({ consistencyByDay }: ConsistencyHeatmapProps) {
-  // Gera os últimos 12 meses em ordem cronológica
+
   const months = Array.from({ length: 12 }, (_, i) => 
     dayjs().subtract(11 - i, "month")
   );

@@ -46,7 +46,7 @@ export function NotificationCenter() {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const router = useRouter();
 
-  // Contador derivado para performance otimizada
+
   const unreadCount = useMemo(() => 
     notifications.filter((n) => !n.isRead).length, 
   [notifications]);
@@ -74,7 +74,7 @@ export function NotificationCenter() {
   useEffect(() => {
     let isMounted = true;
 
-    // Call fetchNotifications after mount to avoid cascading renders lint error
+
     const init = async () => {
       if (isMounted) {
         await fetchNotifications();
@@ -84,7 +84,7 @@ export function NotificationCenter() {
 
     const interval = setInterval(async () => {
       if (isMounted) {
-        // Recarregar apenas a primeira página para checar novas notificações
+
         await fetchNotifications();
       }
     }, 60000);

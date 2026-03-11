@@ -25,7 +25,7 @@ export function FriendSentRequests({ requests }: FriendSentRequestsProps) {
       const response = await declineFriendRequest(id);
       if (response.status === 204) {
         toast.success("Solicitação cancelada.");
-        router.refresh(); // Sincroniza a lista instantaneamente após cancelar
+        router.refresh();
       }
     } catch {
       toast.error("Erro ao cancelar solicitação.");

@@ -47,7 +47,7 @@ export function CompleteWorkoutDialog({ planId, dayId, sessionId, trigger }: Com
   const [isLoading, setIsLoading] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
   
-  // Image states
+
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -90,7 +90,7 @@ export function CompleteWorkoutDialog({ planId, dayId, sessionId, trigger }: Com
     let imageUrl = undefined;
 
     try {
-      // 1. Se houver foto, faz o upload primeiro
+
       if (selectedFile) {
         setIsUploading(true);
         const uploadToastId = "workout-upload-toast";
@@ -107,8 +107,8 @@ export function CompleteWorkoutDialog({ planId, dayId, sessionId, trigger }: Com
         }
 
         try {
-          // Usamos uploadFiles diretamente para garantir que os cabeçalhos sejam enviados como HTTP Headers reais
-          // e não como 'input' no corpo da requisição.
+
+
           const uploadRes = await uploadFiles("workoutImage", {
             files: [selectedFile],
             headers: {
@@ -129,13 +129,13 @@ const errorMessage = uploadError instanceof Error ? uploadError.message : "403 F
 toast.error(`Falha no upload: ${errorMessage}`, { id: uploadToastId });
 setIsLoading(false);
 setIsUploading(false);
-return; // CANCELA O ENVIO
+return;
 } finally {
 setIsUploading(false);
 }
       }
 
-      // 2. Finaliza a sessão com todos os dados
+
       const response = await completeWorkoutAction(planId, dayId, sessionId, {
         statusMessage: statusMessage.trim() || undefined,
         taggedUserIds: selectedFriends.length > 0 ? selectedFriends : undefined,
@@ -152,7 +152,7 @@ setIsUploading(false);
         setTimeout(() => {
           setOpen(false);
           setShowCelebration(false);
-          // Limpa estados
+
           setSelectedFile(null);
           setPreviewUrl(null);
           setStatusMessage("");

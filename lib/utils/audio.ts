@@ -10,14 +10,14 @@ export const playSoftPing = () => {
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
 
-    // Frequência pura e alta para um som "cristalino"
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(880, ctx.currentTime); // Lá (A5)
 
-    // Envelope de volume extremamente suave e curto
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+
+
     gain.gain.setValueAtTime(0, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.02); // Ataque rápido
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5); // Decaimento suave
+    gain.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
 
     osc.connect(gain);
     gain.connect(ctx.destination);

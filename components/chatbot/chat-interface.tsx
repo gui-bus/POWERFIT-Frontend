@@ -49,7 +49,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
       credentials: "include",
     }),
     onFinish: async (message) => {
-      // Verifica se a resposta do bot menciona que o plano foi criado/gerado
+
       const lowerContent = message.parts
         .filter((p) => p.type === "text")
         .map((p) => (p as { text: string }).text)
@@ -64,7 +64,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
          lowerContent.includes("finalizado"));
 
       if (indicatesSuccess) {
-        // Busca o plano ativo mais recente
+
         const plansRes = await getWorkoutPlans({ active: "true" });
         if (plansRes.status === 200 && plansRes.data.length > 0) {
           const activePlan = plansRes.data[0];

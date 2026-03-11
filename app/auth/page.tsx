@@ -1,5 +1,5 @@
 "use client";
-//#region Imports
+
 import { authClient } from "@/lib/authClient";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -8,16 +8,16 @@ import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
 import { LightningIcon, ArrowRightIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
-//#endregion
+
 
 const AuthPage = () => {
-  //#region Hooks
+
   const router = useRouter();
   const { setTheme } = useTheme();
   const { data: session, isPending } = authClient.useSession();
-  //#endregion
 
-  //#region useEffects
+
+
   useEffect(() => {
     setTheme("dark");
   }, [setTheme]);
@@ -27,22 +27,22 @@ const AuthPage = () => {
       router.push("/");
     }
   }, [session, isPending, router]);
-  //#endregion
 
-  //#region Handle functions
+
+
   const handleGoogleLogin = async () => {
     await authClient.signIn.social({
       provider: "google",
       callbackURL: process.env.NEXT_PUBLIC_BASE_URL,
     });
   };
-  //#endregion
 
-  //#region Conditional rendering
+
+
   if (isPending || session) {
     return null;
   }
-  //#endregion
+
 
   return (
     <div className="relative flex min-h-screen w-full flex-col overflow-hidden bg-background selection:bg-primary/30 selection:text-foreground antialiased transition-colors duration-700">

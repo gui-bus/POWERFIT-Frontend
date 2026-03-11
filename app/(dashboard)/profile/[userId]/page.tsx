@@ -39,7 +39,7 @@ export default async function PublicProfilePage({ params }: PageProps) {
 
   if (!session.data?.user) redirect("/auth");
   
-  // Se for o próprio usuário, redireciona para o perfil privado
+
   if (userId === session.data.user.id) redirect("/profile");
 
   const [profileRes, feedRes] = await Promise.all([
