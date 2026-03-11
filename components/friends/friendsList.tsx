@@ -61,7 +61,7 @@ export function FriendsList({ friends }: FriendsListProps) {
                     className="object-cover"
                   />
                   <AvatarFallback className="bg-primary/10 text-primary font-black uppercase italic rounded-2xl">
-                    {friend.name.substring(0, 2)}
+                    {friend.name.substring(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 <div className="absolute -bottom-1 -right-1 size-4 bg-green-500 border-2 border-card rounded-full" />

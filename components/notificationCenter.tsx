@@ -6,20 +6,10 @@ import {
   markNotificationAsRead,
   markAllNotificationsAsRead,
   GetNotifications200NotificationsItem,
-  GetNotifications200NotificationsItemType,
 } from "@/lib/api/fetch-generated";
 import {
   BellIcon,
   ChecksIcon,
-  UserPlusIcon,
-  LightningIcon,
-  UserCircleIcon,
-  StarIcon,
-  TrophyIcon,
-  SwordIcon,
-  ChatTeardropTextIcon,
-  TagIcon,
-  FireIcon
 } from "@phosphor-icons/react";
 import {
   DropdownMenu,
@@ -32,13 +22,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import "dayjs/locale/pt-br";
 import { useRouter } from "next/navigation";
-
-dayjs.extend(relativeTime);
-dayjs.locale("pt-br");
+import { formatRelativeTime } from "@/lib/utils/date";
+import { getNotificationIcon, getNotificationMessage, getNotificationRoute } from "./notificationHelpers";
 
 export function NotificationCenter() {
   const [notifications, setNotifications] = useState<GetNotifications200NotificationsItem[]>([]);
@@ -74,7 +60,6 @@ export function NotificationCenter() {
   useEffect(() => {
     let isMounted = true;
 
-
     const init = async () => {
       if (isMounted) {
         await fetchNotifications();
@@ -84,7 +69,6 @@ export function NotificationCenter() {
 
     const interval = setInterval(async () => {
       if (isMounted) {
-
         await fetchNotifications();
       }
     }, 60000);
@@ -125,69 +109,12 @@ export function NotificationCenter() {
     }
   };
 
-  const getIcon = (type: GetNotifications200NotificationsItemType) => {
-    switch (type) {
-      case "FRIEND_REQUEST":
-        return <UserPlusIcon weight="duotone" className="size-4 text-blue-500" />;
-      case "FRIEND_ACCEPTED":
-        return <UserCircleIcon weight="duotone" className="size-4 text-green-500" />;
-      case "POWERUP_RECEIVED":
-        return <LightningIcon weight="duotone" className="size-4 text-primary" />;
-      case "LEVEL_UP":
-        return <StarIcon weight="fill" className="size-4 text-yellow-500" />;
-      case "ACHIEVEMENT_UNLOCKED":
-        return <TrophyIcon weight="duotone" className="size-4 text-orange-500" />;
-      case "CHALLENGE_INVITE":
-        return <SwordIcon weight="duotone" className="size-4 text-red-500" />;
-      case "COMMENT_RECEIVED":
-        return <ChatTeardropTextIcon weight="duotone" className="size-4 text-blue-400" />;
-      case "TAGGED_IN_ACTIVITY":
-        return <TagIcon weight="duotone" className="size-4 text-purple-500" />;
-      case "PERSONAL_RECORD_BROKEN":
-        return <FireIcon weight="fill" className="size-4 text-orange-600" />;
-      default:
-        return <BellIcon weight="duotone" className="size-4 text-muted-foreground" />;
-    }
-  };
-
-  const getNotificationMessage = (notification: GetNotifications200NotificationsItem) => {
-    switch (notification.type) {
-      case "FRIEND_REQUEST": return "enviou um pedido de amizade.";
-      case "FRIEND_ACCEPTED": return "aceitou seu pedido de amizade.";
-      case "POWERUP_RECEIVED": return "deu um Powerup no seu treino!";
-      case "LEVEL_UP": return "Parabéns! Você subiu de nível!";
-      case "ACHIEVEMENT_UNLOCKED": return "Você desbloqueou uma nova conquista!";
-      case "CHALLENGE_INVITE": return "convidou você para um desafio!";
-      case "COMMENT_RECEIVED": return "comentou na sua atividade!";
-      case "TAGGED_IN_ACTIVITY": return "marcou você em um treino!";
-      case "PERSONAL_RECORD_BROKEN": return "quebrou um recorde pessoal! 🔥";
-      default: return "enviou uma notificação.";
-    }
-  };
-
   const handleNotificationClick = (notification: GetNotifications200NotificationsItem) => {
     if (!notification.isRead) {
       handleMarkAsRead(notification.id);
     }
 
-    switch (notification.type) {
-      case "FRIEND_REQUEST":
-        router.push("/friends");
-        break;
-      case "COMMENT_RECEIVED":
-      case "TAGGED_IN_ACTIVITY":
-      case "POWERUP_RECEIVED":
-        router.push("/feed");
-        break;
-      case "LEVEL_UP":
-      case "ACHIEVEMENT_UNLOCKED":
-      case "PERSONAL_RECORD_BROKEN":
-        router.push("/achievements");
-        break;
-      case "CHALLENGE_INVITE":
-        router.push("/challenges");
-        break;
-    }
+    router.push(getNotificationRoute(notification.type));
   };
 
   return (
@@ -255,7 +182,7 @@ export function NotificationCenter() {
                     </AvatarFallback>
                   </Avatar>
                   <div className="absolute -bottom-1 -right-1 rounded-full">
-                    {getIcon(notification.type)}
+                    {getNotificationIcon(notification.type)}
                   </div>
                 </div>
                 <div className="flex-1 space-y-1">
@@ -266,7 +193,7 @@ export function NotificationCenter() {
                     {getNotificationMessage(notification)}
                   </p>
                   <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
-                    {dayjs(notification.createdAt).fromNow()}
+                    {formatRelativeTime(notification.createdAt)}
                   </p>
                 </div>
                 {!notification.isRead && (
