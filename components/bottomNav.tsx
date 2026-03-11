@@ -12,39 +12,20 @@ import {
 } from "@phosphor-icons/react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
-import { getHomeData } from "@/lib/api/fetch-generated";
-import dayjs from "dayjs";
 import { useQueryState, parseAsBoolean } from "nuqs";
+import { useActiveWorkoutPlanId } from "@/hooks/use-active-workout-plan-id";
 
 export function BottomNav() {
   const pathname = usePathname();
+  const activePlanId = useActiveWorkoutPlanId();
 
   const [, setIsOpen] = useQueryState(
     "chat_open",
     parseAsBoolean.withDefault(false),
   );
 
-  const [planOverviewLink, setPlanOverviewLink] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchHomeData = async () => {
-      try {
-        const response = await getHomeData(dayjs().format("YYYY-MM-DD"));
-        if (response.status === 200 && response.data.activeWorkoutPlanId) {
-          setPlanOverviewLink(
-            `/workout-plans/${response.data.activeWorkoutPlanId}`,
-          );
-        }
-      } catch (error) {
-        console.error("Failed to fetch home data for nav link", error);
-      }
-    };
-
-    fetchHomeData();
-  }, []);
-
   const isWorkoutDayActive = pathname.includes("/workout-plans/");
+  const planOverviewLink = activePlanId ? `/workout-plans/${activePlanId}` : null;
 
   const navItems = [
     { icon: HouseIcon, href: "/", active: pathname === "/" },

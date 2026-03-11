@@ -14,11 +14,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SignOutIcon, UserIcon, MoonIcon, SunIcon, CalendarIcon } from "@phosphor-icons/react";
-import { useEffect, useState } from "react";
-import { getHomeData } from "@/lib/api/fetch-generated";
-import dayjs from "dayjs";
 import { cn } from "@/lib/utils";
 import { useThemeTransition } from "@/lib/hooks/useThemeTransition";
+import { useActiveWorkoutPlanId } from "@/hooks/use-active-workout-plan-id";
 
 interface UserNavProps {
   user: {
@@ -32,22 +30,7 @@ export function UserNav({ user }: UserNavProps) {
   const router = useRouter();
   const pathname = usePathname();
   const { theme, toggleTheme } = useThemeTransition();
-  const [planOverviewLink, setPlanOverviewLink] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchHomeData = async () => {
-      try {
-        const response = await getHomeData(dayjs().format("YYYY-MM-DD"));
-        if (response.status === 200 && response.data.activeWorkoutPlanId) {
-          setPlanOverviewLink(`/workout-plans/${response.data.activeWorkoutPlanId}`);
-        }
-      } catch (error) {
-        console.error("Failed to fetch home data for user nav", error);
-      }
-    };
-
-    fetchHomeData();
-  }, []);
+  const activePlanId = useActiveWorkoutPlanId();
 
   const handleLogout = async () => {
     await authClient.signOut({
@@ -60,6 +43,7 @@ export function UserNav({ user }: UserNavProps) {
   };
 
   const isWorkoutDayActive = pathname.includes("/workout-plans/");
+  const planOverviewLink = activePlanId ? `/workout-plans/${activePlanId}` : null;
 
   return (
     <DropdownMenu>
@@ -96,6 +80,7 @@ export function UserNav({ user }: UserNavProps) {
               isWorkoutDayActive && "bg-primary/5 text-primary"
             )}
             onClick={() => planOverviewLink && router.push(planOverviewLink)}
+            disabled={!planOverviewLink}
           >
             <CalendarIcon weight="duotone" className="mr-3 h-4 w-4 stroke-[2.5] focus:text-white" />
             <span className="font-bold text-xs uppercase tracking-wider">Plano de Treino</span>
