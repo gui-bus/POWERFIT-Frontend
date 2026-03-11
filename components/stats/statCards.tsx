@@ -1,4 +1,5 @@
 import { CheckCircleIcon, PercentIcon, HourglassIcon, BarbellIcon } from "@phosphor-icons/react/ssr";
+import { formatTime, formatVolume, getVolumeComparison } from "@/lib/utils/stats";
 
 interface StatCardsProps {
   completedWorkoutsCount: number;
@@ -16,30 +17,6 @@ export function StatCards({
   totalVolumeInGrams
 }: StatCardsProps) {
   
-  const formatTime = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    if (hours === 0) return `${minutes}m`;
-    return `${hours}h${minutes}m`;
-  };
-
-  const formatVolume = (grams: number) => {
-    const kg = grams / 1000;
-    if (kg >= 1000) {
-      return `${(kg / 1000).toFixed(1)}t`;
-    }
-    return `${Math.round(kg)}kg`;
-  };
-
-  const getVolumeComparison = (grams: number) => {
-    const kg = grams / 1000;
-    if (kg >= 5000) return `≈ ${(kg / 5000).toFixed(1)} Elefantes`;
-    if (kg >= 1200) return `≈ ${(kg / 1200).toFixed(1)} Carros`;
-    if (kg >= 500) return `≈ ${(kg / 20).toFixed(0)} Sacos de Cimento`;
-    if (kg >= 100) return `≈ ${(kg / 5).toFixed(0)} Galões de Água`;
-    return "Rumo ao topo! 🚀";
-  };
-
   const stats = [
     {
       label: "Treinos Feitos",
