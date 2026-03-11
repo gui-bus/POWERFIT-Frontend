@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { calculateStreak } from './consistency'
+import { calculateStreak } from '@/lib/utils/consistency'
 import dayjs from 'dayjs'
 
 describe('calculateStreak utility', () => {
@@ -38,12 +38,12 @@ describe('calculateStreak utility', () => {
       '2026-03-09': { workoutDayCompleted: false, workoutDayStarted: false },
       '2026-03-08': { workoutDayCompleted: true, workoutDayStarted: true },
     }
-    expect(calculateStreak(data, today)).toBe(1) // Only today
+    expect(calculateStreak(data, today)).toBe(1)
   })
 
   it('should ignore future dates', () => {
     const data = {
-      '2026-03-11': { workoutDayCompleted: true, workoutDayStarted: true }, // Future
+      '2026-03-11': { workoutDayCompleted: true, workoutDayStarted: true },
       '2026-03-10': { workoutDayCompleted: true, workoutDayStarted: true },
     }
     expect(calculateStreak(data, today)).toBe(1)

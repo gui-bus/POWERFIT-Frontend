@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
-import { AddFriendForm } from './addFriendForm'
+import { AddFriendForm } from '@/components/friends/addFriendForm'
 import { addFriend } from '@/lib/api/fetch-generated'
 import React from 'react'
 
-// Mock addFriend
+
 vi.mock('@/lib/api/fetch-generated', () => ({
   addFriend: vi.fn(),
 }))
@@ -12,7 +12,7 @@ vi.mock('@/lib/api/fetch-generated', () => ({
 describe('AddFriendForm Component', () => {
   beforeEach(() => {
     vi.useFakeTimers()
-    // Mock clipboard
+
     vi.stubGlobal('navigator', {
       clipboard: {
         writeText: vi.fn().mockResolvedValue(undefined),

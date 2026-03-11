@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { checkIsPersonalRecord, gramsToKg } from './workout'
+import { checkIsPersonalRecord, gramsToKg } from '@/lib/utils/workout'
 
 describe('Workout Utils', () => {
   describe('checkIsPersonalRecord', () => {

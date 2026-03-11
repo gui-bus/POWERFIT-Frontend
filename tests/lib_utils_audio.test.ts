@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { playSoftPing } from './audio'
+import { playSoftPing } from '@/lib/utils/audio'
 
 describe('Audio Utils', () => {
   let mockOscillator: any;
@@ -33,7 +33,7 @@ describe('Audio Utils', () => {
 
     let lastInstance: any;
 
-    // Mock AudioContext as a constructor using a class
+
     (global as any).AudioContext = class {
       currentTime = 0;
       destination = {};

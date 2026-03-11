@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { createAnimation } from './themeAnimations'
+import { createAnimation } from '@/lib/utils/animations/themeAnimations'
 
 describe('Theme Animations', () => {
   it('should create animation CSS and name', () => {

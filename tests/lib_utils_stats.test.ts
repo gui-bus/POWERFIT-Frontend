@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { formatTime, formatVolume, getVolumeComparison } from './stats'
+import { formatTime, formatVolume, getVolumeComparison } from '@/lib/utils/stats'
 
 describe('Stats Utils', () => {
   describe('formatTime', () => {
@@ -18,7 +18,7 @@ describe('Stats Utils', () => {
   describe('formatVolume', () => {
     it('should format grams to kg', () => {
       expect(formatVolume(5000)).toBe('5kg')
-      expect(formatVolume(500)).toBe('1kg') // Rounding check: 0.5kg -> 1kg if using Math.round
+      expect(formatVolume(500)).toBe('1kg')
       expect(formatVolume(0)).toBe('0kg')
     })
 

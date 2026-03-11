@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { formatRelativeTime, formatDisplayDate } from './date'
+import { formatRelativeTime, formatDisplayDate } from '@/lib/utils/date'
 import dayjs from 'dayjs'
 
 describe('Date Utils', () => {

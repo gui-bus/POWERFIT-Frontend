@@ -1,11 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import { FriendRequests } from './friendRequests'
+import { FriendRequests } from '@/components/friends/friendRequests'
 import { acceptFriendRequest, declineFriendRequest } from '@/lib/api/fetch-generated'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
-// Mock dependencies
+
 vi.mock('@/lib/api/fetch-generated', () => ({
   acceptFriendRequest: vi.fn(),
   declineFriendRequest: vi.fn(),

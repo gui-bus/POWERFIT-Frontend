@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { fadeIn, springUp, containerStagger, floatingBadge, pulseGlow } from './animations'
+import { fadeIn, springUp, containerStagger, floatingBadge, pulseGlow } from '@/lib/utils/animations'
 
 describe('Animation Variants', () => {
   it('fadeIn should have correct properties', () => {

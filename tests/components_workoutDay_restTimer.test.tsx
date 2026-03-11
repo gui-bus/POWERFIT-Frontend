@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, act, fireEvent } from '@testing-library/react'
-import { RestTimer } from './restTimer'
+import { RestTimer } from '@/components/workoutDay/restTimer'
 import React from 'react'
 
-// Mock createPortal to render content inline
+
 vi.mock('react-dom', () => ({
   createPortal: (node: React.ReactNode) => node,
 }))
@@ -16,7 +16,7 @@ describe('RestTimer Component', () => {
   beforeEach(() => {
     vi.useFakeTimers()
     
-    // Mock navigator.vibrate
+
     vi.stubGlobal('navigator', {
       vibrate: vi.fn(),
     })
@@ -62,7 +62,7 @@ describe('RestTimer Component', () => {
   it('should render initial time correctly', () => {
     render(<RestTimer initialSeconds={60} />)
     
-    // Advance 0 timer for mounted state
+
     act(() => {
       vi.advanceTimersByTime(1)
     })
@@ -74,7 +74,7 @@ describe('RestTimer Component', () => {
     render(<RestTimer initialSeconds={60} />)
     
     act(() => {
-      vi.advanceTimersByTime(1) // mount
+      vi.advanceTimersByTime(1)
     })
 
     act(() => {
@@ -88,7 +88,7 @@ describe('RestTimer Component', () => {
     render(<RestTimer initialSeconds={60} />)
     
     act(() => {
-      vi.advanceTimersByTime(1) // mount
+      vi.advanceTimersByTime(1)
     })
 
     fireEvent.click(screen.getByText('+15s'))
@@ -102,11 +102,11 @@ describe('RestTimer Component', () => {
     render(<RestTimer initialSeconds={6} />)
     
     act(() => {
-      vi.advanceTimersByTime(1) // mount
+      vi.advanceTimersByTime(1)
     })
 
     act(() => {
-      vi.advanceTimersByTime(1000) // 5 seconds left
+      vi.advanceTimersByTime(1000)
     })
 
     const instance = mockContext.instance;
@@ -119,7 +119,7 @@ describe('RestTimer Component', () => {
     render(<RestTimer initialSeconds={1} onFinish={onFinish} />)
     
     act(() => {
-      vi.advanceTimersByTime(1) // mount
+      vi.advanceTimersByTime(1)
     })
 
     act(() => {
@@ -135,7 +135,7 @@ describe('RestTimer Component', () => {
     render(<RestTimer initialSeconds={60} onClose={onClose} />)
     
     act(() => {
-      vi.advanceTimersByTime(1) // mount
+      vi.advanceTimersByTime(1)
     })
 
     const closeButton = screen.getAllByRole('button').find(b => 

@@ -61,7 +61,7 @@ Você atua como um engenheiro de software sênior especializado em desenvolvimen
 - **Tipagem Estrita:** O uso de `any` é **ESTRITAMENTE PROIBIDO**. Utilize interfaces e tipos precisos.
 - **Clean Code:** Siga os princípios SOLID. Use nomes descritivos (ex: `isLoading`, `hasError`).
 - **Nomenclatura:** Use `camelCase` para nomes de pastas e arquivos.
-- **Comentários:** **NUNCA** escreva comentários explicativos no código; o código deve ser autoexplicativo.
+- **Comentários:** **NUNCA** escreva comentários explicativos no código (estilo `// comentário`); o código deve ser autoexplicativo. Esta regra aplica-se a código de produção e de teste.
 - **DRY:** Evite duplicidade. Centralize lógicas repetitivas em funções ou componentes reutilizáveis.
 
 ### 📝 Padrões de Commit e Git

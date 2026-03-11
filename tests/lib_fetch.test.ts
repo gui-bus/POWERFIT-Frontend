@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { customFetch } from './fetch'
+import { customFetch } from '@/lib/fetch'
 
 describe('customFetch utility', () => {
   const originalEnv = process.env;
@@ -76,10 +76,10 @@ describe('customFetch utility', () => {
   })
 
   it('should include server-side cookies when in server environment', async () => {
-    // Simulate server environment
+
     vi.stubGlobal('window', undefined);
     
-    // Mock next/headers
+
     vi.mock('next/headers', () => ({
       cookies: vi.fn().mockResolvedValue({
         toString: () => 'session-cookie=123'

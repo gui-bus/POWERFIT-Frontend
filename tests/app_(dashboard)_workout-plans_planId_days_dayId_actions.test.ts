@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { startWorkoutAction, completeWorkoutAction } from './actions'
+import { startWorkoutAction, completeWorkoutAction } from '@/app/(dashboard)/workout-plans/[planId]/days/[dayId]/actions'
 import { startWorkoutSession, completeWorkoutSession } from '@/lib/api/fetch-generated'
 import { revalidatePath } from 'next/cache'
 
-// Mock dependencies
+
 vi.mock('@/lib/api/fetch-generated', () => ({
   startWorkoutSession: vi.fn(),
   completeWorkoutSession: vi.fn(),
