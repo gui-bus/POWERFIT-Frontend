@@ -1,11 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { PlanHistoryCard } from '@/app/(dashboard)/workout-plans/_components/planHistoryCard'
-import { activateWorkoutPlan } from '@/lib/api/fetch-generated'
+import { activateWorkoutPlan, deleteWorkoutPlan } from '@/lib/api/fetch-generated'
 import React from 'react'
 
 vi.mock('@/lib/api/fetch-generated', () => ({
   activateWorkoutPlan: vi.fn(),
+  deleteWorkoutPlan: vi.fn(),
 }))
 
 vi.mock('sonner', () => ({
@@ -51,10 +52,10 @@ describe('PlanHistoryCard Component', () => {
     expect(screen.getByText('Ativar')).toBeTruthy()
   })
 
-  it('should show "Ativo" badge if plan is active', () => {
+  it('should show "Ativo Agora" badge if plan is active', () => {
     render(<PlanHistoryCard plan={MOCK_PLAN_ACTIVE} />)
     
-    expect(screen.getByText('Ativo')).toBeTruthy()
+    expect(screen.getByText('Ativo Agora')).toBeTruthy()
     expect(screen.getByText('Protocolo Atual')).toBeTruthy()
   })
 
@@ -69,11 +70,33 @@ describe('PlanHistoryCard Component', () => {
     // Check if dialog opened
     expect(screen.getByText('Reativar Protocolo')).toBeTruthy()
     
-    const confirmBtn = screen.getByText('Confirmar Reativação')
+    const confirmBtn = screen.getByText('Ativar Agora')
     fireEvent.click(confirmBtn)
     
     await waitFor(() => {
       expect(activateWorkoutPlan).toHaveBeenCalledWith('plan-1')
+    })
+  })
+
+  it('should call deleteWorkoutPlan when confirm deletion', async () => {
+    vi.mocked(deleteWorkoutPlan).mockResolvedValue({ status: 204, data: {} } as any)
+    
+    render(<PlanHistoryCard plan={MOCK_PLAN_INACTIVE} />)
+    
+    // Find trash button by its icon container or similar, or just get by role
+    // Since it's a ghost button with a trash icon, let's look for the one that isn't Detalhes or Ativar
+    const buttons = screen.getAllByRole('button')
+    const deleteBtn = buttons[buttons.length - 1] 
+    
+    fireEvent.click(deleteBtn)
+    
+    expect(screen.getByText('Remover Permanentemente')).toBeTruthy()
+    
+    const confirmDeleteBtn = screen.getByText('Excluir Definitivamente')
+    fireEvent.click(confirmDeleteBtn)
+    
+    await waitFor(() => {
+      expect(deleteWorkoutPlan).toHaveBeenCalledWith('plan-1')
     })
   })
 })

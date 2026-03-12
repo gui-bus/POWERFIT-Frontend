@@ -294,6 +294,35 @@ export type GetWorkoutPlanById500 = {
   code: string;
 };
 
+/**
+ * @nullable
+ */
+export type DeleteWorkoutPlan204 =
+  | (typeof DeleteWorkoutPlan204)[keyof typeof DeleteWorkoutPlan204]
+  | null;
+
+export const DeleteWorkoutPlan204 = {} as const;
+
+export type DeleteWorkoutPlan400 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteWorkoutPlan401 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteWorkoutPlan404 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteWorkoutPlan500 = {
+  error: string;
+  code: string;
+};
+
 export type StartWorkoutSession201 = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
@@ -2236,6 +2265,65 @@ export const getWorkoutPlanById = async (
   return customFetch<getWorkoutPlanByIdResponse>(getGetWorkoutPlanByIdUrl(id), {
     ...options,
     method: "GET",
+  });
+};
+
+/**
+ * Permanently removes a workout plan. Cannot delete the currently active plan.
+ * @summary Delete a workout plan
+ */
+export type deleteWorkoutPlanResponse204 = {
+  data: DeleteWorkoutPlan204;
+  status: 204;
+};
+
+export type deleteWorkoutPlanResponse400 = {
+  data: DeleteWorkoutPlan400;
+  status: 400;
+};
+
+export type deleteWorkoutPlanResponse401 = {
+  data: DeleteWorkoutPlan401;
+  status: 401;
+};
+
+export type deleteWorkoutPlanResponse404 = {
+  data: DeleteWorkoutPlan404;
+  status: 404;
+};
+
+export type deleteWorkoutPlanResponse500 = {
+  data: DeleteWorkoutPlan500;
+  status: 500;
+};
+
+export type deleteWorkoutPlanResponseSuccess = deleteWorkoutPlanResponse204 & {
+  headers: Headers;
+};
+export type deleteWorkoutPlanResponseError = (
+  | deleteWorkoutPlanResponse400
+  | deleteWorkoutPlanResponse401
+  | deleteWorkoutPlanResponse404
+  | deleteWorkoutPlanResponse500
+) & {
+  headers: Headers;
+};
+
+export type deleteWorkoutPlanResponse =
+  | deleteWorkoutPlanResponseSuccess
+  | deleteWorkoutPlanResponseError;
+
+export const getDeleteWorkoutPlanUrl = (id: string) => {
+  return `/workout-plans/${id}`;
+};
+
+export const deleteWorkoutPlan = async (
+  id: string,
+  options?: RequestInit,
+): Promise<deleteWorkoutPlanResponse> => {
+  return customFetch<deleteWorkoutPlanResponse>(getDeleteWorkoutPlanUrl(id), {
+    ...options,
+    method: "DELETE",
   });
 };
 

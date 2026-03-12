@@ -1,17 +1,16 @@
 "use client";
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { MagnifyingGlassIcon, FunnelIcon, XIcon } from "@phosphor-icons/react";
+import { MagnifyingGlassIcon, XIcon, TargetIcon, ChartLineUpIcon } from "@phosphor-icons/react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuLabel, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger,
-  DropdownMenuCheckboxItem
-} from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useState, useEffect, useCallback } from "react";
 import { useDebounce } from "@/hooks/use-debounce";
 
@@ -24,7 +23,11 @@ interface TemplateFiltersProps {
 }
 
 const CATEGORIES = ["Ganho de Massa", "Emagrecimento", "Condicionamento", "Força"];
-const DIFFICULTIES = ["Beginner", "Intermediate", "Advanced"];
+const DIFFICULTIES = [
+  { label: "Iniciante", value: "Beginner" },
+  { label: "Intermediário", value: "Intermediate" },
+  { label: "Avançado", value: "Advanced" }
+];
 
 export function TemplateFilters({ initialFilters }: TemplateFiltersProps) {
   const router = useRouter();
@@ -37,7 +40,7 @@ export function TemplateFilters({ initialFilters }: TemplateFiltersProps) {
   const createQueryString = useCallback(
     (name: string, value: string | null) => {
       const params = new URLSearchParams(searchParams.toString());
-      if (value) {
+      if (value && value !== "all") {
         params.set(name, value);
       } else {
         params.delete(name);
@@ -48,72 +51,80 @@ export function TemplateFilters({ initialFilters }: TemplateFiltersProps) {
   );
 
   useEffect(() => {
-    router.push(`${pathname}?${createQueryString("query", debouncedQuery)}`);
-  }, [debouncedQuery, pathname, router, createQueryString]);
+    if (debouncedQuery !== (searchParams.get("query") || "")) {
+      router.push(`${pathname}?${createQueryString("query", debouncedQuery)}`, { scroll: false });
+    }
+  }, [debouncedQuery, pathname, router, createQueryString, searchParams]);
 
-  const handleFilterChange = (name: string, value: string | null) => {
-    router.push(`${pathname}?${createQueryString(name, value)}`);
+  const handleFilterChange = (name: string, value: string) => {
+    router.push(`${pathname}?${createQueryString(name, value)}`, { scroll: false });
   };
 
   const clearFilters = () => {
     setQuery("");
-    router.push(pathname);
+    router.push(pathname, { scroll: false });
   };
 
   const hasActiveFilters = !!(searchParams.get("category") || searchParams.get("difficulty") || searchParams.get("query"));
 
   return (
-    <div className="flex flex-col sm:flex-row items-center gap-4 bg-card/30 border border-border/50 p-4 rounded-[2rem] backdrop-blur-sm">
+    <div className="flex flex-col xl:flex-row items-center gap-4 bg-card/30 border border-border/50 p-4 rounded-[2.5rem] backdrop-blur-sm">
       <div className="relative flex-1 w-full">
-        <MagnifyingGlassIcon className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+        <MagnifyingGlassIcon className="absolute left-5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
         <Input 
-          placeholder="Buscar modelos..." 
+          placeholder="Buscar modelos de treinamento..." 
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="pl-11 h-12 bg-background/50 border-border/50 rounded-2xl focus-visible:ring-primary/20 focus-visible:border-primary/30 transition-all font-medium italic"
+          className="pl-12 h-14 bg-background/50 border-border/50 rounded-3xl focus-visible:ring-primary/20 focus-visible:border-primary/30 transition-all font-medium italic"
         />
       </div>
 
-      <div className="flex items-center gap-2 w-full sm:w-auto">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="h-12 rounded-2xl border-border/50 bg-background/50 px-6 gap-2 font-black uppercase italic tracking-widest text-[10px] cursor-pointer hover:border-primary/30 transition-all">
-              <FunnelIcon weight="duotone" className="size-4 text-primary" />
-              Filtros
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56 bg-card border-border rounded-2xl p-2">
-            <DropdownMenuLabel className="text-[10px] font-black uppercase tracking-widest italic px-2 py-1.5">Objetivo</DropdownMenuLabel>
+      <div className="flex flex-col sm:flex-row items-center gap-3 w-full xl:w-auto">
+        <Select 
+          value={searchParams.get("category") || "all"} 
+          onValueChange={(v) => handleFilterChange("category", v)}
+        >
+          <SelectTrigger className="h-14 w-full sm:w-[200px] rounded-3xl border-border/50 bg-background/50 px-6 font-black uppercase italic tracking-widest text-[10px] cursor-pointer hover:border-primary/30 transition-all">
+            <div className="flex items-center gap-2">
+              <TargetIcon weight="duotone" className="size-4 text-primary" />
+              <SelectValue placeholder="Objetivo" />
+            </div>
+          </SelectTrigger>
+          <SelectContent className="bg-card border-border rounded-2xl p-2">
+            <SelectItem value="all" className="rounded-xl text-[10px] font-black uppercase italic py-3">Todos Objetivos</SelectItem>
             {CATEGORIES.map((cat) => (
-              <DropdownMenuCheckboxItem
-                key={cat}
-                checked={searchParams.get("category") === cat}
-                onCheckedChange={() => handleFilterChange("category", searchParams.get("category") === cat ? null : cat)}
-                className="rounded-xl text-xs font-bold uppercase italic tracking-tight py-2"
-              >
+              <SelectItem key={cat} value={cat} className="rounded-xl text-[10px] font-black uppercase italic py-3">
                 {cat}
-              </DropdownMenuCheckboxItem>
+              </SelectItem>
             ))}
-            <DropdownMenuSeparator className="bg-border/50 my-2" />
-            <DropdownMenuLabel className="text-[10px] font-black uppercase tracking-widest italic px-2 py-1.5">Dificuldade</DropdownMenuLabel>
+          </SelectContent>
+        </Select>
+
+        <Select 
+          value={searchParams.get("difficulty") || "all"} 
+          onValueChange={(v) => handleFilterChange("difficulty", v)}
+        >
+          <SelectTrigger className="h-14 w-full sm:w-[180px] rounded-3xl border-border/50 bg-background/50 px-6 font-black uppercase italic tracking-widest text-[10px] cursor-pointer hover:border-primary/30 transition-all">
+            <div className="flex items-center gap-2">
+              <ChartLineUpIcon weight="duotone" className="size-4 text-primary" />
+              <SelectValue placeholder="Nível" />
+            </div>
+          </SelectTrigger>
+          <SelectContent className="bg-card border-border rounded-2xl p-2">
+            <SelectItem value="all" className="rounded-xl text-[10px] font-black uppercase italic py-3">Todos Níveis</SelectItem>
             {DIFFICULTIES.map((diff) => (
-              <DropdownMenuCheckboxItem
-                key={diff}
-                checked={searchParams.get("difficulty") === diff}
-                onCheckedChange={() => handleFilterChange("difficulty", searchParams.get("difficulty") === diff ? null : diff)}
-                className="rounded-xl text-xs font-bold uppercase italic tracking-tight py-2"
-              >
-                {diff}
-              </DropdownMenuCheckboxItem>
+              <SelectItem key={diff.value} value={diff.value} className="rounded-xl text-[10px] font-black uppercase italic py-3">
+                {diff.label}
+              </SelectItem>
             ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+          </SelectContent>
+        </Select>
 
         {hasActiveFilters && (
           <Button 
             onClick={clearFilters}
             variant="ghost" 
-            className="h-12 rounded-2xl px-4 gap-2 text-destructive font-black uppercase italic tracking-widest text-[10px] cursor-pointer hover:bg-destructive/10"
+            className="h-14 rounded-3xl px-6 gap-2 text-destructive font-black uppercase italic tracking-widest text-[10px] cursor-pointer hover:bg-destructive/10"
           >
             <XIcon weight="bold" className="size-4" />
             Limpar

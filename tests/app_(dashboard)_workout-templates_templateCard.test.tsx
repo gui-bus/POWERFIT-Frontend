@@ -21,6 +21,21 @@ vi.mock('next/navigation', () => ({
   }),
 }))
 
+// Mock matchMedia for components that use it (Sheet/Drawer)
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: vi.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(), // Deprecated
+    removeListener: vi.fn(), // Deprecated
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })),
+})
+
 const MOCK_TEMPLATE = {
   id: 'template-1',
   name: 'Plano de Hipertrofia',
@@ -44,7 +59,7 @@ describe('TemplateCard Component', () => {
     expect(screen.getByText('Plano de Hipertrofia')).toBeTruthy()
     expect(screen.getByText('Um plano focado em ganho de massa.')).toBeTruthy()
     expect(screen.getByText('Hipertrofia')).toBeTruthy()
-    expect(screen.getByText('ADVANCED')).toBeTruthy()
+    expect(screen.getByText('Avançado')).toBeTruthy()
   })
 
   it('should call applyWorkoutTemplate when confirm in AlertDialog', async () => {
@@ -52,13 +67,9 @@ describe('TemplateCard Component', () => {
     
     render(<TemplateCard template={MOCK_TEMPLATE} />)
     
-    // The Plus button is the last one
-    const buttons = screen.getAllByRole('button')
-    const applyBtn = buttons[buttons.length - 1]
-    
+    const applyBtn = screen.getByText('Ativar Plano')
     fireEvent.click(applyBtn)
     
-    // Now the AlertDialog should be open
     await waitFor(() => {
       expect(screen.getByText('Alterar Protocolo Ativo')).toBeTruthy()
     })
@@ -71,16 +82,14 @@ describe('TemplateCard Component', () => {
     })
   })
 
-  it('should open details dialog when eye button is clicked', async () => {
+  it('should open details sheet when explore button is clicked', async () => {
     render(<TemplateCard template={MOCK_TEMPLATE} />)
     
-    const buttons = screen.getAllByRole('button')
-    const detailsBtn = buttons[buttons.length - 2] // The Eye button
-    
-    fireEvent.click(detailsBtn)
+    const exploreBtn = screen.getByText('Explorar')
+    fireEvent.click(exploreBtn)
     
     await waitFor(() => {
-      expect(screen.getByText('Detalhes do Protocolo de Treino')).toBeTruthy()
+      expect(screen.getByText('Detalhamento do Protocolo')).toBeTruthy()
     })
   })
 })

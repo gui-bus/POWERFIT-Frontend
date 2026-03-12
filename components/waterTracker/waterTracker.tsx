@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { DropIcon, PlusIcon, TrashIcon, ClockIcon } from "@phosphor-icons/react";
+import { DropIcon, PlusIcon, ClockIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { 
@@ -11,7 +11,6 @@ import {
 } from "@/lib/api/fetch-generated";
 import dayjs from "dayjs";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
 import {
   Dialog,
   DialogContent,
@@ -26,7 +25,6 @@ const WATER_GOAL = 2000; // ml
 export function WaterTracker() {
   const [total, setTotal] = useState(0);
   const [logs, setLogs] = useState<GetWaterHistory200LogsItem[]>([]);
-  const [loading, setLoading] = useState(true);
 
   const fetchWaterData = async () => {
     try {
@@ -38,13 +36,14 @@ export function WaterTracker() {
       }
     } catch (error) {
       console.error("Error fetching water data:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchWaterData();
+    const init = async () => {
+      await fetchWaterData();
+    };
+    init();
   }, []);
 
   const handleLogWater = async (amount: number) => {
@@ -56,7 +55,7 @@ export function WaterTracker() {
       } else {
         toast.error("Erro ao registrar consumo de água.");
       }
-    } catch (error) {
+    } catch {
       toast.error("Erro na conexão.");
     }
   };

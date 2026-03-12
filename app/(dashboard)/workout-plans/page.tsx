@@ -1,4 +1,4 @@
-import { getWorkoutPlans, activateWorkoutPlan } from "@/lib/api/fetch-generated";
+import { getWorkoutPlans } from "@/lib/api/fetch-generated";
 import { authClient } from "@/lib/authClient";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";

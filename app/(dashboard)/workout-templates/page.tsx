@@ -60,7 +60,7 @@ export default async function WorkoutTemplatesPage({ searchParams }: WorkoutTemp
 
       <TemplateFilters initialFilters={filters} />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
         {templates.map((template) => (
           <TemplateCard key={template.id} template={template} />
         ))}
