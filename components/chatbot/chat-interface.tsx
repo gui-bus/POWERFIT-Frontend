@@ -44,7 +44,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
       api: `${process.env.NEXT_PUBLIC_API_URL}/ai`,
       credentials: "include",
     }),
-    onFinish: async (message) => {
+    onFinish: async ({ message }) => {
       const lowerContent = message.parts
         .filter((p) => p.type === "text")
         .map((p) => (p as { text: string }).text)

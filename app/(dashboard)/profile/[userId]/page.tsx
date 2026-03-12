@@ -75,7 +75,7 @@ export default async function PublicProfilePage({ params }: PageProps) {
   }
 
   const user = (profileRes as getUserProfileResponseSuccess).data;
-  const feedItems = feedRes.status === 200 ? (feedRes as getUserFeedResponseSuccess).data : [];
+  const feedItems = feedRes.status === 200 ? (feedRes as getUserFeedResponseSuccess).data.activities : [];
 
   const biometrics = user.stats ? [
     { label: "Peso", value: (user.stats.weightInGrams / 1000).toFixed(1), unit: "kg", icon: PersonIcon },

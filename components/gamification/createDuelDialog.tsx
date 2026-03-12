@@ -78,7 +78,6 @@ export function CreateDuelDialog({ friend, trigger }: CreateDuelDialogProps) {
   const router = useRouter();
 
   const form = useForm<DuelFormValues>({
-    // @ts-expect-error schema
     resolver: zodResolver(duelSchema),
     defaultValues: {
       name: `Duelo vs ${friend.name.split(" ")[0]}`,
