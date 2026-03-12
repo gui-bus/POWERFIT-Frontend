@@ -55,16 +55,18 @@ export function ProfileAvatarSection({ user, isUploading, setIsUploading }: Prof
             const session = await authClient.getSession();
             const token = session.data?.session?.token;
 
+            const headers: Record<string, string> = {};
+
             if (!token) {
               console.warn("Nenhum token de sessão encontrado no authClient!");
-              return {};
+              return headers;
             }
 
-            return {
-              "Authorization": `Bearer ${token}`,
-              "Cookie": `better-auth.session-token=${token}`,
-              "x-session-token": token 
-            };
+            headers["Authorization"] = `Bearer ${token}`;
+            headers["Cookie"] = `better-auth.session-token=${token}`;
+            headers["x-session-token"] = token;
+
+            return headers;
           }}
           onClientUploadComplete={async (res) => {
             const imageUrl = res[0].url;
