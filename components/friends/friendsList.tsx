@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UsersIcon, EyeIcon, ActivityIcon } from "@phosphor-icons/react";
 import dayjs from "dayjs";
 import Link from "next/link";
+import { CreateDuelDialog } from "@/components/gamification/createDuelDialog";
 
 interface FriendsListProps {
   friends: GetFriends200Item[];
@@ -77,6 +78,8 @@ export function FriendsList({ friends }: FriendsListProps) {
             </div>
 
             <div className="flex items-center gap-2">
+              <CreateDuelDialog friend={friend} />
+
               <Link href={`/feed/users/${friend.id}`}>
                 <button
                   className="p-3 bg-muted/50 hover:bg-primary hover:text-primary-foreground rounded-2xl transition-all active:scale-90 cursor-pointer"

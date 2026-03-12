@@ -8,7 +8,7 @@ import { authClient } from "@/lib/authClient";
 import { headers } from "next/headers";
 import { redirect, notFound } from "next/navigation";
 import Image from "next/image";
-import {
+import { 
   PersonIcon,
   RulerIcon,
   BarbellIcon,
@@ -18,11 +18,13 @@ import {
   CaretLeftIcon,
   UserPlusIcon,
   ClockIcon,
-  ActivityIcon
+  ActivityIcon,
+  SwordIcon
 } from "@phosphor-icons/react/ssr";
 import { Container } from "@/components/common/container";
 import { FeedItem } from "@/components/feed/feedItem";
 import Link from "next/link";
+import { CreateDuelDialog } from "@/components/gamification/createDuelDialog";
 
 interface PageProps {
   params: Promise<{
@@ -137,9 +139,20 @@ export default async function PublicProfilePage({ params }: PageProps) {
                   </button>
                 )}
                 {user.isFriend && (
-                  <div className="px-8 py-4 bg-green-500/10 text-green-500 border border-green-500/20 rounded-2xl font-black uppercase italic tracking-widest text-[10px] flex items-center gap-2">
-                    <CheckCircleIcon weight="fill" className="size-4" />
-                    Amigos
+                  <div className="flex items-center gap-3">
+                    <CreateDuelDialog 
+                      friend={{ id: user.id, name: user.name }} 
+                      trigger={
+                        <button className="px-8 py-4 bg-primary text-primary-foreground rounded-2xl font-black uppercase italic tracking-widest text-[10px] flex items-center gap-2 transition-all active:scale-95 shadow-xl shadow-primary/20">
+                          <SwordIcon weight="duotone" className="size-4" />
+                          Desafiar
+                        </button>
+                      }
+                    />
+                    <div className="px-8 py-4 bg-green-500/10 text-green-500 border border-green-500/20 rounded-2xl font-black uppercase italic tracking-widest text-[10px] flex items-center gap-2">
+                      <CheckCircleIcon weight="fill" className="size-4" />
+                      Amigos
+                    </div>
                   </div>
                 )}
               </div>

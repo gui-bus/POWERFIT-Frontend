@@ -336,8 +336,8 @@ export type StartWorkoutSession500 = {
 
 export type CompleteWorkoutSessionBody = {
   statusMessage?: string;
-  taggedUserIds?: string[];
   imageUrl?: string;
+  taggedUserIds?: string[];
 };
 
 export type CompleteWorkoutSession200 = {
@@ -1110,24 +1110,182 @@ export type MarkNotificationAsRead500 = {
   code: string;
 };
 
-export type GetAchievements200Item = {
+export type GetChallengeById200Type =
+  (typeof GetChallengeById200Type)[keyof typeof GetChallengeById200Type];
+
+export const GetChallengeById200Type = {
+  GLOBAL: "GLOBAL",
+  FRIEND_DUEL: "FRIEND_DUEL",
+} as const;
+
+export type GetChallengeById200Status =
+  (typeof GetChallengeById200Status)[keyof typeof GetChallengeById200Status];
+
+export const GetChallengeById200Status = {
+  PENDING: "PENDING",
+  ACTIVE: "ACTIVE",
+  COMPLETED: "COMPLETED",
+} as const;
+
+/**
+ * @nullable
+ */
+export type GetChallengeById200GoalType =
+  | (typeof GetChallengeById200GoalType)[keyof typeof GetChallengeById200GoalType]
+  | null;
+
+export const GetChallengeById200GoalType = {
+  WORKOUT_COUNT: "WORKOUT_COUNT",
+  TOTAL_VOLUME: "TOTAL_VOLUME",
+  TOTAL_XP: "TOTAL_XP",
+  PR_COUNT: "PR_COUNT",
+  TOTAL_DURATION: "TOTAL_DURATION",
+  STREAK_DAYS: "STREAK_DAYS",
+} as const;
+
+export type GetChallengeById200ParticipantsItem = {
+  userId: string;
+  userName: string;
+  score: number;
+  hasWon: boolean;
+};
+
+export type GetChallengeById200 = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
   name: string;
   description: string;
+  type: GetChallengeById200Type;
+  status: GetChallengeById200Status;
   /** @nullable */
-  iconUrl: string | null;
+  startDate: string | null;
+  /** @nullable */
+  endDate: string | null;
   xpReward: number;
+  participantsCount: number;
+  isJoined: boolean;
   /** @nullable */
-  unlockedAt?: string | null;
+  goalType?: GetChallengeById200GoalType;
+  /** @nullable */
+  goalTarget?: number | null;
+  participants: GetChallengeById200ParticipantsItem[];
 };
 
-export type GetAchievements401 = {
+export type GetChallengeById401 = {
   error: string;
   code: string;
 };
 
-export type GetAchievements500 = {
+export type GetChallengeById404 = {
+  error: string;
+  code: string;
+};
+
+export type GetChallengeById500 = {
+  error: string;
+  code: string;
+};
+
+export type CreateChallengeBodyGoalType =
+  (typeof CreateChallengeBodyGoalType)[keyof typeof CreateChallengeBodyGoalType];
+
+export const CreateChallengeBodyGoalType = {
+  WORKOUT_COUNT: "WORKOUT_COUNT",
+  TOTAL_VOLUME: "TOTAL_VOLUME",
+  TOTAL_XP: "TOTAL_XP",
+  PR_COUNT: "PR_COUNT",
+  TOTAL_DURATION: "TOTAL_DURATION",
+  STREAK_DAYS: "STREAK_DAYS",
+} as const;
+
+export type CreateChallengeBody = {
+  /** @minLength 1 */
+  name: string;
+  /** @minLength 1 */
+  description: string;
+  /** @minLength 1 */
+  opponentId: string;
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  startDate?: string;
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  endDate?: string;
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  xpReward?: number;
+  goalType: CreateChallengeBodyGoalType;
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  goalTarget: number;
+};
+
+export type CreateChallenge201Type =
+  (typeof CreateChallenge201Type)[keyof typeof CreateChallenge201Type];
+
+export const CreateChallenge201Type = {
+  GLOBAL: "GLOBAL",
+  FRIEND_DUEL: "FRIEND_DUEL",
+} as const;
+
+export type CreateChallenge201Status =
+  (typeof CreateChallenge201Status)[keyof typeof CreateChallenge201Status];
+
+export const CreateChallenge201Status = {
+  PENDING: "PENDING",
+  ACTIVE: "ACTIVE",
+  COMPLETED: "COMPLETED",
+} as const;
+
+/**
+ * @nullable
+ */
+export type CreateChallenge201GoalType =
+  | (typeof CreateChallenge201GoalType)[keyof typeof CreateChallenge201GoalType]
+  | null;
+
+export const CreateChallenge201GoalType = {
+  WORKOUT_COUNT: "WORKOUT_COUNT",
+  TOTAL_VOLUME: "TOTAL_VOLUME",
+  TOTAL_XP: "TOTAL_XP",
+  PR_COUNT: "PR_COUNT",
+  TOTAL_DURATION: "TOTAL_DURATION",
+  STREAK_DAYS: "STREAK_DAYS",
+} as const;
+
+export type CreateChallenge201 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+  description: string;
+  type: CreateChallenge201Type;
+  status: CreateChallenge201Status;
+  /** @nullable */
+  startDate: string | null;
+  /** @nullable */
+  endDate: string | null;
+  xpReward: number;
+  participantsCount: number;
+  isJoined: boolean;
+  /** @nullable */
+  goalType?: CreateChallenge201GoalType;
+  /** @nullable */
+  goalTarget?: number | null;
+};
+
+export type CreateChallenge401 = {
+  error: string;
+  code: string;
+};
+
+export type CreateChallenge404 = {
+  error: string;
+  code: string;
+};
+
+export type CreateChallenge500 = {
   error: string;
   code: string;
 };
@@ -1149,6 +1307,22 @@ export const GetChallenges200ItemStatus = {
   COMPLETED: "COMPLETED",
 } as const;
 
+/**
+ * @nullable
+ */
+export type GetChallenges200ItemGoalType =
+  | (typeof GetChallenges200ItemGoalType)[keyof typeof GetChallenges200ItemGoalType]
+  | null;
+
+export const GetChallenges200ItemGoalType = {
+  WORKOUT_COUNT: "WORKOUT_COUNT",
+  TOTAL_VOLUME: "TOTAL_VOLUME",
+  TOTAL_XP: "TOTAL_XP",
+  PR_COUNT: "PR_COUNT",
+  TOTAL_DURATION: "TOTAL_DURATION",
+  STREAK_DAYS: "STREAK_DAYS",
+} as const;
+
 export type GetChallenges200Item = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
@@ -1163,6 +1337,10 @@ export type GetChallenges200Item = {
   xpReward: number;
   participantsCount: number;
   isJoined: boolean;
+  /** @nullable */
+  goalType?: GetChallenges200ItemGoalType;
+  /** @nullable */
+  goalTarget?: number | null;
 };
 
 export type GetChallenges401 = {
@@ -1171,6 +1349,66 @@ export type GetChallenges401 = {
 };
 
 export type GetChallenges500 = {
+  error: string;
+  code: string;
+};
+
+export type GetRankingParams = {
+  sortBy: GetRankingSortBy;
+};
+
+export type GetRankingSortBy =
+  (typeof GetRankingSortBy)[keyof typeof GetRankingSortBy];
+
+export const GetRankingSortBy = {
+  XP: "XP",
+  STREAK: "STREAK",
+} as const;
+
+export type GetRanking200RankingItem = {
+  id: string;
+  name: string;
+  /** @nullable */
+  image: string | null;
+  streak: number;
+  xp: number;
+  level: number;
+};
+
+export type GetRanking200 = {
+  ranking: GetRanking200RankingItem[];
+  /** @nullable */
+  currentUserPosition: number | null;
+};
+
+export type GetRanking401 = {
+  error: string;
+  code: string;
+};
+
+export type GetRanking500 = {
+  error: string;
+  code: string;
+};
+
+export type GetAchievements200Item = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+  description: string;
+  /** @nullable */
+  iconUrl: string | null;
+  xpReward: number;
+  /** @nullable */
+  unlockedAt?: string | null;
+};
+
+export type GetAchievements401 = {
+  error: string;
+  code: string;
+};
+
+export type GetAchievements500 = {
   error: string;
   code: string;
 };
@@ -1552,44 +1790,6 @@ export type LogBodyProgress401 = {
 };
 
 export type LogBodyProgress500 = {
-  error: string;
-  code: string;
-};
-
-export type GetRankingParams = {
-  sortBy?: GetRankingSortBy;
-};
-
-export type GetRankingSortBy =
-  (typeof GetRankingSortBy)[keyof typeof GetRankingSortBy];
-
-export const GetRankingSortBy = {
-  STREAK: "STREAK",
-  XP: "XP",
-} as const;
-
-export type GetRanking200RankingItem = {
-  id: string;
-  name: string;
-  /** @nullable */
-  image: string | null;
-  streak: number;
-  xp: number;
-  level: number;
-};
-
-export type GetRanking200 = {
-  ranking: GetRanking200RankingItem[];
-  /** @nullable */
-  currentUserPosition: number | null;
-};
-
-export type GetRanking401 = {
-  error: string;
-  code: string;
-};
-
-export type GetRanking500 = {
   error: string;
   code: string;
 };
@@ -3022,47 +3222,108 @@ export const markNotificationAsRead = async (
 };
 
 /**
- * @summary Get all achievements and user progress
+ * @summary Get challenge details and participant progress
  */
-export type getAchievementsResponse200 = {
-  data: GetAchievements200Item[];
+export type getChallengeByIdResponse200 = {
+  data: GetChallengeById200;
   status: 200;
 };
 
-export type getAchievementsResponse401 = {
-  data: GetAchievements401;
+export type getChallengeByIdResponse401 = {
+  data: GetChallengeById401;
   status: 401;
 };
 
-export type getAchievementsResponse500 = {
-  data: GetAchievements500;
+export type getChallengeByIdResponse404 = {
+  data: GetChallengeById404;
+  status: 404;
+};
+
+export type getChallengeByIdResponse500 = {
+  data: GetChallengeById500;
   status: 500;
 };
 
-export type getAchievementsResponseSuccess = getAchievementsResponse200 & {
+export type getChallengeByIdResponseSuccess = getChallengeByIdResponse200 & {
   headers: Headers;
 };
-export type getAchievementsResponseError = (
-  | getAchievementsResponse401
-  | getAchievementsResponse500
+export type getChallengeByIdResponseError = (
+  | getChallengeByIdResponse401
+  | getChallengeByIdResponse404
+  | getChallengeByIdResponse500
 ) & {
   headers: Headers;
 };
 
-export type getAchievementsResponse =
-  | getAchievementsResponseSuccess
-  | getAchievementsResponseError;
+export type getChallengeByIdResponse =
+  | getChallengeByIdResponseSuccess
+  | getChallengeByIdResponseError;
 
-export const getGetAchievementsUrl = () => {
-  return `/gamification/achievements`;
+export const getGetChallengeByIdUrl = (id: string) => {
+  return `/gamification/challenges/${id}`;
 };
 
-export const getAchievements = async (
+export const getChallengeById = async (
+  id: string,
   options?: RequestInit,
-): Promise<getAchievementsResponse> => {
-  return customFetch<getAchievementsResponse>(getGetAchievementsUrl(), {
+): Promise<getChallengeByIdResponse> => {
+  return customFetch<getChallengeByIdResponse>(getGetChallengeByIdUrl(id), {
     ...options,
     method: "GET",
+  });
+};
+
+/**
+ * @summary Create a new challenge (duel)
+ */
+export type createChallengeResponse201 = {
+  data: CreateChallenge201;
+  status: 201;
+};
+
+export type createChallengeResponse401 = {
+  data: CreateChallenge401;
+  status: 401;
+};
+
+export type createChallengeResponse404 = {
+  data: CreateChallenge404;
+  status: 404;
+};
+
+export type createChallengeResponse500 = {
+  data: CreateChallenge500;
+  status: 500;
+};
+
+export type createChallengeResponseSuccess = createChallengeResponse201 & {
+  headers: Headers;
+};
+export type createChallengeResponseError = (
+  | createChallengeResponse401
+  | createChallengeResponse404
+  | createChallengeResponse500
+) & {
+  headers: Headers;
+};
+
+export type createChallengeResponse =
+  | createChallengeResponseSuccess
+  | createChallengeResponseError;
+
+export const getCreateChallengeUrl = () => {
+  return `/gamification/challenges`;
+};
+
+export const createChallenge = async (
+  createChallengeBody: CreateChallengeBody,
+  options?: RequestInit,
+): Promise<createChallengeResponse> => {
+  return customFetch<createChallengeResponse>(getCreateChallengeUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(createChallengeBody),
   });
 };
 
@@ -3106,6 +3367,109 @@ export const getChallenges = async (
   options?: RequestInit,
 ): Promise<getChallengesResponse> => {
   return customFetch<getChallengesResponse>(getGetChallengesUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Get users ranking
+ */
+export type getRankingResponse200 = {
+  data: GetRanking200;
+  status: 200;
+};
+
+export type getRankingResponse401 = {
+  data: GetRanking401;
+  status: 401;
+};
+
+export type getRankingResponse500 = {
+  data: GetRanking500;
+  status: 500;
+};
+
+export type getRankingResponseSuccess = getRankingResponse200 & {
+  headers: Headers;
+};
+export type getRankingResponseError = (
+  | getRankingResponse401
+  | getRankingResponse500
+) & {
+  headers: Headers;
+};
+
+export type getRankingResponse =
+  | getRankingResponseSuccess
+  | getRankingResponseError;
+
+export const getGetRankingUrl = (params: GetRankingParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/gamification/ranking?${stringifiedParams}`
+    : `/gamification/ranking`;
+};
+
+export const getRanking = async (
+  params: GetRankingParams,
+  options?: RequestInit,
+): Promise<getRankingResponse> => {
+  return customFetch<getRankingResponse>(getGetRankingUrl(params), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Get all achievements and user progress
+ */
+export type getAchievementsResponse200 = {
+  data: GetAchievements200Item[];
+  status: 200;
+};
+
+export type getAchievementsResponse401 = {
+  data: GetAchievements401;
+  status: 401;
+};
+
+export type getAchievementsResponse500 = {
+  data: GetAchievements500;
+  status: 500;
+};
+
+export type getAchievementsResponseSuccess = getAchievementsResponse200 & {
+  headers: Headers;
+};
+export type getAchievementsResponseError = (
+  | getAchievementsResponse401
+  | getAchievementsResponse500
+) & {
+  headers: Headers;
+};
+
+export type getAchievementsResponse =
+  | getAchievementsResponseSuccess
+  | getAchievementsResponseError;
+
+export const getGetAchievementsUrl = () => {
+  return `/gamification/achievements`;
+};
+
+export const getAchievements = async (
+  options?: RequestInit,
+): Promise<getAchievementsResponse> => {
+  return customFetch<getAchievementsResponse>(getGetAchievementsUrl(), {
     ...options,
     method: "GET",
   });
@@ -3710,64 +4074,6 @@ export const logBodyProgress = async (
     method: "POST",
     headers: { "Content-Type": "application/json", ...options?.headers },
     body: JSON.stringify(logBodyProgressBody),
-  });
-};
-
-/**
- * @summary Get users ranking
- */
-export type getRankingResponse200 = {
-  data: GetRanking200;
-  status: 200;
-};
-
-export type getRankingResponse401 = {
-  data: GetRanking401;
-  status: 401;
-};
-
-export type getRankingResponse500 = {
-  data: GetRanking500;
-  status: 500;
-};
-
-export type getRankingResponseSuccess = getRankingResponse200 & {
-  headers: Headers;
-};
-export type getRankingResponseError = (
-  | getRankingResponse401
-  | getRankingResponse500
-) & {
-  headers: Headers;
-};
-
-export type getRankingResponse =
-  | getRankingResponseSuccess
-  | getRankingResponseError;
-
-export const getGetRankingUrl = (params?: GetRankingParams) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? "null" : value.toString());
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0
-    ? `/ranking?${stringifiedParams}`
-    : `/ranking`;
-};
-
-export const getRanking = async (
-  params?: GetRankingParams,
-  options?: RequestInit,
-): Promise<getRankingResponse> => {
-  return customFetch<getRankingResponse>(getGetRankingUrl(params), {
-    ...options,
-    method: "GET",
   });
 };
 
