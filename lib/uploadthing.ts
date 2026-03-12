@@ -23,26 +23,14 @@ const getUploadThingUrl = () => {
 
 const url = getUploadThingUrl();
 
-export const UploadButton = generateUploadButton<OurFileRouter>({
+export const UploadButton = generateUploadButton<any>({
   url,
-
-  requestConfig: {
-    credentials: "include",
-  },
 });
 
-export const UploadDropzone = generateUploadDropzone<OurFileRouter>({
+export const UploadDropzone = generateUploadDropzone<any>({
   url,
-
-  requestConfig: {
-    credentials: "include",
-  },
 });
 
-export const { useUploadThing, uploadFiles } = generateReactHelpers<OurFileRouter>({
+export const { useUploadThing, uploadFiles } = generateReactHelpers<any>({
   url,
-
-  requestConfig: {
-    credentials: "include",
-  },
 });
