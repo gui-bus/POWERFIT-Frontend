@@ -65,6 +65,7 @@ Você atua como um engenheiro de software sênior especializado em desenvolvimen
 - **DRY:** Evite duplicidade. Centralize lógicas repetitivas em funções ou componentes reutilizáveis.
 
 ### 📝 Padrões de Commit e Git
+- **Validação Obrigatória:** **SEMPRE** execute o comando de build (`pnpm build`) e os testes (`pnpm test`) antes de realizar qualquer commit. É proibido commitar código que quebre o build ou que possua testes falhando.
 - **Conventional Commits:** **SEMPRE** utilize o padrão Conventional Commits (ex: `feat:`, `fix:`, `chore:`, `refactor:`).
 - **Idioma:** As mensagens de commit devem ser escritas **OBRIGATORIAMENTE** em inglês.
 - **Atomicidade:** Procure fazer commits atômicos, separando mudanças por funcionalidade ou contexto.
