@@ -6,6 +6,7 @@ import { Metadata } from "next";
 import { Container } from "@/components/common/container";
 import { PageHeader } from "@/components/pageHeader";
 import { PlanHistoryCard } from "./_components/planHistoryCard";
+import { ActivityIcon } from "@phosphor-icons/react/ssr";
 
 export const metadata: Metadata = {
   title: "Histórico de Planos",
@@ -18,7 +19,6 @@ export default async function WorkoutPlansHistoryPage() {
 
   if (!session.data?.user) redirect("/auth");
 
-  // GET /workout-plans sem filtros retorna todos os planos
   const response = await getWorkoutPlans();
 
   if (response.status !== 200) {
@@ -34,13 +34,15 @@ export default async function WorkoutPlansHistoryPage() {
   }
 
   const plans = response.data;
+  // Ordenar para que o ativo fique no topo e os outros venham depois
+  const sortedPlans = [...plans].sort((a, b) => (a.isActive === b.isActive ? 0 : a.isActive ? -1 : 1));
 
   return (
-    <Container className="space-y-12 pb-20">
-      <header>
+    <Container className="pb-32">
+      <header className="mb-16">
         <PageHeader 
-          title="MEUS PLANOS" 
-          subtitle="Gerencie seu histórico de treinamento" 
+          title="PROTOCOLOS" 
+          subtitle="Cronologia de Treinamento" 
           user={{
             name: session.data.user.name,
             email: session.data.user.email,
@@ -49,20 +51,30 @@ export default async function WorkoutPlansHistoryPage() {
         />
       </header>
 
-      <div className="space-y-6">
-        <div className="px-2 flex items-center gap-3">
-          <div className="h-px flex-1 bg-border/50" />
-          <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.5em] whitespace-nowrap italic">Protocolos Registrados</h2>
-          <div className="h-px flex-1 bg-border/50" />
-        </div>
+      <div className="relative">
+        {/* Central Timeline Line */}
+        <div className="absolute left-8 top-0 bottom-0 w-px bg-linear-to-b from-primary/50 via-border to-transparent hidden md:block" />
 
-        <div className="grid grid-cols-1 gap-4">
-          {plans.map((plan) => (
-            <PlanHistoryCard key={plan.id} plan={plan} />
+        <div className="space-y-12">
+          {sortedPlans.map((plan) => (
+            <div key={plan.id} className="relative">
+              {/* Timeline Dot */}
+              <div className={`absolute left-8 -translate-x-1/2 mt-10 size-3 rounded-full border-4 border-background hidden md:block z-20 ${
+                plan.isActive ? "bg-primary shadow-[0_0_10px_rgba(255,100,0,0.5)]" : "bg-muted-foreground/30"
+              }`} />
+              
+              <PlanHistoryCard plan={plan} />
+            </div>
           ))}
+
           {plans.length === 0 && (
-            <div className="py-20 text-center space-y-4 bg-card/50 border border-dashed border-border rounded-[3rem]">
-              <p className="text-muted-foreground font-medium uppercase italic tracking-widest text-sm">Você ainda não possui planos de treino.</p>
+            <div className="py-20 text-center space-y-6 bg-card/30 border border-dashed border-border rounded-[3rem]">
+              <div className="size-16 bg-muted rounded-full flex items-center justify-center mx-auto">
+                <ActivityIcon weight="duotone" className="size-8 text-muted-foreground" />
+              </div>
+              <p className="text-muted-foreground font-medium uppercase italic tracking-widest text-xs">
+                Nenhum protocolo registrado em seu histórico.
+              </p>
             </div>
           )}
         </div>
