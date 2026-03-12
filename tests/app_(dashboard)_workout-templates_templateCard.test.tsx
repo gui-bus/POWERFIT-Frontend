@@ -52,11 +52,29 @@ describe('TemplateCard Component', () => {
     
     render(<TemplateCard template={MOCK_TEMPLATE} />)
     
-    const applyBtn = screen.getByRole('button')
+    // The Plus button is the second one in the card footer's action area usually, 
+    // but better to find by icon or sequence.
+    // Actually, I'll just use getAllByRole and pick the second one or find by specific selector.
+    const buttons = screen.getAllByRole('button')
+    const applyBtn = buttons[buttons.length - 1] // The Plus button
+    
     fireEvent.click(applyBtn)
     
     await waitFor(() => {
       expect(applyWorkoutTemplate).toHaveBeenCalledWith('template-1')
+    })
+  })
+
+  it('should open details dialog when eye button is clicked', async () => {
+    render(<TemplateCard template={MOCK_TEMPLATE} />)
+    
+    const buttons = screen.getAllByRole('button')
+    const detailsBtn = buttons[buttons.length - 2] // The Eye button
+    
+    fireEvent.click(detailsBtn)
+    
+    await waitFor(() => {
+      expect(screen.getByText('Detalhes do Protocolo de Treino')).toBeTruthy()
     })
   })
 })
