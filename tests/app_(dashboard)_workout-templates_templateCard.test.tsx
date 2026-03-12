@@ -47,18 +47,24 @@ describe('TemplateCard Component', () => {
     expect(screen.getByText('ADVANCED')).toBeTruthy()
   })
 
-  it('should call applyWorkoutTemplate when apply button is clicked', async () => {
+  it('should call applyWorkoutTemplate when confirm in AlertDialog', async () => {
     vi.mocked(applyWorkoutTemplate).mockResolvedValue({ status: 201, data: {} } as any)
     
     render(<TemplateCard template={MOCK_TEMPLATE} />)
     
-    // The Plus button is the second one in the card footer's action area usually, 
-    // but better to find by icon or sequence.
-    // Actually, I'll just use getAllByRole and pick the second one or find by specific selector.
+    // The Plus button is the last one
     const buttons = screen.getAllByRole('button')
-    const applyBtn = buttons[buttons.length - 1] // The Plus button
+    const applyBtn = buttons[buttons.length - 1]
     
     fireEvent.click(applyBtn)
+    
+    // Now the AlertDialog should be open
+    await waitFor(() => {
+      expect(screen.getByText('Alterar Protocolo Ativo')).toBeTruthy()
+    })
+
+    const confirmBtn = screen.getByText('Ativar Novo Plano')
+    fireEvent.click(confirmBtn)
     
     await waitFor(() => {
       expect(applyWorkoutTemplate).toHaveBeenCalledWith('template-1')

@@ -28,6 +28,12 @@ export function HomeWorkoutSection({
         </div>
         <div className="flex items-center gap-4">
           <Link
+            href="/workout-plans"
+            className="text-[10px] lg:text-xs font-black text-muted-foreground uppercase italic tracking-widest hover:text-primary transition-colors"
+          >
+            Histórico
+          </Link>
+          <Link
             href="/workout-templates"
             className="text-[10px] lg:text-xs font-black text-muted-foreground uppercase italic tracking-widest hover:text-primary transition-colors"
           >

@@ -461,6 +461,27 @@ export type GetWorkoutExerciseHistory500 = {
   code: string;
 };
 
+export type ActivateWorkoutPlan200 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+};
+
+export type ActivateWorkoutPlan401 = {
+  error: string;
+  code: string;
+};
+
+export type ActivateWorkoutPlan404 = {
+  error: string;
+  code: string;
+};
+
+export type ActivateWorkoutPlan500 = {
+  error: string;
+  code: string;
+};
+
 /**
  * @nullable
  */
@@ -1567,6 +1588,7 @@ export type LogWater500 = {
 export type GetWorkoutTemplatesParams = {
   category?: string;
   difficulty?: string;
+  query?: string;
 };
 
 export type GetWorkoutTemplates200TemplatesItemDaysItemWeekDay =
@@ -2492,6 +2514,63 @@ export const getWorkoutExerciseHistory = async (
     {
       ...options,
       method: "GET",
+    },
+  );
+};
+
+/**
+ * Sets a specific workout plan as active and deactivates all others for the user.
+ * @summary Activate a workout plan
+ */
+export type activateWorkoutPlanResponse200 = {
+  data: ActivateWorkoutPlan200;
+  status: 200;
+};
+
+export type activateWorkoutPlanResponse401 = {
+  data: ActivateWorkoutPlan401;
+  status: 401;
+};
+
+export type activateWorkoutPlanResponse404 = {
+  data: ActivateWorkoutPlan404;
+  status: 404;
+};
+
+export type activateWorkoutPlanResponse500 = {
+  data: ActivateWorkoutPlan500;
+  status: 500;
+};
+
+export type activateWorkoutPlanResponseSuccess =
+  activateWorkoutPlanResponse200 & {
+    headers: Headers;
+  };
+export type activateWorkoutPlanResponseError = (
+  | activateWorkoutPlanResponse401
+  | activateWorkoutPlanResponse404
+  | activateWorkoutPlanResponse500
+) & {
+  headers: Headers;
+};
+
+export type activateWorkoutPlanResponse =
+  | activateWorkoutPlanResponseSuccess
+  | activateWorkoutPlanResponseError;
+
+export const getActivateWorkoutPlanUrl = (id: string) => {
+  return `/workout-plans/${id}/activate`;
+};
+
+export const activateWorkoutPlan = async (
+  id: string,
+  options?: RequestInit,
+): Promise<activateWorkoutPlanResponse> => {
+  return customFetch<activateWorkoutPlanResponse>(
+    getActivateWorkoutPlanUrl(id),
+    {
+      ...options,
+      method: "PATCH",
     },
   );
 };
