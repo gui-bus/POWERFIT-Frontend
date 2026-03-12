@@ -2,6 +2,7 @@ import Image from "next/image";
 import { CalendarIcon, TimerIcon, BarbellIcon } from "@phosphor-icons/react/ssr";
 import { SessionAction } from "@/components/workoutDay/sessionAction";
 import { WEEKDAY_TRANSLATIONS } from "@/lib/utils/date";
+import { EditWorkoutDaySheet } from "./editWorkoutDaySheet";
 
 interface WorkoutDayHeaderProps {
   workoutDay: any;
@@ -32,7 +33,7 @@ export function WorkoutDayHeader({
       <div className="absolute inset-0 bg-linear-to-r from-black/40 via-transparent to-transparent opacity-60" />
       
       <div className="absolute inset-0 flex flex-col justify-between p-8 sm:p-10 lg:p-14">
-        <div className="flex justify-between items-start">
+        <div className="flex justify-between items-start relative z-20">
           <div className="group/badge flex items-center gap-2 bg-black/20 backdrop-blur-xl border border-white/20 px-5 py-2 rounded-full transition-all hover:bg-white/10">
             <div className="relative">
               <CalendarIcon weight="duotone" className="size-3.5 text-primary animate-pulse" />
@@ -42,6 +43,12 @@ export function WorkoutDayHeader({
               {WEEKDAY_TRANSLATIONS[workoutDay.weekDay as keyof typeof WEEKDAY_TRANSLATIONS]}
             </span>
           </div>
+
+          <EditWorkoutDaySheet 
+            workoutDay={workoutDay} 
+            planId={planId} 
+            dayId={dayId} 
+          />
         </div>
 
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
