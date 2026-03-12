@@ -10,6 +10,7 @@ import {
 import { authClient } from "@/lib/authClient";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
 import { PageHeader } from "@/components/pageHeader";
 import { Container } from "@/components/common/container";
 import { FriendsList } from "@/components/friends/friendsList";
@@ -19,7 +20,12 @@ import { AddFriendForm } from "@/components/friends/addFriendForm";
 import { GlobalSearch } from "@/components/friends/globalSearch";
 import { ActivityIcon } from "@phosphor-icons/react/ssr";
 
+export const metadata: Metadata = {
+  title: "Amigos",
+};
+
 export default async function FriendsPage() {
+
   const session = await authClient.getSession({
     fetchOptions: { headers: await headers() },
   });

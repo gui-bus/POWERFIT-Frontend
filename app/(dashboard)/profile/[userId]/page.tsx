@@ -25,11 +25,24 @@ import { Container } from "@/components/common/container";
 import { FeedItem } from "@/components/feed/feedItem";
 import Link from "next/link";
 import { CreateDuelDialog } from "@/components/gamification/createDuelDialog";
+import { Metadata } from "next";
 
 interface PageProps {
   params: Promise<{
     userId: string;
   }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { userId } = await params;
+  const profileRes = await getUserProfile(userId);
+  
+  if (profileRes.status !== 200) {
+    return { title: "Perfil do Usuário" };
+  }
+
+  const user = (profileRes as getUserProfileResponseSuccess).data;
+  return { title: `Perfil de ${user.name}` };
 }
 
 export default async function PublicProfilePage({ params }: PageProps) {

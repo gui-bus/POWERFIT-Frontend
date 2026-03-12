@@ -23,8 +23,33 @@ const anton = Anton({
 });
 
 export const metadata: Metadata = {
-  title: "POWER.FIT - Domine seu potencial",
+  metadataBase: new URL("https://powerfit.guibus.dev/"),
+  title: {
+    default: "POWER.FIT - Domine seu potencial",
+    template: "%s | POWER.FIT",
+  },
   description: "Performance elevada através da tecnologia fitness.",
+  authors: [{ name: "Guilherme Bustamante", url: "https://guibus.dev/" }],
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    url: "https://powerfit.guibus.dev/",
+    siteName: "POWER.FIT",
+    title: "POWER.FIT - Domine seu potencial",
+    description: "Performance elevada através da tecnologia fitness.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "POWER.FIT - Domine seu potencial",
+    description: "Performance elevada através da tecnologia fitness.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

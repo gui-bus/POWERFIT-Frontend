@@ -11,11 +11,24 @@ import { FeedList } from "@/components/feed/feedList";
 import { CaretLeftIcon, ActivityIcon } from "@phosphor-icons/react/ssr";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Metadata } from "next";
 
 interface UserFeedPageProps {
   params: Promise<{
     userId: string;
   }>;
+}
+
+export async function generateMetadata({ params }: UserFeedPageProps): Promise<Metadata> {
+  const { userId } = await params;
+  const response = await getUserFeed(userId, { limit: 1 });
+  
+  if (response.status !== 200 || response.data.activities.length === 0) {
+    return { title: "Feed do Usuário" };
+  }
+
+  const userName = response.data.activities[0].userName;
+  return { title: `Feed de ${userName}` };
 }
 
 export default async function UserFeedPage({ params }: UserFeedPageProps) {

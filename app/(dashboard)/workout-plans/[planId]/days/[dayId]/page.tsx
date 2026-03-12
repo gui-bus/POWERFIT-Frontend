@@ -10,12 +10,26 @@ import { WEEKDAY_TRANSLATIONS } from "@/lib/utils/date";
 import { RestDayView } from "./_components/restDayView";
 import { WorkoutDayHeader } from "./_components/workoutDayHeader";
 import { ExerciseSection } from "./_components/exerciseSection";
+import { Metadata } from "next";
 
 interface PageProps {
   params: Promise<{
     planId: string;
     dayId: string;
   }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { planId, dayId } = await params;
+  const response = await getWorkoutDayById(planId, dayId);
+
+  if (response.status !== 200) {
+    return { title: "Dia de Treino" };
+  }
+
+  const day = response.data;
+  const dayName = WEEKDAY_TRANSLATIONS[day.dayOfWeek as keyof typeof WEEKDAY_TRANSLATIONS] || "Dia de Treino";
+  return { title: `${dayName} | Dia de Treino` };
 }
 
 export default async function WorkoutDayPage({ params }: PageProps) {

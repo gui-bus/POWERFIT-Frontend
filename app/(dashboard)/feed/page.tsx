@@ -5,11 +5,16 @@ import {
 import { authClient } from "@/lib/authClient";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
 import { PageHeader } from "@/components/pageHeader";
 import { Container } from "@/components/common/container";
 import { FeedList } from "@/components/feed/feedList";
 import { UserPlusIcon } from "@phosphor-icons/react/ssr";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Feed Social",
+};
 
 export default async function FeedPage() {
   const session = await authClient.getSession({

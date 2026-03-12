@@ -1,11 +1,16 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Metadata } from "next";
 import { BookOpenIcon, ArrowRightIcon } from "@phosphor-icons/react/ssr";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/common/container";
 import { PageHeader } from "@/components/pageHeader";
 import { authClient } from "@/lib/authClient";
 import { headers } from "next/headers";
+
+export const metadata: Metadata = {
+  title: "Blog",
+};
 
 const MOCK_POSTS = [
   {

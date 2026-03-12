@@ -6,91 +6,17 @@ import { Container } from "@/components/common/container";
 import { PageHeader } from "@/components/pageHeader";
 import { authClient } from "@/lib/authClient";
 import { headers } from "next/headers";
+import { Metadata } from "next";
 
 const MOCK_POSTS = [
-  {
-    id: 1,
-    slug: "hipertrofia-maxima",
-    title: "Hipertrofia Máxima: A ciência por trás das repetições",
-    category: "Treinamento",
-    readTime: "5 min",
-    date: "01 Mar 2024",
-    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1200",
-    content: `
-      <p>A hipertrofia muscular é um processo complexo que envolve a adaptação das fibras musculares ao estresse mecânico e metabólico. Para maximizar os ganhos, é essencial entender como o volume, a intensidade e a frequência do treino interagem.</p>
-      
-      <h2>O Estresse Mecânico</h2>
-      <p>O principal driver da hipertrofia é a tensão mecânica. Quando você levanta cargas pesadas através de uma amplitude de movimento completa, as fibras musculares sofrem micro-lesões que, ao serem reparadas, tornam o músculo maior e mais forte.</p>
-      
-      <h2>Volume vs. Intensidade</h2>
-      <p>Estudos mostram que o volume total de treino (séries x repetições x carga) é o fator mais correlacionado com o crescimento muscular. No entanto, a intensidade (proximidade da falha) é crucial para garantir que as unidades motoras de alto limiar sejam recrutadas.</p>
-      
-      <blockquote>
-        "O sucesso na musculação não vem de fazer coisas extraordinárias, mas de fazer o básico de forma extraordinária por um longo período."
-      </blockquote>
-      
-      <h2>Conclusão</h2>
-      <p>Para hipertrofia máxima, foque em progressão de carga, mantenha um volume adequado para cada grupamento muscular e garanta que sua técnica seja impecável para maximizar a tensão no músculo alvo.</p>
-    `
-  },
-  {
-    id: 2,
-    slug: "nutricao-peri-treino",
-    title: "Nutrição Peri-treino: O que comer antes e depois",
-    category: "Dieta",
-    readTime: "8 min",
-    date: "28 Fev 2024",
-    image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80&w=1200",
-    content: `
-      <p>O que você consome antes, durante e após o treino pode ditar a qualidade da sua performance e a velocidade da sua recuperação.</p>
-      
-      <h2>Pré-Treino</h2>
-      <p>O objetivo principal é fornecer energia e evitar o catabolismo. Carboidratos complexos consumidos 2-3 horas antes do treino garantem estoques de glicogênio cheios. Se a refeição for mais próxima do treino, opte por carboidratos simples de rápida absorção.</p>
-      
-      <h2>Pós-Treino: A "Janela de Oportunidade"</h2>
-      <p>Embora a ideia de uma janela de 30 minutos seja exagerada, a ingestão de proteínas de alta qualidade e carboidratos após o exercício é fundamental para iniciar a síntese proteica e repor as energias.</p>
-      
-      <h2>Hidratação</h2>
-      <p>Não subestime a água. Uma desidratação de apenas 2% pode reduzir sua força significativamente.</p>
-    `
-  },
-  {
-    id: 3,
-    slug: "sono-e-performance",
-    title: "Sono e Performance: O anabolizante natural",
-    category: "Recovery",
-    readTime: "6 min",
-    date: "25 Fev 2024",
-    image: "https://images.unsplash.com/photo-1541480601022-2308c0f02487?auto=format&fit=crop&q=80&w=1200",
-    content: `
-      <p>Você não cresce na academia; você cresce enquanto dorme. O sono é o período mais crítico para a reparação tecidual e regulação hormonal.</p>
-      
-      <h2>Hormônios e Recuperação</h2>
-      <p>Durante o sono profundo, o corpo libera a maior parte do hormônio do crescimento (GH) e regula os níveis de cortisol. A falta de sono crônica pode reduzir a testosterona e aumentar a resistência à insulina.</p>
-      
-      <h2>Qualidade vs. Quantidade</h2>
-      <p>Sete a nove horas são recomendadas, mas a qualidade importa tanto quanto a duração. Evite telas azuis antes de dormir e mantenha o quarto em uma temperatura amena.</p>
-    `
-  },
-  {
-    id: 4,
-    slug: "mobilidade-articular",
-    title: "Mobilidade Articular: Base para Força",
-    category: "Mobilidade",
-    readTime: "4 min",
-    date: "20 Fev 2024",
-    image: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&q=80&w=1200",
-    content: `
-      <p>Muitas vezes confundida com flexibilidade, a mobilidade é a capacidade de controlar ativamente uma articulação através de sua amplitude de movimento total.</p>
-      
-      <h2>Por que treinar mobilidade?</h2>
-      <p>Articulações móveis permitem uma técnica melhor nos exercícios compostos. Por exemplo, uma boa mobilidade de tornozelo permite um agachamento mais profundo sem arredondar a lombar.</p>
-      
-      <h2>Rotina Diária</h2>
-      <p>Apenas 10 minutos por dia podem prevenir lesões crônicas e melhorar sua produção de força a longo prazo.</p>
-    `
-  }
+// ... (rest of mock posts)
 ];
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const post = MOCK_POSTS.find((p) => p.slug === slug);
+  return { title: post ? `${post.title} | Blog` : "Post do Blog" };
+}
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

@@ -5,12 +5,17 @@ import {
 import { authClient } from "@/lib/authClient";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
 import { Container } from "@/components/common/container";
 import { PageHeader } from "@/components/pageHeader";
 import { MedalIcon, LockIcon, StarIcon, CheckCircleIcon } from "@phosphor-icons/react/ssr";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
+
+export const metadata: Metadata = {
+  title: "Conquistas",
+};
 
 export default async function AchievementsPage() {
   const session = await authClient.getSession({

@@ -2,6 +2,7 @@ import { getHomeData } from "@/lib/api/fetch-generated";
 import { authClient } from "@/lib/authClient";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
 import dayjs from "dayjs";
 import { ConsistencyGrid } from "@/components/consistencyGrid";
 import { PageHeader } from "@/components/pageHeader";
@@ -9,6 +10,10 @@ import { Container } from "@/components/common/container";
 import { HomeBanner } from "./_components/home/homeBanner";
 import { HomeWorkoutSection } from "./_components/home/homeWorkoutSection";
 import { HomeNoPlanView } from "./_components/home/homeNoPlanView";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+};
 
 export default async function Home() {
   const session = await authClient.getSession({

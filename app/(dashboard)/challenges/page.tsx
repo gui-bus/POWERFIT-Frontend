@@ -5,10 +5,15 @@ import {
 import { authClient } from "@/lib/authClient";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
 import { Container } from "@/components/common/container";
 import { PageHeader } from "@/components/pageHeader";
 import { ChallengeCard } from "@/components/gamification/challengeCard";
 import { SwordIcon, TrophyIcon } from "@phosphor-icons/react/ssr";
+
+export const metadata: Metadata = {
+  title: "Desafios",
+};
 
 export default async function ChallengesPage() {
   const session = await authClient.getSession({

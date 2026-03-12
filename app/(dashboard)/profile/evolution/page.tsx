@@ -8,6 +8,11 @@ import { BodyProgressTimeline } from "@/components/profile/bodyProgressTimeline"
 import { LogBodyProgressDialog } from "@/components/profile/logBodyProgressDialog";
 import { ScalesIcon, CaretLeftIcon } from "@phosphor-icons/react/ssr";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Minha Evolução",
+};
 
 export default async function BodyEvolutionPage() {
   const session = await authClient.getSession({

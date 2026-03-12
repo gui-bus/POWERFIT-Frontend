@@ -8,11 +8,24 @@ import { WorkoutCard } from "@/components/workoutCard";
 import { TargetIcon } from "@phosphor-icons/react/ssr";
 import { PageHeader } from "@/components/pageHeader";
 import { Container } from "@/components/common/container";
+import { Metadata } from "next";
 
 interface PageProps {
   params: Promise<{
     planId: string;
   }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { planId } = await params;
+  const planResponse = await getWorkoutPlanById(planId);
+  
+  if (planResponse.status !== 200) {
+    return { title: "Plano de Treino" };
+  }
+
+  const plan = planResponse.data;
+  return { title: `${plan.name} | Plano de Treino` };
 }
 
 export default async function WorkoutPlanDetailsPage({ params }: PageProps) {

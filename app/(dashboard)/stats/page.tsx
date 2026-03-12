@@ -12,6 +12,11 @@ import { StatCards } from "@/components/stats/statCards";
 import { ChartBarIcon, CalendarIcon, ClockIcon } from "@phosphor-icons/react/ssr";
 import { PageHeader } from "@/components/pageHeader";
 import { Container } from "@/components/common/container";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Estatísticas",
+};
 
 export default async function StatsPage() {
   const session = await authClient.getSession({

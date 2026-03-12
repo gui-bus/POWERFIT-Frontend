@@ -10,6 +10,11 @@ import { FireIcon, StarIcon } from "@phosphor-icons/react/ssr";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Ranking",
+};
 
 interface RankingPageProps {
   searchParams: Promise<{
