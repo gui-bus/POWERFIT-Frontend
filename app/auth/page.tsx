@@ -16,14 +16,12 @@ const AuthPage = () => {
   const { setTheme } = useTheme();
   const { data: session, isPending } = authClient.useSession();
 
-
-
   useEffect(() => {
     setTheme("dark");
   }, [setTheme]);
 
   useEffect(() => {
-    if (session && !isPending) {
+    if (session?.user && !isPending) {
       router.push("/");
     }
   }, [session, isPending, router]);
