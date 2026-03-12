@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const day = response.data;
-  const dayName = WEEKDAY_TRANSLATIONS[day.dayOfWeek as keyof typeof WEEKDAY_TRANSLATIONS] || "Dia de Treino";
+  const dayName = WEEKDAY_TRANSLATIONS[day.weekDay as keyof typeof WEEKDAY_TRANSLATIONS] || "Dia de Treino";
   return { title: `${dayName} | Dia de Treino` };
 }
 
