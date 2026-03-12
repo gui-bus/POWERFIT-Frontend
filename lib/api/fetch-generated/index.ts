@@ -242,6 +242,83 @@ export type GetWorkoutDayById500 = {
   code: string;
 };
 
+export type UpdateWorkoutDayBodyWeekDay =
+  (typeof UpdateWorkoutDayBodyWeekDay)[keyof typeof UpdateWorkoutDayBodyWeekDay];
+
+export const UpdateWorkoutDayBodyWeekDay = {
+  MONDAY: "MONDAY",
+  TUESDAY: "TUESDAY",
+  WEDNESDAY: "WEDNESDAY",
+  THURSDAY: "THURSDAY",
+  FRIDAY: "FRIDAY",
+  SATURDAY: "SATURDAY",
+  SUNDAY: "SUNDAY",
+} as const;
+
+export type UpdateWorkoutDayBodyExercisesItem = {
+  /** @minLength 1 */
+  name: string;
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  order: number;
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  sets: number;
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  reps: number;
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  restTimeInSeconds: number;
+};
+
+export type UpdateWorkoutDayBody = {
+  /** @minLength 1 */
+  name: string;
+  weekDay: UpdateWorkoutDayBodyWeekDay;
+  isRestDay: boolean;
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  estimatedDurationInSeconds: number;
+  /** @nullable */
+  coverImageUrl?: string | null;
+  exercises: UpdateWorkoutDayBodyExercisesItem[];
+};
+
+/**
+ * @nullable
+ */
+export type UpdateWorkoutDay204 =
+  | (typeof UpdateWorkoutDay204)[keyof typeof UpdateWorkoutDay204]
+  | null;
+
+export const UpdateWorkoutDay204 = {} as const;
+
+export type UpdateWorkoutDay401 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateWorkoutDay404 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateWorkoutDay500 = {
+  error: string;
+  code: string;
+};
+
 export type GetWorkoutPlanById200WorkoutDaysItemWeekDay =
   (typeof GetWorkoutPlanById200WorkoutDaysItemWeekDay)[keyof typeof GetWorkoutPlanById200WorkoutDaysItemWeekDay];
 
@@ -2204,6 +2281,69 @@ export const getWorkoutDayById = async (
     {
       ...options,
       method: "GET",
+    },
+  );
+};
+
+/**
+ * Updates workout day details and synchronizes its exercises (upsert logic).
+ * @summary Update a workout day
+ */
+export type updateWorkoutDayResponse204 = {
+  data: UpdateWorkoutDay204;
+  status: 204;
+};
+
+export type updateWorkoutDayResponse401 = {
+  data: UpdateWorkoutDay401;
+  status: 401;
+};
+
+export type updateWorkoutDayResponse404 = {
+  data: UpdateWorkoutDay404;
+  status: 404;
+};
+
+export type updateWorkoutDayResponse500 = {
+  data: UpdateWorkoutDay500;
+  status: 500;
+};
+
+export type updateWorkoutDayResponseSuccess = updateWorkoutDayResponse204 & {
+  headers: Headers;
+};
+export type updateWorkoutDayResponseError = (
+  | updateWorkoutDayResponse401
+  | updateWorkoutDayResponse404
+  | updateWorkoutDayResponse500
+) & {
+  headers: Headers;
+};
+
+export type updateWorkoutDayResponse =
+  | updateWorkoutDayResponseSuccess
+  | updateWorkoutDayResponseError;
+
+export const getUpdateWorkoutDayUrl = (
+  workoutPlanId: string,
+  workoutDayId: string,
+) => {
+  return `/workout-plans/${workoutPlanId}/days/${workoutDayId}`;
+};
+
+export const updateWorkoutDay = async (
+  workoutPlanId: string,
+  workoutDayId: string,
+  updateWorkoutDayBody: UpdateWorkoutDayBody,
+  options?: RequestInit,
+): Promise<updateWorkoutDayResponse> => {
+  return customFetch<updateWorkoutDayResponse>(
+    getUpdateWorkoutDayUrl(workoutPlanId, workoutDayId),
+    {
+      ...options,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(updateWorkoutDayBody),
     },
   );
 };
