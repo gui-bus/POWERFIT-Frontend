@@ -8,6 +8,7 @@ import { GetHomeData200, GetMe200 } from "@/lib/api/fetch-generated";
 import { BlogCard } from "./premiumSidebar/blogCard";
 import { LevelProgress } from "./premiumSidebar/levelProgress";
 import { QuickActions } from "./premiumSidebar/quickActions";
+import { WaterTracker } from "./waterTracker/waterTracker";
 
 const MOCK_POSTS = [
   {
@@ -56,6 +57,8 @@ export function PremiumSidebar({ homeData, userData }: PremiumSidebarProps) {
         <LevelProgress userData={userData} />
 
         <QuickActions />
+
+        <WaterTracker />
 
         <div className="bg-background dark:bg-zinc-800 rounded-[2.5rem] border border-border overflow-hidden shadow-sm">
           <ConsistencyGrid 

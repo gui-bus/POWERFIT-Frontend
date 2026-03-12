@@ -26,12 +26,20 @@ export function HomeWorkoutSection({
               : "Dia de descanso ou sem treino agendado"}
           </p>
         </div>
-        <Link
-          href={`/workout-plans/${activeWorkoutPlanId}`}
-          className="text-[10px] lg:text-xs font-black text-primary uppercase italic tracking-widest hover:underline"
-        >
-          Ver plano completo
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link
+            href="/workout-templates"
+            className="text-[10px] lg:text-xs font-black text-muted-foreground uppercase italic tracking-widest hover:text-primary transition-colors"
+          >
+            Mudar plano
+          </Link>
+          <Link
+            href={`/workout-plans/${activeWorkoutPlanId}`}
+            className="text-[10px] lg:text-xs font-black text-primary uppercase italic tracking-widest hover:underline"
+          >
+            Ver plano completo
+          </Link>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-2">

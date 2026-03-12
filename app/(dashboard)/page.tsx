@@ -10,6 +10,7 @@ import { Container } from "@/components/common/container";
 import { HomeBanner } from "./_components/home/homeBanner";
 import { HomeWorkoutSection } from "./_components/home/homeWorkoutSection";
 import { HomeNoPlanView } from "./_components/home/homeNoPlanView";
+import { WaterTracker } from "@/components/waterTracker/waterTracker";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -78,6 +79,10 @@ export default async function Home() {
         ) : (
           <HomeNoPlanView />
         )}
+
+        <div className="2xl:hidden px-5">
+          <WaterTracker />
+        </div>
 
         <div className="lg:hidden px-5 pb-10">
           <ConsistencyGrid
