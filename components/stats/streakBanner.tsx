@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { FireIcon, HeartBreakIcon, WrenchIcon } from "@phosphor-icons/react";
 import { authClient } from "@/lib/authClient";
-import { streakRepair } from "@/lib/api/fetch-generated";
+import { streakRepair, getMe } from "@/lib/api/fetch-generated";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -13,22 +13,27 @@ interface StreakBannerProps {
 }
 
 export function StreakBanner({ streak }: StreakBannerProps) {
-  const { data: session } = authClient.useSession();
   const [isRepairing, setIsRepairing] = useState(false);
   const router = useRouter();
 
   const handleRepair = async () => {
     if (isRepairing) return;
     
-    if ((session?.user?.xp || 0) < 500) {
-      toast.error("XP insuficiente", {
-        description: "Você precisa de 500 XP para recuperar sua streak."
-      });
-      return;
-    }
-
     setIsRepairing(true);
     try {
+      const meRes = await getMe();
+      if (meRes.status !== 200) {
+        toast.error("Erro ao verificar dados do usuário.");
+        return;
+      }
+
+      if (meRes.data.xp < 500) {
+        toast.error("XP insuficiente", {
+          description: "Você precisa de 500 XP para recuperar sua streak."
+        });
+        return;
+      }
+
       const response = await streakRepair();
       if (response.status === 200) {
         toast.success("Streak recuperada!", {
