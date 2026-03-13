@@ -193,14 +193,16 @@ export function PlanHistoryCard({ plan }: PlanHistoryCardProps) {
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
                     className="size-10 rounded-xl text-muted-foreground hover:text-primary cursor-pointer"
+                    aria-label="Abrir menu de opções"
                   >
                     <DotsThreeVerticalIcon weight="bold" className="size-6" />
                   </Button>
                 </DropdownMenuTrigger>
+
                 <DropdownMenuContent
                   align="end"
                   className="bg-card border-border rounded-xl p-2 min-w-40"

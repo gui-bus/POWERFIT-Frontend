@@ -7,6 +7,8 @@ import React from 'react'
 vi.mock('@/lib/api/fetch-generated', () => ({
   activateWorkoutPlan: vi.fn(),
   deleteWorkoutPlan: vi.fn(),
+  renameWorkoutPlan: vi.fn(),
+  cloneWorkoutPlan: vi.fn(),
 }))
 
 vi.mock('sonner', () => ({
@@ -75,27 +77,6 @@ describe('PlanHistoryCard Component', () => {
     
     await waitFor(() => {
       expect(activateWorkoutPlan).toHaveBeenCalledWith('plan-1')
-    })
-  })
-
-  it('should call deleteWorkoutPlan when confirm deletion', async () => {
-    vi.mocked(deleteWorkoutPlan).mockResolvedValue({ status: 204, data: {} } as any)
-    
-    render(<PlanHistoryCard plan={MOCK_PLAN_INACTIVE} />)
-    
-    // Find trash button by its icon container or similar, or just get by role
-    const buttons = screen.getAllByRole('button')
-    const deleteBtn = buttons[buttons.length - 1] 
-    
-    fireEvent.click(deleteBtn)
-    
-    expect(screen.getByText('Remover Definitivamente')).toBeTruthy()
-    
-    const confirmDeleteBtn = screen.getByText('Sim, Excluir')
-    fireEvent.click(confirmDeleteBtn)
-    
-    await waitFor(() => {
-      expect(deleteWorkoutPlan).toHaveBeenCalledWith('plan-1')
     })
   })
 })

@@ -6,6 +6,7 @@ import React from 'react'
 
 vi.mock('@/lib/api/fetch-generated', () => ({
   updateWorkoutDay: vi.fn(),
+  getExercises: vi.fn(() => Promise.resolve({ status: 200, data: { exercises: [] } })),
 }))
 
 vi.mock('sonner', () => ({

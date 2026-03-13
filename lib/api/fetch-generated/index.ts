@@ -1798,6 +1798,7 @@ export type ToggleFavoriteExercise500 = {
 export type GetExercisesParams = {
   muscleGroup?: string;
   query?: string;
+  favoritesOnly?: boolean;
 };
 
 export type GetExercises200ExercisesItem = {
