@@ -63,9 +63,9 @@ export function ExerciseHeader({
   };
 
   return (
-    <div className="flex flex-col-reverse md:flex-row items-start justify-between gap-4">
-      <div className="space-y-4 flex-1">
-        <div className="grid grid-cols-2 gap-2.5">
+    <div className="flex flex-col-reverse items-start justify-between gap-4 md:gap-0">
+      <div className="space-y-4 w-full">
+        <div className="grid grid-cols-2 md:flex md:flex-row gap-2.5">
           <button
             onClick={onHelpClick}
             className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors uppercase text-[9px] font-black tracking-widest border border-border px-3 py-1.5 rounded-xl bg-background/50 active:scale-95 cursor-pointer"
