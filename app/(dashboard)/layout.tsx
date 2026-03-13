@@ -17,53 +17,57 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await authClient.getSession({
-    fetchOptions: { headers: await headers() },
-  });
+  try {
+    const session = await authClient.getSession({
+      fetchOptions: { headers: await headers() },
+    });
 
-  if (!session.data?.user) redirect("/auth");
+    if (!session.data?.user) redirect("/auth");
 
-  const today = dayjs();
-  const [homeResponse, meResponse] = await Promise.all([
-    getHomeData(today.format("YYYY-MM-DD")),
-    getMe()
-  ]);
+    const today = dayjs();
+    const [homeResponse, meResponse] = await Promise.all([
+      getHomeData(today.format("YYYY-MM-DD")),
+      getMe()
+    ]);
 
-  if ((meResponse as any).status === 403 && (meResponse.data as any)?.code === "USER_BANNED") {
-    redirect("/suspended");
-  }
+    if ((meResponse as any).status === 403 && (meResponse.data as any)?.code === "USER_BANNED") {
+      redirect("/suspended");
+    }
 
-  if (homeResponse.status !== 200 || meResponse.status !== 200) {
+    if (homeResponse.status !== 200 || meResponse.status !== 200) {
+      throw new Error("API_ERROR");
+    }
+
+    const homeData = homeResponse.data;
+    const userData = meResponse.data;
+
     return (
-      <div className="flex min-h-screen items-center justify-center p-6 text-center bg-background">
-        <p className="text-muted-foreground font-medium text-lg italic uppercase tracking-tighter">
-          Erro ao carregar dados do dashboard.
-        </p>
+      <div className="relative min-h-screen flex flex-col lg:flex-row overflow-x-hidden selection:bg-primary/20 selection:text-primary transition-colors duration-500 w-full max-w-440 mx-auto">
+        <BackgroundImages />
+        <BottomNav />
+
+        <div className="flex-1 flex flex-col h-screen overflow-hidden">
+          <Header homeData={homeData} userData={userData} />
+          <main className="flex-1 overflow-y-auto custom-scrollbar">
+            {children}
+          </main>
+        </div>
+
+        <PremiumSidebar
+          homeData={homeData}
+          userData={userData}
+        />
+
+        <Chat />
       </div>
     );
+  } catch (error) {
+    if ((error as any).digest?.startsWith("NEXT_REDIRECT")) {
+      throw error;
+    }
+    
+    // This will trigger the error.tsx boundary
+    console.error("DashboardLayout Fetch Error:", error);
+    throw error;
   }
-
-  const homeData = homeResponse.data;
-  const userData = meResponse.data;
-
-  return (
-    <div className="relative min-h-screen flex flex-col lg:flex-row overflow-x-hidden selection:bg-primary/20 selection:text-primary transition-colors duration-500 w-full max-w-440 mx-auto">
-      <BackgroundImages />
-      <BottomNav />
-
-      <div className="flex-1 flex flex-col h-screen overflow-hidden">
-        <Header homeData={homeData} userData={userData} />
-        <main className="flex-1 overflow-y-auto custom-scrollbar">
-          {children}
-        </main>
-      </div>
-
-      <PremiumSidebar
-        homeData={homeData}
-        userData={userData}
-      />
-
-      <Chat />
-    </div>
-  );
 }
