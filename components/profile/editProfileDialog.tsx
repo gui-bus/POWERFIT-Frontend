@@ -94,7 +94,7 @@ export function EditProfileDialog({
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>{children}</SheetTrigger>
-      <SheetContent className="sm:max-w-xl bg-card border-l border-border p-0 flex flex-col h-full overflow-hidden">
+      <SheetContent className="sm:max-w-xl bg-card border-l border-border p-0 overflow-y-auto custom-scrollbar">
         <div className="p-8 pb-4">
           <SheetHeader>
             <div className="flex items-center gap-4">
@@ -116,29 +116,27 @@ export function EditProfileDialog({
         <Form {...form}>
           <form 
             onSubmit={form.handleSubmit(onSubmit)} 
-            className="flex-1 flex flex-col min-h-0"
+            className="space-y-10"
           >
-            <ScrollArea className="flex-1 px-8">
-              <div className="space-y-10 py-6 pb-12">
-                <ProfileAvatarSection 
-                  user={{ name: user.name, image: user.image }} 
-                  isUploading={isUploading} 
-                  setIsUploading={setIsUploading} 
-                />
+            <div className="px-8 space-y-10 py-6 pb-32">
+              <ProfileAvatarSection 
+                user={{ name: user.name, image: user.image }} 
+                isUploading={isUploading} 
+                setIsUploading={setIsUploading} 
+              />
 
-                <div className="space-y-8">
-                  <div className="flex items-center gap-3 px-2">
-                    <div className="h-px flex-1 bg-border/50" />
-                    <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em] italic">Dados Biométricos</span>
-                    <div className="h-px flex-1 bg-border/50" />
-                  </div>
-                  
-                  <ProfileFormFields form={form} />
+              <div className="space-y-8">
+                <div className="flex items-center gap-3 px-2">
+                  <div className="h-px flex-1 bg-border/50" />
+                  <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em] italic">Dados Biométricos</span>
+                  <div className="h-px flex-1 bg-border/50" />
                 </div>
+                
+                <ProfileFormFields form={form} />
               </div>
-            </ScrollArea>
+            </div>
 
-            <div className="p-8 pt-4 border-t border-border bg-card/80 backdrop-blur-md">
+            <div className="p-8 pt-4 border-t border-border bg-card/80 backdrop-blur-md sticky bottom-0 z-30">
               <Button
                 type="submit"
                 disabled={isLoading || isUploading}

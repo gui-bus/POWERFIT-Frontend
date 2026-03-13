@@ -27,11 +27,13 @@ import {
   XIcon,
   BarbellIcon,
   TimerIcon,
-  DotsSixVerticalIcon
+  DotsSixVerticalIcon,
+  StarIcon
 } from "@phosphor-icons/react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { FavoriteExercisesSelection } from "./favoriteExercisesSelection";
 
 // DND Kit Imports
 import {
@@ -316,6 +318,20 @@ export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDa
                   )}
                 </div>
               </div>
+
+              {/* Seção de Favoritos */}
+              <FavoriteExercisesSelection 
+                onSelect={(ex) => {
+                  append({ 
+                    name: ex.name, 
+                    sets: 3, 
+                    reps: 12, 
+                    restTimeInSeconds: 60, 
+                    order: fields.length 
+                  });
+                  toast.success(`${ex.name} adicionado!`);
+                }} 
+              />
 
               {/* Lista de Exercícios */}
               <div className="space-y-6">
