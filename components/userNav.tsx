@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdownMenu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { SignOutIcon, UserIcon, MoonIcon, SunIcon, CalendarIcon } from "@phosphor-icons/react";
+import { SignOutIcon, UserIcon, MoonIcon, SunIcon, CalendarIcon, HouseIcon, UsersIcon, TrophyIcon, ChartBarIcon } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { useThemeTransition } from "@/lib/hooks/useThemeTransition";
 import { useActiveWorkoutPlanId } from "@/hooks/use-active-workout-plan-id";
@@ -45,22 +45,31 @@ export function UserNav({ user }: UserNavProps) {
   const isWorkoutDayActive = pathname.includes("/workout-plans/");
   const planOverviewLink = activePlanId ? `/workout-plans/${activePlanId}` : null;
 
+  const navItems = [
+    { icon: HouseIcon, label: "Início", href: "/", active: pathname === "/" },
+    {
+      icon: CalendarIcon,
+      label: "Plano de Treino",
+      href: planOverviewLink,
+      active: isWorkoutDayActive,
+      disabled: !planOverviewLink
+    },
+    { icon: UsersIcon, label: "Feed", href: "/feed", active: pathname === "/feed" },
+    { icon: TrophyIcon, label: "Ranking", href: "/ranking", active: pathname === "/ranking" },
+    { icon: ChartBarIcon, label: "Estatísticas", href: "/stats", active: pathname === "/stats" },
+    { icon: UserIcon, label: "Perfil", href: "/profile", active: pathname === "/profile" },
+  ];
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-14 w-auto rounded-full px-3 flex items-center gap-3 cursor-pointer hover:bg-primary/5 transition-all">
-          <Avatar className="h-10 w-10 rounded-full p-0.5">
-            <AvatarImage src={user.image || ""} alt={user.name} className="rounded-full object-cover" />
-            <AvatarFallback className="rounded-full bg-primary text-primary-foreground text-[10px] font-black uppercase">
+        <Button variant="ghost" className="relative h-12 w-12 rounded-2xl p-0 flex items-center justify-center cursor-pointer hover:bg-primary/5 transition-all">
+          <Avatar className="h-10 w-10 rounded-xl border border-border">
+            <AvatarImage src={user.image || ""} alt={user.name} className="rounded-xl object-cover" />
+            <AvatarFallback className="rounded-xl bg-primary text-primary-foreground text-[10px] font-black uppercase">
               {user.name.substring(0, 2)}
             </AvatarFallback>
           </Avatar>
-          <div className="flex flex-col items-start text-left sm:flex">
-            <p className="text-[11px] font-black leading-none uppercase italic tracking-tight text-foreground">{user.name}</p>
-            <p className="text-[9px] font-bold leading-none text-muted-foreground uppercase tracking-widest mt-1">
-              {user.email.length > 20 ? `${user.email.substring(0, 20)}...` : user.email}
-            </p>
-          </div>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-64 mt-2 rounded-[1.5rem] p-3 border-border bg-card shadow-2xl" align="end" forceMount>
@@ -74,24 +83,20 @@ export function UserNav({ user }: UserNavProps) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-border/50" />
         <DropdownMenuGroup className="p-1">
-          <DropdownMenuItem 
-            className={cn(
-              "rounded-xl p-3 focus:bg-primary focus:text-primary-foreground group cursor-pointer",
-              isWorkoutDayActive && "bg-primary/5 text-primary"
-            )}
-            onClick={() => planOverviewLink && router.push(planOverviewLink)}
-            disabled={!planOverviewLink}
-          >
-            <CalendarIcon weight="duotone" className="mr-3 h-4 w-4 stroke-[2.5] focus:text-white" />
-            <span className="font-bold text-xs uppercase tracking-wider">Plano de Treino</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem 
-            className="rounded-xl p-3 focus:bg-primary focus:text-primary-foreground group cursor-pointer"
-            onClick={() => router.push("/profile")}
-          >
-            <UserIcon weight="duotone" className="mr-3 h-4 w-4 stroke-[2.5] focus:text-white" />
-            <span className="font-bold text-xs uppercase tracking-wider">Perfil</span>
-          </DropdownMenuItem>
+          {navItems.map((item) => (
+            <DropdownMenuItem 
+              key={item.href || item.label}
+              className={cn(
+                "rounded-xl p-3 focus:bg-primary focus:text-primary-foreground group cursor-pointer",
+                item.active && "bg-primary/5 text-primary"
+              )}
+              onClick={() => item.href && router.push(item.href)}
+              disabled={item.disabled}
+            >
+              <item.icon weight="duotone" className="mr-3 h-4 w-4 stroke-[2.5] focus:text-white" />
+              <span className="font-bold text-xs uppercase tracking-wider">{item.label}</span>
+            </DropdownMenuItem>
+          ))}
         </DropdownMenuGroup>
         <DropdownMenuSeparator className="bg-border/50" />
         <DropdownMenuGroup className="p-1">

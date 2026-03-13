@@ -1,5 +1,7 @@
+"use client";
+
 import Link from "next/link";
-import { TrophyIcon, UsersIcon, StarIcon, SwordIcon, BarbellIcon, ClockCounterClockwiseIcon } from "@phosphor-icons/react/ssr";
+import { TrophyIcon, UsersIcon, StarIcon, SwordIcon, BarbellIcon, ClockCounterClockwiseIcon } from "@phosphor-icons/react";
 
 export function QuickActions() {
   const actions = [

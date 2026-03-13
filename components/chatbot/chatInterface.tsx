@@ -137,7 +137,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
       className={
         embedded
           ? "flex h-svh flex-col bg-background"
-          : "flex flex-1 flex-col overflow-hidden rounded-[3rem] bg-card/80 backdrop-blur-2xl border border-border/50 shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2)]"
+          : "flex flex-1 flex-col overflow-hidden sm:rounded-[3rem] bg-card/80 backdrop-blur-2xl border-border/50 shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2)] sm:border"
       }
     >
       <ChatHeader embedded={embedded} onClose={handleClose} />
@@ -172,13 +172,13 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
 
       <AnimatePresence>
         {chatParams.chat_open && (
-          <div className="absolute inset-0 z-100 flex items-end justify-end p-4 sm:p-8 pointer-events-none overflow-hidden">
+          <div className="fixed inset-0 z-100 flex items-end justify-end sm:p-8 pointer-events-none overflow-hidden">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={handleClose}
-              className="absolute inset-0 bg-black/20 backdrop-blur-[2px] pointer-events-auto sm:hidden"
+              className="absolute inset-0 bg-black/20 backdrop-blur-[2px] pointer-events-auto hidden sm:block"
             />
 
             <motion.div
@@ -191,7 +191,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.95 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-110 h-150 max-h-[80vh] flex flex-col pointer-events-auto shadow-2xl"
+              className="relative w-full h-full sm:w-full sm:max-w-110 sm:h-150 sm:max-h-[80vh] flex flex-col pointer-events-auto shadow-2xl bg-background sm:bg-transparent"
             >
               {chatContent}
             </motion.div>

@@ -8,8 +8,9 @@ import { redirect } from "next/navigation";
 import dayjs from "dayjs";
 import { BottomNav } from "@/components/bottomNav";
 import { PremiumSidebar } from "@/components/premiumSidebar";
+import { Header } from "@/components/header";
 import BackgroundImages from "@/components/common/backgroundImages";
-import { Chat } from "@/components/chatbot/chat-interface";
+import { Chat } from "@/components/chatbot/chatInterface";
 
 export default async function DashboardLayout({
   children,
@@ -46,9 +47,12 @@ export default async function DashboardLayout({
       <BackgroundImages />
       <BottomNav />
 
-      <main className="flex-1 h-screen overflow-y-auto custom-scrollbar">
-        {children}
-      </main>
+      <div className="flex-1 flex flex-col h-screen overflow-hidden">
+        <Header homeData={homeData} userData={userData} />
+        <main className="flex-1 overflow-y-auto custom-scrollbar">
+          {children}
+        </main>
+      </div>
 
       <PremiumSidebar
         homeData={homeData}

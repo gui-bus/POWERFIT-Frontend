@@ -1,6 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { BookOpenIcon } from "@phosphor-icons/react/ssr";
+import { BookOpenIcon } from "@phosphor-icons/react";
 
 interface BlogCardProps {
   post: {
@@ -16,9 +18,7 @@ interface BlogCardProps {
 export function BlogCard({ post }: BlogCardProps) {
   return (
     <Link href={`/blog/${post.slug}`}>
-      <article
-        className="group bg-background dark:bg-zinc-800 rounded-[2.5rem] border border-border hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/5 transition-all cursor-pointer overflow-hidden flex items-center"
-      >
+      <article className="group bg-background dark:bg-zinc-900 rounded-[2.5rem] border border-border hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/5 transition-all cursor-pointer overflow-hidden flex items-center">
         <div className="relative aspect-square size-32 min-w-32 overflow-hidden">
           <Image
             src={post.image}
@@ -38,7 +38,9 @@ export function BlogCard({ post }: BlogCardProps) {
           </div>
           <div className="flex items-center gap-2 text-muted-foreground">
             <BookOpenIcon weight="duotone" className="size-3" />
-            <span className="text-[9px] font-black uppercase tracking-widest">{post.readTime}</span>
+            <span className="text-[9px] font-black uppercase tracking-widest">
+              {post.readTime}
+            </span>
           </div>
         </div>
       </article>

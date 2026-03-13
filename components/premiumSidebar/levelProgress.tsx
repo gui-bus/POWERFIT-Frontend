@@ -1,4 +1,6 @@
-import { LightningIcon, StarIcon } from "@phosphor-icons/react/ssr";
+"use client";
+
+import { LightningIcon, StarIcon } from "@phosphor-icons/react";
 import { GetMe200 } from "@/lib/api/fetch-generated";
 
 interface LevelProgressProps {

@@ -16,16 +16,7 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, subtitle, user }: PageHeaderProps) {
   return (
-    <div className="flex flex-col lg:flex-row-reverse items-center justify-between w-full gap-6">
-      <div className="flex items-center gap-4 mt-4 lg:mt-0">
-        <NotificationCenter />
-        {user && (
-          <div className="flex items-center">
-            <UserNav user={user} />
-          </div>
-        )}
-      </div>
-
+    <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-6">
       <div className="space-y-1">
         <div className="flex items-center gap-3">
           <div className="h-5 flex items-center relative">
@@ -53,6 +44,15 @@ export function PageHeader({ title, subtitle, user }: PageHeaderProps) {
         <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.4em] pl-1">
           {subtitle}
         </p>
+      </div>
+
+      <div className="hidden 2xl:flex items-center gap-4 mt-4 lg:mt-0">
+        <NotificationCenter />
+        {user && (
+          <div className="flex items-center">
+            <UserNav user={user} />
+          </div>
+        )}
       </div>
     </div>
   );

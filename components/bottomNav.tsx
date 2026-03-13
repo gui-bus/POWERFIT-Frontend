@@ -42,7 +42,7 @@ export function BottomNav() {
 
   return (
     <>
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-t border-border px-4 py-4 flex items-center justify-between rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-card backdrop-blur-xl border-t border-border px-4 py-4 flex items-center justify-between rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
         {navItems.slice(0, 3).map((item, i) => (
           <Link key={i} href={item.href} className="p-2">
             <item.icon
@@ -57,12 +57,12 @@ export function BottomNav() {
           </Link>
         ))}
 
-        <div className="relative -mt-14">
+        <div className="relative -mt-10">
           <button
             onClick={() => setIsOpen(true)}
-            className="bg-primary p-5 rounded-full border-8 border-background shadow-2xl shadow-primary/40 transition-transform active:scale-95 text-primary-foreground"
+            className="bg-primary p-3.5 rounded-full border-4 border-background shadow-2xl shadow-primary/40 transition-transform active:scale-95 text-primary-foreground"
           >
-            <SparkleIcon weight="duotone" className="size-6" />
+            <SparkleIcon weight="duotone" className="size-5" />
           </button>
         </div>
 
@@ -81,7 +81,7 @@ export function BottomNav() {
         ))}
       </nav>
 
-      <nav className="hidden lg:flex sticky left-0 top-0 h-screen w-20 bg-card/50 backdrop-blur-xl border-r border-border flex-col items-center py-8 z-50 transition-all duration-300">
+      <nav className="hidden lg:flex sticky left-0 top-0 h-screen w-20 bg-card backdrop-blur-xl border-r border-border flex-col items-center py-8 z-50 transition-all duration-300">
         <Link
           href="/"
           className="font-syne text-2xl font-black italic text-primary mb-10 tracking-tighter hover:scale-110 transition-transform"

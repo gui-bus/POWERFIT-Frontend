@@ -7,9 +7,9 @@ import dayjs from "dayjs";
 import { ConsistencyGrid } from "@/components/consistencyGrid";
 import { PageHeader } from "@/components/pageHeader";
 import { Container } from "@/components/common/container";
-import { HomeBanner } from "./_components/home/homeBanner";
-import { HomeWorkoutSection } from "./_components/home/homeWorkoutSection";
-import { HomeNoPlanView } from "./_components/home/homeNoPlanView";
+import { HomeBanner } from "../../components/home/homeBanner";
+import { HomeWorkoutSection } from "../../components/home/homeWorkoutSection";
+import { HomeNoPlanView } from "../../components/home/homeNoPlanView";
 import { WaterTracker } from "@/components/waterTracker/waterTracker";
 
 export const metadata: Metadata = {
