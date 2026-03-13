@@ -1,6 +1,6 @@
 import {
   getHomeData,
-  getMe,
+  getMeProfile,
 } from "@/lib/api/fetch-generated";
 import { authClient } from "@/lib/authClient";
 import { headers } from "next/headers";
@@ -27,7 +27,7 @@ export default async function DashboardLayout({
     const today = dayjs();
     const [homeResponse, meResponse] = await Promise.all([
       getHomeData(today.format("YYYY-MM-DD")),
-      getMe()
+      getMeProfile()
     ]);
 
     if ((meResponse as any).status === 403 && (meResponse.data as any)?.code === "USER_BANNED") {
@@ -39,7 +39,8 @@ export default async function DashboardLayout({
     }
 
     const homeData = homeResponse.data;
-    const userData = meResponse.data;
+    // GetMeProfile200 tem os dados dentro de um campo 'data' adicional
+    const userData = (meResponse.data as any).data;
 
     return (
       <div className="relative min-h-screen flex flex-col lg:flex-row overflow-x-hidden selection:bg-primary/20 selection:text-primary transition-colors duration-500 w-full max-w-440 mx-auto">

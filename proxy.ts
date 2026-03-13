@@ -23,24 +23,28 @@ export async function proxy(request: NextRequest) {
   // Proteção de rotas ADMIN (Esta sim precisa ser rigorosa)
   if (pathname.startsWith('/admin')) {
     try {
-      const sessionRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-session`, {
+      const profileRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/me/profile`, {
         headers: {
           cookie: request.headers.get('cookie') || '',
         },
         cache: 'no-store'
       });
 
-      if (sessionRes.ok) {
-        const session = await sessionRes.json();
-        if (session?.user?.role !== 'ADMIN') {
+      if (profileRes.ok) {
+        const profile = await profileRes.json();
+        // De acordo com os tipos do Orval, GetMeProfile200 tem um campo 'data'
+        const userRole = profile?.data?.role || profile?.role;
+        
+        if (userRole !== 'ADMIN') {
+          console.warn(`Acesso negado ao admin. Role detectada: ${userRole}`);
           return NextResponse.redirect(new URL('/', request.url));
         }
       } else {
-        // Se falhar a verificação, por segurança redirecionamos para a home
+        console.error('Falha na resposta do perfil admin:', profileRes.status);
         return NextResponse.redirect(new URL('/', request.url));
       }
     } catch (error) {
-      console.error('Erro ao verificar sessão admin no proxy:', error);
+      console.error('Erro ao verificar perfil admin no proxy:', error);
       return NextResponse.redirect(new URL('/', request.url));
     }
   }
