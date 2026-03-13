@@ -17,6 +17,8 @@ export const profileSchema = z.object({
     .number()
     .min(0, "Mínimo 0%")
     .max(100, "Máximo 100%"),
+  bio: z.string().max(500, "Bio muito longa").optional(),
+  instagram: z.string().url("URL inválida").or(z.literal("")).optional(),
 });
 
 export type ProfileFormValues = z.infer<typeof profileSchema>;

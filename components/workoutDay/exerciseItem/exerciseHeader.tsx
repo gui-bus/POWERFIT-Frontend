@@ -1,9 +1,12 @@
-import { QuestionIcon, TimerIcon, CopyIcon, CheckCircleIcon } from "@phosphor-icons/react";
+import { QuestionIcon, TimerIcon, CopyIcon, CheckCircleIcon, HeartIcon } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { MiniTrendChart } from "./miniTrendChart";
-import { Item as HistoryItem } from "@/lib/api/fetch-generated";
+import { Item as HistoryItem, toggleFavoriteExercise } from "@/lib/api/fetch-generated";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface ExerciseHeaderProps {
+  id: string;
   name: string;
   formattedPausa: string;
   isAllCompleted: boolean;
@@ -16,6 +19,7 @@ interface ExerciseHeaderProps {
 }
 
 export function ExerciseHeader({
+  id,
   name,
   formattedPausa,
   isAllCompleted,
@@ -26,6 +30,25 @@ export function ExerciseHeader({
   onHelpClick,
   onCopyFirstSet,
 }: ExerciseHeaderProps) {
+  const [isFavorite, setIsFavorite] = useState(false); // Default to false as GET doesn't provide it yet
+  const [isFavoriting, setIsFavoriting] = useState(false);
+
+  const handleToggleFavorite = async () => {
+    if (isFavoriting) return;
+    setIsFavoriting(true);
+    try {
+      const response = await toggleFavoriteExercise(id);
+      if (response.status === 200) {
+        setIsFavorite(response.data.isFavorite);
+        toast.success(response.data.isFavorite ? "Adicionado aos favoritos!" : "Removido dos favoritos.");
+      }
+    } catch {
+      toast.error("Erro ao favoritar exercício.");
+    } finally {
+      setIsFavoriting(false);
+    }
+  };
+
   return (
     <div className="flex items-start justify-between gap-4">
       <div className="space-y-4 flex-1">
@@ -47,6 +70,19 @@ export function ExerciseHeader({
               <CopyIcon size={14} /> Replicar Carga
             </button>
           )}
+          <button
+            onClick={handleToggleFavorite}
+            disabled={isFavoriting}
+            className={cn(
+              "inline-flex items-center gap-2 transition-all uppercase text-[9px] font-black tracking-widest border px-3 py-1.5 rounded-xl bg-background/50 active:scale-95 cursor-pointer",
+              isFavorite 
+                ? "text-red-500 border-red-500/20 bg-red-500/5" 
+                : "text-muted-foreground border-border hover:text-red-500 hover:border-red-500/20"
+            )}
+          >
+            <HeartIcon size={14} weight={isFavorite ? "fill" : "bold"} className={cn(isFavoriting && "animate-pulse")} />
+            {isFavorite ? "Favorito" : "Favoritar"}
+          </button>
         </div>
 
         <h3

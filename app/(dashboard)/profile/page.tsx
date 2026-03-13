@@ -27,6 +27,7 @@ import {
   CheckCircleIcon,
   ShareNetworkIcon,
   TrophyIcon,
+  InstagramLogoIcon
 } from "@phosphor-icons/react/ssr";
 import { LogoutButton } from "./logout-button";
 import { EditProfileDialog } from "@/components/profile/editProfileDialog";
@@ -182,15 +183,30 @@ export default async function ProfilePage() {
                     {userData.email}
                   </span>
                 </div>
+
+                {userData.bio && (
+                  <p className="text-xs text-muted-foreground font-medium italic max-w-md leading-relaxed">
+                    {userData.bio}
+                  </p>
+                )}
+
+                {userData.socialLinks?.instagram && (
+                  <a 
+                    href={userData.socialLinks.instagram} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-[10px] font-black text-primary uppercase italic tracking-widest hover:underline"
+                  >
+                    <InstagramLogoIcon weight="bold" className="size-3" />
+                    Instagram
+                  </a>
+                )}
               </div>
 
               <div className="flex items-center gap-3">
                 <EditProfileDialog 
                   initialData={trainData} 
-                  user={{ 
-                    name: userData.name, 
-                    image: userData.image 
-                  }}
+                  user={userData}
                 >
                   <button className="px-6 py-3 bg-card border border-border hover:border-primary/50 rounded-2xl font-black uppercase italic tracking-widest text-[10px] flex items-center gap-2 transition-all active:scale-95 shadow-sm cursor-pointer">
                     <PencilSimpleIcon

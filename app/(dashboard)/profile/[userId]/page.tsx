@@ -19,13 +19,15 @@ import {
   UserPlusIcon,
   ClockIcon,
   ActivityIcon,
-  SwordIcon
+  SwordIcon,
+  InstagramLogoIcon
 } from "@phosphor-icons/react/ssr";
 import { Container } from "@/components/common/container";
 import { FeedItem } from "@/components/feed/feedItem";
 import Link from "next/link";
 import { CreateDuelDialog } from "@/components/gamification/createDuelDialog";
 import { Metadata } from "next";
+import { BlockUserButton } from "./_components/blockUserButton";
 
 interface PageProps {
   params: Promise<{
@@ -136,6 +138,24 @@ export default async function PublicProfilePage({ params }: PageProps) {
                     Nível {user.level} · Atleta PowerFit
                   </span>
                 </div>
+
+                {user.bio && (
+                  <p className="text-xs text-muted-foreground font-medium italic max-w-md leading-relaxed mx-auto sm:mx-0 text-center sm:text-left">
+                    {user.bio}
+                  </p>
+                )}
+
+                {user.socialLinks?.instagram && (
+                  <a 
+                    href={user.socialLinks.instagram} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-[10px] font-black text-primary uppercase italic tracking-widest hover:underline mx-auto sm:mx-0"
+                  >
+                    <InstagramLogoIcon weight="bold" className="size-3" />
+                    Instagram
+                  </a>
+                )}
               </div>
 
               <div className="flex items-center gap-3">
@@ -168,6 +188,8 @@ export default async function PublicProfilePage({ params }: PageProps) {
                     </div>
                   </div>
                 )}
+
+                <BlockUserButton userId={user.id} userName={user.name} />
               </div>
             </div>
           </div>

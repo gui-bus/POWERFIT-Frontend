@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { SpinnerGapIcon } from "@phosphor-icons/react";
+import { SpinnerGapIcon, CameraIcon } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { UploadButton } from "@/lib/uploadthing";
 import { authClient } from "@/lib/authClient";
@@ -20,12 +20,14 @@ export function ProfileAvatarSection({ user, isUploading, setIsUploading }: Prof
   const router = useRouter();
 
   return (
-    <div className="flex flex-col items-center justify-center p-8 bg-muted/30 rounded-[2.5rem] border border-border/50 relative overflow-hidden group">
+    <div className="flex flex-col items-center justify-center p-10 bg-muted/20 rounded-[3rem] border border-border/50 relative overflow-hidden group shadow-inner">
       <div className="relative">
-        <Avatar className="size-32 rounded-[2rem] border-4 border-background shadow-2xl transition-transform duration-500 group-hover:scale-105">
+        <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+        
+        <Avatar className="size-40 rounded-[2.5rem] border-4 border-background shadow-2xl transition-all duration-500 group-hover:scale-105 group-hover:rotate-2 relative z-10">
           <AvatarImage src={user.image || ""} className="object-cover" />
-          <AvatarFallback className="bg-primary text-primary-foreground font-black text-4xl italic">
-            {user.name.substring(0, 2).toUpperCase()}
+          <AvatarFallback className="bg-linear-to-br from-primary to-orange-600 text-white font-black text-5xl italic">
+            {user.name.substring(0, 1).toUpperCase()}
           </AvatarFallback>
         </Avatar>
         
@@ -35,16 +37,16 @@ export function ProfileAvatarSection({ user, isUploading, setIsUploading }: Prof
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 z-20 rounded-[2rem] bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center gap-2"
+              className="absolute inset-0 z-20 rounded-[2.5rem] bg-black/60 backdrop-blur-md flex flex-col items-center justify-center gap-2"
             >
-              <SpinnerGapIcon className="size-8 text-primary animate-spin" />
-              <span className="text-[8px] font-black text-white uppercase tracking-widest italic animate-pulse">Enviando...</span>
+              <SpinnerGapIcon className="size-10 text-primary animate-spin" />
+              <span className="text-[10px] font-black text-white uppercase tracking-widest italic animate-pulse">Sincronizando...</span>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-8 relative z-10">
         <UploadButton
           endpoint="profileImage"
           onUploadBegin={() => {
@@ -54,33 +56,23 @@ export function ProfileAvatarSection({ user, isUploading, setIsUploading }: Prof
           headers={async () => {
             const session = await authClient.getSession();
             const token = session.data?.session?.token;
-
             const headers: Record<string, string> = {};
-
-            if (!token) {
-              console.warn("Nenhum token de sessão encontrado no authClient!");
-              return headers;
+            if (token) {
+              headers["Authorization"] = `Bearer ${token}`;
+              headers["Cookie"] = `better-auth.session-token=${token}`;
+              headers["x-session-token"] = token;
             }
-
-            headers["Authorization"] = `Bearer ${token}`;
-            headers["Cookie"] = `better-auth.session-token=${token}`;
-            headers["x-session-token"] = token;
-
             return headers;
           }}
           onClientUploadComplete={async (res) => {
             const imageUrl = res[0].url;
-            
             try {
               const response = await updateProfile({ image: imageUrl });
               if (response.status === 200) {
                 toast.success("Foto de perfil atualizada!", { id: "upload-toast" });
                 router.refresh();
-              } else {
-                toast.error("Erro ao salvar no servidor.", { id: "upload-toast" });
               }
-            } catch (e) {
-              console.error(e);
+            } catch {
               toast.error("Erro na conexão.", { id: "upload-toast" });
             } finally {
               setIsUploading(false);
@@ -88,18 +80,21 @@ export function ProfileAvatarSection({ user, isUploading, setIsUploading }: Prof
           }}
           onUploadError={(error: Error) => {
             setIsUploading(false);
-            console.error("Erro Uploadthing:", error);
             toast.error(`Erro: ${error.message}`, { id: "upload-toast" });
           }}
           appearance={{
             button:
-              "bg-primary text-primary-foreground font-black uppercase italic tracking-widest text-[9px] h-10 px-8 rounded-xl hover:scale-105 active:scale-95 transition-all shadow-lg shadow-primary/20 cursor-pointer",
+              "bg-background border border-border hover:border-primary/50 text-foreground font-black uppercase italic tracking-widest text-[10px] h-12 px-8 rounded-2xl transition-all shadow-xl group/btn cursor-pointer",
             allowedContent: "hidden",
           }}
           content={{
             button({ ready }) {
-              if (ready) return "Alterar Imagem";
-              return "Iniciando...";
+              return (
+                <div className="flex items-center gap-2">
+                  <CameraIcon weight="bold" className="size-4 text-primary group-hover/btn:scale-110 transition-transform" />
+                  {ready ? "Alterar Avatar" : "Iniciando..."}
+                </div>
+              );
             },
           }}
         />

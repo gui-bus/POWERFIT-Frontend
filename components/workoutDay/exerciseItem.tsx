@@ -203,6 +203,7 @@ export function ExerciseItem({
       >
         <div className="p-8 sm:p-10 space-y-8">
           <ExerciseHeader
+            id={exercise.id}
             name={exercise.name}
             formattedPausa={formattedPausa}
             isAllCompleted={isAllCompleted}

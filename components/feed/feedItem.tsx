@@ -115,7 +115,10 @@ export function FeedItem({ item }: FeedItemProps) {
       />
 
       <FeedComments
-        comments={item.comments}
+        comments={item.comments.map(c => ({
+          ...c,
+          userId: c.userId // Ensuring mapping
+        }))}
         showComments={showComments}
         commentText={commentText}
         isSubmittingComment={isSubmittingComment}

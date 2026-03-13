@@ -6,7 +6,7 @@ import { Container } from "@/components/common/container";
 import { PageHeader } from "@/components/pageHeader";
 import { RankingPodium } from "@/components/ranking/rankingPodium";
 import { RankingList } from "@/components/ranking/rankingList";
-import { FireIcon, StarIcon } from "@phosphor-icons/react/ssr";
+import { FireIcon, StarIcon, UsersIcon } from "@phosphor-icons/react/ssr";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -19,12 +19,14 @@ export const metadata: Metadata = {
 interface RankingPageProps {
   searchParams: Promise<{
     type?: string;
+    friendsOnly?: string;
   }>;
 }
 
 export default async function RankingPage({ searchParams }: RankingPageProps) {
-  const { type = "STREAK" } = await searchParams;
+  const { type = "STREAK", friendsOnly = "false" } = await searchParams;
   const rankingType = type.toUpperCase() as GetRankingSortBy;
+  const isFriendsOnly = friendsOnly === "true";
 
   const session = await authClient.getSession({
     fetchOptions: { headers: await headers() },
@@ -35,7 +37,7 @@ export default async function RankingPage({ searchParams }: RankingPageProps) {
   const today = dayjs().format("YYYY-MM-DD");
   
   const [rankingResponse, homeResponse] = await Promise.all([
-    getRanking({ sortBy: rankingType }),
+    getRanking({ sortBy: rankingType, friendsOnly: isFriendsOnly }),
     getHomeData(today)
   ]);
 
@@ -75,13 +77,13 @@ export default async function RankingPage({ searchParams }: RankingPageProps) {
           }}
         />
 
-        {/* Tab Toggle */}
-        <div className="flex items-center justify-center sm:justify-start">
+        {/* Tab Toggle & Filters */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 bg-card/30 border border-border/50 p-4 rounded-[2rem] backdrop-blur-sm">
           <div className="flex bg-muted/50 p-1.5 rounded-[1.5rem] border border-border/50 shadow-inner">
             {tabs.map((tab) => (
               <Link
                 key={tab.id}
-                href={`/ranking?type=${tab.id}`}
+                href={`/ranking?type=${tab.id}&friendsOnly=${isFriendsOnly}`}
                 className={cn(
                   "flex items-center gap-2 px-6 py-3 rounded-2xl text-[10px] font-black uppercase italic tracking-widest transition-all",
                   rankingType === tab.id
@@ -93,6 +95,21 @@ export default async function RankingPage({ searchParams }: RankingPageProps) {
                 {tab.label}
               </Link>
             ))}
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Link
+              href={`/ranking?type=${rankingType}&friendsOnly=${!isFriendsOnly}`}
+              className={cn(
+                "flex items-center gap-3 px-6 h-12 rounded-2xl text-[10px] font-black uppercase italic tracking-widest border transition-all active:scale-95",
+                isFriendsOnly 
+                  ? "bg-primary/10 border-primary/30 text-primary shadow-inner" 
+                  : "bg-background border-border text-muted-foreground hover:border-primary/30"
+              )}
+            >
+              <UsersIcon weight={isFriendsOnly ? "fill" : "duotone"} className="size-4" />
+              Apenas Amigos
+            </Link>
           </div>
         </div>
       </header>

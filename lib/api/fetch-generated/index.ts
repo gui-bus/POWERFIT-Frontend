@@ -400,6 +400,32 @@ export type DeleteWorkoutPlan500 = {
   code: string;
 };
 
+export type RenameWorkoutPlanBody = {
+  /** @minLength 1 */
+  name: string;
+};
+
+export type RenameWorkoutPlan200 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+};
+
+export type RenameWorkoutPlan401 = {
+  error: string;
+  code: string;
+};
+
+export type RenameWorkoutPlan404 = {
+  error: string;
+  code: string;
+};
+
+export type RenameWorkoutPlan500 = {
+  error: string;
+  code: string;
+};
+
 export type StartWorkoutSession201 = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string;
@@ -588,6 +614,27 @@ export type ActivateWorkoutPlan500 = {
   code: string;
 };
 
+export type CloneWorkoutPlan201 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  name: string;
+};
+
+export type CloneWorkoutPlan401 = {
+  error: string;
+  code: string;
+};
+
+export type CloneWorkoutPlan404 = {
+  error: string;
+  code: string;
+};
+
+export type CloneWorkoutPlan500 = {
+  error: string;
+  code: string;
+};
+
 /**
  * @nullable
  */
@@ -679,6 +726,11 @@ export type GetStats500 = {
   code: string;
 };
 
+/**
+ * @nullable
+ */
+export type GetMe200SocialLinks = { [key: string]: string } | null;
+
 export type GetMe200 = {
   id: string;
   name: string;
@@ -686,6 +738,10 @@ export type GetMe200 = {
   email: string;
   /** @nullable */
   image: string | null;
+  /** @nullable */
+  bio: string | null;
+  /** @nullable */
+  socialLinks: GetMe200SocialLinks;
   /** @nullable */
   friendCode: string | null;
   xp: number;
@@ -736,6 +792,11 @@ export type AddFriendBody = {
   codeOrEmail: string;
 };
 
+/**
+ * @nullable
+ */
+export type AddFriend200SocialLinks = { [key: string]: string } | null;
+
 export type AddFriend200 = {
   id: string;
   name: string;
@@ -743,6 +804,10 @@ export type AddFriend200 = {
   email: string;
   /** @nullable */
   image: string | null;
+  /** @nullable */
+  bio: string | null;
+  /** @nullable */
+  socialLinks: AddFriend200SocialLinks;
   /** @nullable */
   friendCode: string | null;
   xp: number;
@@ -1261,6 +1326,93 @@ export type MarkNotificationAsRead500 = {
   code: string;
 };
 
+export type EditCommentBody = {
+  /** @minLength 1 */
+  content: string;
+};
+
+/**
+ * @nullable
+ */
+export type EditComment204 =
+  | (typeof EditComment204)[keyof typeof EditComment204]
+  | null;
+
+export const EditComment204 = {} as const;
+
+export type EditComment401 = {
+  error: string;
+  code: string;
+};
+
+export type EditComment404 = {
+  error: string;
+  code: string;
+};
+
+export type EditComment500 = {
+  error: string;
+  code: string;
+};
+
+/**
+ * @nullable
+ */
+export type DeleteComment204 =
+  | (typeof DeleteComment204)[keyof typeof DeleteComment204]
+  | null;
+
+export const DeleteComment204 = {} as const;
+
+export type DeleteComment401 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteComment404 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteComment500 = {
+  error: string;
+  code: string;
+};
+
+export type ToggleBlockUser200 = {
+  isBlocked: boolean;
+};
+
+export type ToggleBlockUser401 = {
+  error: string;
+  code: string;
+};
+
+export type ToggleBlockUser500 = {
+  error: string;
+  code: string;
+};
+
+export type StreakRepair200 = {
+  newStreak: number;
+  newXp: number;
+};
+
+export type StreakRepair400 = {
+  error: string;
+  code: string;
+};
+
+export type StreakRepair401 = {
+  error: string;
+  code: string;
+};
+
+export type StreakRepair500 = {
+  error: string;
+  code: string;
+};
+
 export type GetChallengeById200Type =
   (typeof GetChallengeById200Type)[keyof typeof GetChallengeById200Type];
 
@@ -1506,6 +1658,7 @@ export type GetChallenges500 = {
 
 export type GetRankingParams = {
   sortBy: GetRankingSortBy;
+  friendsOnly?: boolean;
 };
 
 export type GetRankingSortBy =
@@ -1602,6 +1755,7 @@ export const GetXpHistory200ItemReason = {
   CHALLENGE_COMPLETED: "CHALLENGE_COMPLETED",
   CHALLENGE_WON: "CHALLENGE_WON",
   COMMENT_GIVEN: "COMMENT_GIVEN",
+  STREAK_REPAIR: "STREAK_REPAIR",
 } as const;
 
 export type GetXpHistory200Item = {
@@ -1618,6 +1772,25 @@ export type GetXpHistory401 = {
 };
 
 export type GetXpHistory500 = {
+  error: string;
+  code: string;
+};
+
+export type ToggleFavoriteExercise200 = {
+  isFavorite: boolean;
+};
+
+export type ToggleFavoriteExercise401 = {
+  error: string;
+  code: string;
+};
+
+export type ToggleFavoriteExercise404 = {
+  error: string;
+  code: string;
+};
+
+export type ToggleFavoriteExercise500 = {
   error: string;
   code: string;
 };
@@ -1800,10 +1973,22 @@ export type ApplyWorkoutTemplate500 = {
   code: string;
 };
 
+/**
+ * @nullable
+ */
+export type UpdateProfileBodySocialLinks = { [key: string]: string } | null;
+
 export type UpdateProfileBody = {
   /** @minLength 1 */
   name?: string;
   image?: string;
+  /**
+   * @maxLength 500
+   * @nullable
+   */
+  bio?: string | null;
+  /** @nullable */
+  socialLinks?: UpdateProfileBodySocialLinks;
 };
 
 export type UpdateProfile200 = {
@@ -1933,6 +2118,11 @@ export type SearchUsers500 = {
 /**
  * @nullable
  */
+export type GetUserProfile200SocialLinks = { [key: string]: string } | null;
+
+/**
+ * @nullable
+ */
 export type GetUserProfile200Stats = {
   weightInGrams: number;
   heightInCentimeters: number;
@@ -1954,6 +2144,10 @@ export type GetUserProfile200 = {
   name: string;
   /** @nullable */
   image: string | null;
+  /** @nullable */
+  bio: string | null;
+  /** @nullable */
+  socialLinks: GetUserProfile200SocialLinks;
   level: number;
   xp: number;
   streak: number;
@@ -2492,6 +2686,61 @@ export const deleteWorkoutPlan = async (
 };
 
 /**
+ * @summary Rename a workout plan
+ */
+export type renameWorkoutPlanResponse200 = {
+  data: RenameWorkoutPlan200;
+  status: 200;
+};
+
+export type renameWorkoutPlanResponse401 = {
+  data: RenameWorkoutPlan401;
+  status: 401;
+};
+
+export type renameWorkoutPlanResponse404 = {
+  data: RenameWorkoutPlan404;
+  status: 404;
+};
+
+export type renameWorkoutPlanResponse500 = {
+  data: RenameWorkoutPlan500;
+  status: 500;
+};
+
+export type renameWorkoutPlanResponseSuccess = renameWorkoutPlanResponse200 & {
+  headers: Headers;
+};
+export type renameWorkoutPlanResponseError = (
+  | renameWorkoutPlanResponse401
+  | renameWorkoutPlanResponse404
+  | renameWorkoutPlanResponse500
+) & {
+  headers: Headers;
+};
+
+export type renameWorkoutPlanResponse =
+  | renameWorkoutPlanResponseSuccess
+  | renameWorkoutPlanResponseError;
+
+export const getRenameWorkoutPlanUrl = (id: string) => {
+  return `/workout-plans/${id}`;
+};
+
+export const renameWorkoutPlan = async (
+  id: string,
+  renameWorkoutPlanBody: RenameWorkoutPlanBody,
+  options?: RequestInit,
+): Promise<renameWorkoutPlanResponse> => {
+  return customFetch<renameWorkoutPlanResponse>(getRenameWorkoutPlanUrl(id), {
+    ...options,
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(renameWorkoutPlanBody),
+  });
+};
+
+/**
  * Logs the start of a real-time workout for a specific day. Only one session can be active at a time.
  * @summary Start a workout session
  */
@@ -2825,6 +3074,58 @@ export const activateWorkoutPlan = async (
       method: "PATCH",
     },
   );
+};
+
+/**
+ * @summary Clone a workout plan
+ */
+export type cloneWorkoutPlanResponse201 = {
+  data: CloneWorkoutPlan201;
+  status: 201;
+};
+
+export type cloneWorkoutPlanResponse401 = {
+  data: CloneWorkoutPlan401;
+  status: 401;
+};
+
+export type cloneWorkoutPlanResponse404 = {
+  data: CloneWorkoutPlan404;
+  status: 404;
+};
+
+export type cloneWorkoutPlanResponse500 = {
+  data: CloneWorkoutPlan500;
+  status: 500;
+};
+
+export type cloneWorkoutPlanResponseSuccess = cloneWorkoutPlanResponse201 & {
+  headers: Headers;
+};
+export type cloneWorkoutPlanResponseError = (
+  | cloneWorkoutPlanResponse401
+  | cloneWorkoutPlanResponse404
+  | cloneWorkoutPlanResponse500
+) & {
+  headers: Headers;
+};
+
+export type cloneWorkoutPlanResponse =
+  | cloneWorkoutPlanResponseSuccess
+  | cloneWorkoutPlanResponseError;
+
+export const getCloneWorkoutPlanUrl = (id: string) => {
+  return `/workout-plans/${id}/clone`;
+};
+
+export const cloneWorkoutPlan = async (
+  id: string,
+  options?: RequestInit,
+): Promise<cloneWorkoutPlanResponse> => {
+  return customFetch<cloneWorkoutPlanResponse>(getCloneWorkoutPlanUrl(id), {
+    ...options,
+    method: "POST",
+  });
 };
 
 /**
@@ -3811,6 +4112,211 @@ export const markNotificationAsRead = async (
 };
 
 /**
+ * @summary Edit own comment
+ */
+export type editCommentResponse204 = {
+  data: EditComment204;
+  status: 204;
+};
+
+export type editCommentResponse401 = {
+  data: EditComment401;
+  status: 401;
+};
+
+export type editCommentResponse404 = {
+  data: EditComment404;
+  status: 404;
+};
+
+export type editCommentResponse500 = {
+  data: EditComment500;
+  status: 500;
+};
+
+export type editCommentResponseSuccess = editCommentResponse204 & {
+  headers: Headers;
+};
+export type editCommentResponseError = (
+  | editCommentResponse401
+  | editCommentResponse404
+  | editCommentResponse500
+) & {
+  headers: Headers;
+};
+
+export type editCommentResponse =
+  | editCommentResponseSuccess
+  | editCommentResponseError;
+
+export const getEditCommentUrl = (id: string) => {
+  return `/social/comments/${id}`;
+};
+
+export const editComment = async (
+  id: string,
+  editCommentBody: EditCommentBody,
+  options?: RequestInit,
+): Promise<editCommentResponse> => {
+  return customFetch<editCommentResponse>(getEditCommentUrl(id), {
+    ...options,
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(editCommentBody),
+  });
+};
+
+/**
+ * @summary Delete own comment
+ */
+export type deleteCommentResponse204 = {
+  data: DeleteComment204;
+  status: 204;
+};
+
+export type deleteCommentResponse401 = {
+  data: DeleteComment401;
+  status: 401;
+};
+
+export type deleteCommentResponse404 = {
+  data: DeleteComment404;
+  status: 404;
+};
+
+export type deleteCommentResponse500 = {
+  data: DeleteComment500;
+  status: 500;
+};
+
+export type deleteCommentResponseSuccess = deleteCommentResponse204 & {
+  headers: Headers;
+};
+export type deleteCommentResponseError = (
+  | deleteCommentResponse401
+  | deleteCommentResponse404
+  | deleteCommentResponse500
+) & {
+  headers: Headers;
+};
+
+export type deleteCommentResponse =
+  | deleteCommentResponseSuccess
+  | deleteCommentResponseError;
+
+export const getDeleteCommentUrl = (id: string) => {
+  return `/social/comments/${id}`;
+};
+
+export const deleteComment = async (
+  id: string,
+  options?: RequestInit,
+): Promise<deleteCommentResponse> => {
+  return customFetch<deleteCommentResponse>(getDeleteCommentUrl(id), {
+    ...options,
+    method: "DELETE",
+  });
+};
+
+/**
+ * @summary Block/Unblock user
+ */
+export type toggleBlockUserResponse200 = {
+  data: ToggleBlockUser200;
+  status: 200;
+};
+
+export type toggleBlockUserResponse401 = {
+  data: ToggleBlockUser401;
+  status: 401;
+};
+
+export type toggleBlockUserResponse500 = {
+  data: ToggleBlockUser500;
+  status: 500;
+};
+
+export type toggleBlockUserResponseSuccess = toggleBlockUserResponse200 & {
+  headers: Headers;
+};
+export type toggleBlockUserResponseError = (
+  | toggleBlockUserResponse401
+  | toggleBlockUserResponse500
+) & {
+  headers: Headers;
+};
+
+export type toggleBlockUserResponse =
+  | toggleBlockUserResponseSuccess
+  | toggleBlockUserResponseError;
+
+export const getToggleBlockUserUrl = (id: string) => {
+  return `/social/users/${id}/block`;
+};
+
+export const toggleBlockUser = async (
+  id: string,
+  options?: RequestInit,
+): Promise<toggleBlockUserResponse> => {
+  return customFetch<toggleBlockUserResponse>(getToggleBlockUserUrl(id), {
+    ...options,
+    method: "POST",
+  });
+};
+
+/**
+ * Uses 500 XP to restore a broken workout streak to 1 day.
+ * @summary Repair broken streak
+ */
+export type streakRepairResponse200 = {
+  data: StreakRepair200;
+  status: 200;
+};
+
+export type streakRepairResponse400 = {
+  data: StreakRepair400;
+  status: 400;
+};
+
+export type streakRepairResponse401 = {
+  data: StreakRepair401;
+  status: 401;
+};
+
+export type streakRepairResponse500 = {
+  data: StreakRepair500;
+  status: 500;
+};
+
+export type streakRepairResponseSuccess = streakRepairResponse200 & {
+  headers: Headers;
+};
+export type streakRepairResponseError = (
+  | streakRepairResponse400
+  | streakRepairResponse401
+  | streakRepairResponse500
+) & {
+  headers: Headers;
+};
+
+export type streakRepairResponse =
+  | streakRepairResponseSuccess
+  | streakRepairResponseError;
+
+export const getStreakRepairUrl = () => {
+  return `/gamification/streak-repair`;
+};
+
+export const streakRepair = async (
+  options?: RequestInit,
+): Promise<streakRepairResponse> => {
+  return customFetch<streakRepairResponse>(getStreakRepairUrl(), {
+    ...options,
+    method: "POST",
+  });
+};
+
+/**
  * Returns full information about a challenge (duel) and the current progress of all participants.
  * @summary Get challenge details
  */
@@ -4166,6 +4672,63 @@ export const getXpHistory = async (
     ...options,
     method: "GET",
   });
+};
+
+/**
+ * Marks or unmarks an exercise as a favorite for the authenticated user.
+ * @summary Toggle exercise as favorite
+ */
+export type toggleFavoriteExerciseResponse200 = {
+  data: ToggleFavoriteExercise200;
+  status: 200;
+};
+
+export type toggleFavoriteExerciseResponse401 = {
+  data: ToggleFavoriteExercise401;
+  status: 401;
+};
+
+export type toggleFavoriteExerciseResponse404 = {
+  data: ToggleFavoriteExercise404;
+  status: 404;
+};
+
+export type toggleFavoriteExerciseResponse500 = {
+  data: ToggleFavoriteExercise500;
+  status: 500;
+};
+
+export type toggleFavoriteExerciseResponseSuccess =
+  toggleFavoriteExerciseResponse200 & {
+    headers: Headers;
+  };
+export type toggleFavoriteExerciseResponseError = (
+  | toggleFavoriteExerciseResponse401
+  | toggleFavoriteExerciseResponse404
+  | toggleFavoriteExerciseResponse500
+) & {
+  headers: Headers;
+};
+
+export type toggleFavoriteExerciseResponse =
+  | toggleFavoriteExerciseResponseSuccess
+  | toggleFavoriteExerciseResponseError;
+
+export const getToggleFavoriteExerciseUrl = (id: string) => {
+  return `/exercises/${id}/favorite`;
+};
+
+export const toggleFavoriteExercise = async (
+  id: string,
+  options?: RequestInit,
+): Promise<toggleFavoriteExerciseResponse> => {
+  return customFetch<toggleFavoriteExerciseResponse>(
+    getToggleFavoriteExerciseUrl(id),
+    {
+      ...options,
+      method: "POST",
+    },
+  );
 };
 
 /**

@@ -34,7 +34,6 @@ export default async function WorkoutPlansHistoryPage() {
   }
 
   const plans = response.data;
-  // Ordenar para que o ativo fique no topo e os outros venham depois
   const sortedPlans = [...plans].sort((a, b) => (a.isActive === b.isActive ? 0 : a.isActive ? -1 : 1));
 
   return (
@@ -58,7 +57,6 @@ export default async function WorkoutPlansHistoryPage() {
         <div className="space-y-12">
           {sortedPlans.map((plan) => (
             <div key={plan.id} className="relative">
-              {/* Timeline Dot */}
               <div className={`absolute left-8 -translate-x-1/2 mt-10 size-3 rounded-full border-4 border-background hidden md:block z-20 ${
                 plan.isActive ? "bg-primary shadow-[0_0_10px_rgba(255,100,0,0.5)]" : "bg-muted-foreground/30"
               }`} />
