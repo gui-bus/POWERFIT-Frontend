@@ -39,7 +39,7 @@ export function ExerciseHeader({
   onHelpClick,
   onCopyFirstSet,
 }: ExerciseHeaderProps) {
-  const [isFavorite, setIsFavorite] = useState(false); // Default to false as GET doesn't provide it yet
+  const [isFavorite, setIsFavorite] = useState(false);
   const [isFavoriting, setIsFavoriting] = useState(false);
 
   const handleToggleFavorite = async () => {

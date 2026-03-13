@@ -13,15 +13,21 @@ interface ConsistencyGridProps {
   streak: number;
 }
 
-export function ConsistencyGrid({ consistencyByDay, streak }: ConsistencyGridProps) {
-  const today = dayjs().startOf('day');
-  const startOfWeek = today.startOf('week').add(1, 'day').subtract(today.day() === 0 ? 7 : 0, 'day');
+export function ConsistencyGrid({
+  consistencyByDay,
+  streak,
+}: ConsistencyGridProps) {
+  const today = dayjs().startOf("day");
+  const startOfWeek = today
+    .startOf("week")
+    .add(1, "day")
+    .subtract(today.day() === 0 ? 7 : 0, "day");
 
   const calculatedStreak = calculateStreak(consistencyByDay, today);
   const finalStreak = Math.max(streak, calculatedStreak);
 
   return (
-    <div className="w-full flex flex-col gap-6 p-8 dark:bg-zinc-900 rounded-3xl">
+    <div className="w-full flex flex-col gap-6 p-8 dark:bg-zinc-900 rounded-3xl border border-border">
       <div className="flex items-center justify-between">
         <div className="space-y-0.5">
           <h2 className="text-xl font-bold text-foreground tracking-tight flex items-center gap-2">
@@ -38,7 +44,7 @@ export function ConsistencyGrid({ consistencyByDay, streak }: ConsistencyGridPro
           const currentDate = startOfWeek.add(index, "day");
           const dateKey = currentDate.format("YYYY-MM-DD");
           const status = consistencyByDay[dateKey];
-          
+
           const isToday = currentDate.isSame(today, "day");
           const isCompleted = status?.workoutDayCompleted || false;
           const isStarted = status?.workoutDayStarted || false;

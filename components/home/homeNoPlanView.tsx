@@ -4,7 +4,7 @@ import Link from "next/link";
 export function HomeNoPlanView() {
   return (
     <div className="space-y-6">
-      <div className="px-5 lg:px-0 flex items-end justify-between">
+      <div className="flex items-end justify-between">
         <div>
           <h2 className="text-xl lg:text-2xl font-black text-foreground tracking-tight uppercase italic leading-none">
             Comece Agora
@@ -15,10 +15,10 @@ export function HomeNoPlanView() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-5 lg:px-0">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Link
           href="?chat_open=true&chat_initial_message=Monte meu plano de treino"
-          className="group bg-card border border-border rounded-[2.5rem] p-10 text-center space-y-6 hover:border-primary/50 transition-all active:scale-[0.99] cursor-pointer"
+          className="group bg-card border border-border rounded-3xl p-10 text-center space-y-6 hover:border-primary/50 transition-all active:scale-[0.99] cursor-pointer"
         >
           <div className="size-20 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-inner">
             <SparkleIcon
@@ -42,7 +42,7 @@ export function HomeNoPlanView() {
 
         <Link
           href="/workout-templates"
-          className="group bg-card border border-border rounded-[2.5rem] p-10 text-center space-y-6 hover:border-primary/50 transition-all active:scale-[0.99] cursor-pointer"
+          className="group bg-card border border-border rounded-3xl p-10 text-center space-y-6 hover:border-primary/50 transition-all active:scale-[0.99] cursor-pointer"
         >
           <div className="size-20 bg-orange-500/10 text-orange-500 rounded-full flex items-center justify-center mx-auto group-hover:scale-110 group-hover:-rotate-6 transition-all duration-500 shadow-inner">
             <BarbellIcon
