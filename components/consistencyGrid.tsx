@@ -21,7 +21,7 @@ export function ConsistencyGrid({ consistencyByDay, streak }: ConsistencyGridPro
   const finalStreak = Math.max(streak, calculatedStreak);
 
   return (
-    <div className="w-full flex flex-col gap-4 lg:p-8 dark:bg-zinc-800">
+    <div className="w-full flex flex-col gap-6 p-8 dark:bg-zinc-900 rounded-3xl">
       <div className="flex items-center justify-between">
         <div className="space-y-0.5">
           <h2 className="text-xl font-bold text-foreground tracking-tight flex items-center gap-2">

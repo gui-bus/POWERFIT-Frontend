@@ -80,11 +80,11 @@ export default async function Home() {
           <HomeNoPlanView />
         )}
 
-        <div className="2xl:hidden px-5">
+        <div className="2xl:hidden">
           <WaterTracker />
         </div>
 
-        <div className="lg:hidden px-5 pb-10">
+        <div className="lg:hidden">
           <ConsistencyGrid
             consistencyByDay={homeData.consistencyByDay}
             streak={homeData.workoutStreak}

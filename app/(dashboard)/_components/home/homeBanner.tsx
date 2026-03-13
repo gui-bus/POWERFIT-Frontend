@@ -63,7 +63,7 @@ export function HomeBanner({ hasPlan, activeWorkoutPlanId, todayWorkoutId }: Hom
 
           <Link
             href={actionLink}
-            className="group bg-white hover:bg-primary text-black hover:text-white px-6 sm:px-8 py-3 sm:py-4 lg:px-10 lg:py-5 rounded-2xl sm:rounded-[2rem] text-[10px] sm:text-sm lg:text-base font-black uppercase italic transition-all shadow-2xl active:scale-95 flex items-center gap-3 sm:gap-4 w-fit"
+            className="group bg-primary text-white px-6 sm:px-8 py-3 sm:py-4 lg:px-10 lg:py-5 rounded-2xl sm:rounded-[2rem] text-[10px] sm:text-sm lg:text-base font-black uppercase italic transition-all shadow-2xl active:scale-95 flex items-center gap-3 sm:gap-4 w-full md:w-fit"
           >
             {hasPlan ? "Iniciar Treino de hoje" : "Montar Plano"}
           </Link>

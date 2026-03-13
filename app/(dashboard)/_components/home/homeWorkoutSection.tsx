@@ -15,7 +15,7 @@ export function HomeWorkoutSection({
 }: HomeWorkoutSectionProps) {
   return (
     <div className="space-y-6">
-      <div className="px-5 lg:px-0 flex items-end justify-between">
+      <div className="px-5 lg:px-0 flex flex-col md:flex-row items-start md:items-end justify-between gap-5">
         <div>
           <h2 className="text-xl lg:text-2xl font-black text-foreground tracking-tight uppercase italic leading-none">
             Treino de Hoje
@@ -26,6 +26,7 @@ export function HomeWorkoutSection({
               : "Dia de descanso ou sem treino agendado"}
           </p>
         </div>
+
         <div className="flex items-center gap-4">
           <Link
             href="/workout-plans"
@@ -41,7 +42,7 @@ export function HomeWorkoutSection({
           </Link>
           <Link
             href={`/workout-plans/${activeWorkoutPlanId}`}
-            className="text-[10px] lg:text-xs font-black text-primary uppercase italic tracking-widest hover:underline"
+            className="text-[10px] lg:text-xs font-black text-muted-foreground uppercase italic tracking-widest hover:underline"
           >
             Ver plano completo
           </Link>

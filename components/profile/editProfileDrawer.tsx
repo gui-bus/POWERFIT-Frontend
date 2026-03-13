@@ -24,21 +24,21 @@ import {
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { CheckIcon, SpinnerGapIcon, UserCircleIcon } from "@phosphor-icons/react";
-import { profileSchema, ProfileFormValues } from "./editProfileDialog/schema";
-import { ProfileAvatarSection } from "./editProfileDialog/avatarSection";
-import { ProfileFormFields } from "./editProfileDialog/formFields";
+import { profileSchema, ProfileFormValues } from "./editProfileDrawer/schema";
+import { ProfileAvatarSection } from "./editProfileDrawer/avatarSection";
+import { ProfileFormFields } from "./editProfileDrawer/formFields";
 
-interface EditProfileDialogProps {
+interface EditProfileDrawerProps {
   initialData: GetUserTrainData200;
   user: GetMe200;
   children: React.ReactNode;
 }
 
-export function EditProfileDialog({
+export function EditProfileDrawer({
   initialData,
   user,
   children,
-}: EditProfileDialogProps) {
+}: EditProfileDrawerProps) {
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);

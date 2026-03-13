@@ -21,7 +21,7 @@ export function StatCard({ label, value, icon: Icon, subValue }: StatCardProps) 
           {label}
         </p>
         {subValue && (
-          <p className="text-[8px] font-black text-primary uppercase tracking-[0.2em] mt-2 animate-pulse">
+          <p className="text-[8px] font-black text-primary uppercase tracking-[0.2em] mt-2">
             {subValue}
           </p>
         )}

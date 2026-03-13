@@ -32,7 +32,7 @@ function RestDayCard({
     <div
       className={cn(
         "relative w-full aspect-4/3 sm:aspect-21/9 rounded-[2rem] overflow-hidden group transition-all duration-500 border bg-card",
-        isActive ? "shadow-2xl shadow-primary/10" : "hover:border-primary/20",
+        isActive ? "shadow-2xl" : "hover:border-primary/20",
       )}
     >
       <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
@@ -105,7 +105,7 @@ function WorkoutDayCard({
     <div
       className={cn(
         "relative w-full aspect-4/3 sm:aspect-21/9 rounded-[2rem] overflow-hidden group transition-all duration-500 border bg-card",
-        isActive ? "shadow-2xl shadow-primary/10" : "hover:border-primary/20",
+        isActive ? "shadow-2xl" : "hover:border-primary/20",
       )}
     >
       <Image
@@ -124,7 +124,7 @@ function WorkoutDayCard({
       <div className="absolute inset-0 bg-linear-to-t from-black via-black/60 to-transparent opacity-90 transition-opacity group-hover:opacity-80" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,0,0,0),rgba(0,0,0,0.8))] opacity-60" />
 
-      <div className="absolute inset-0 p-16 flex flex-col justify-between z-10">
+      <div className="absolute inset-0 p-5 md:p-16 flex flex-col justify-between z-10">
         <div className="flex justify-between items-start">
           <div
             className={cn(
@@ -132,7 +132,7 @@ function WorkoutDayCard({
               isCompleted
                 ? "bg-green-500/10 border-green-500/40 text-green-400"
                 : isActive
-                  ? "bg-primary/10 border-primary/50 text-white shadow-primary/20"
+                  ? "bg-primary/10 border-primary/50 text-white"
                   : "bg-black/40 border-white/10 text-white/30",
             )}
           >
@@ -157,7 +157,7 @@ function WorkoutDayCard({
 
           {isActive && !isCompleted && (
             <div className="hidden sm:flex items-center gap-2 text-primary font-black text-[10px] uppercase tracking-[0.2em] group-hover:translate-x-1 transition-transform">
-              <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <span>
                 TREINAR
               </span>
               <ArrowRightIcon weight="duotone" className="size-4" />
@@ -184,12 +184,12 @@ function WorkoutDayCard({
               </p>
             </div>
 
-            <h3 className="font-syne text-3xl font-black text-white uppercase italic leading-[0.85] tracking-tighter drop-shadow-2xl group-hover:text-primary transition-colors duration-500">
+            <h3 className="font-syne md:text-3xl font-black text-white uppercase italic leading-[0.85] tracking-tighter drop-shadow-2xl group-hover:text-primary transition-colors duration-500">
               {workout.name}
             </h3>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col md:flex-row items-center gap-2">
             {[
               {
                 icon: TimerIcon,
@@ -202,7 +202,7 @@ function WorkoutDayCard({
             ].map((item, i) => (
               <div
                 key={i}
-                className="group/pill flex items-center gap-2 bg-white/3 hover:bg-white/8 backdrop-blur-md px-4 py-2 rounded-sm border border-white/10 transition-colors"
+                className="group/pill flex items-center gap-2 bg-white/3 hover:bg-white/8 backdrop-blur-md px-4 py-2 rounded-sm border border-white/10 transition-colors w-full md:w-fit"
               >
                 <item.icon weight="duotone" className="size-3 text-primary" />
                 <span className="text-[9px] font-black text-white/90 uppercase tracking-widest">

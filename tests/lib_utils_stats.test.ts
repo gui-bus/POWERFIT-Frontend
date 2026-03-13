@@ -34,7 +34,7 @@ describe('Stats Utils', () => {
       expect(getVolumeComparison(1200 * 1000)).toBe('≈ 1.0 Carros')
       expect(getVolumeComparison(500 * 1000)).toBe('≈ 25 Sacos de Cimento')
       expect(getVolumeComparison(100 * 1000)).toBe('≈ 20 Galões de Água')
-      expect(getVolumeComparison(50 * 1000)).toBe('Rumo ao topo! 🚀')
+      expect(getVolumeComparison(50 * 1000)).toBe('Rumo ao topo!')
     })
   })
 })

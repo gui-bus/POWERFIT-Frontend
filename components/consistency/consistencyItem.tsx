@@ -13,7 +13,7 @@ export function ConsistencyItem({ label, isToday, isCompleted, isStarted }: Cons
     <div className="flex flex-col items-center gap-2.5">
       <div
         className={cn(
-          "relative size-12 rounded-2xl flex items-center justify-center transition-all duration-300",
+          "relative size-8 md:size-12 rounded-2xl flex items-center justify-center transition-all duration-300",
           isCompleted
             ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
             : isStarted

@@ -20,5 +20,5 @@ export const getVolumeComparison = (grams: number) => {
   if (kg >= 1200) return `≈ ${(kg / 1200).toFixed(1)} Carros`;
   if (kg >= 500) return `≈ ${(kg / 20).toFixed(0)} Sacos de Cimento`;
   if (kg >= 100) return `≈ ${(kg / 5).toFixed(0)} Galões de Água`;
-  return "Rumo ao topo! 🚀";
+  return "Rumo ao topo!";
 };

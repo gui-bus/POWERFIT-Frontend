@@ -30,7 +30,7 @@ import {
   InstagramLogoIcon
 } from "@phosphor-icons/react/ssr";
 import { LogoutButton } from "./logout-button";
-import { EditProfileDialog } from "@/components/profile/editProfileDialog";
+import { EditProfileDrawer } from "@/components/profile/editProfileDrawer";
 import { PrivacySettings } from "@/components/profile/privacySettings";
 import dayjs from "dayjs";
 import Link from "next/link";
@@ -204,7 +204,7 @@ export default async function ProfilePage() {
               </div>
 
               <div className="flex items-center gap-3">
-                <EditProfileDialog 
+                <EditProfileDrawer 
                   initialData={trainData} 
                   user={userData}
                 >
@@ -215,7 +215,7 @@ export default async function ProfilePage() {
                     />
                     Editar Perfil
                   </button>
-                </EditProfileDialog>
+                </EditProfileDrawer>
                 <button className="p-3 bg-card border border-border hover:border-primary/50 rounded-2xl transition-all active:scale-95 group cursor-pointer">
                   <ShareNetworkIcon
                     weight="bold"

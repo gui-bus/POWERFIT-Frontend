@@ -20,7 +20,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 
-const WATER_GOAL = 2000; // ml
+const WATER_GOAL = 2000;
 
 export function WaterTracker() {
   const [total, setTotal] = useState(0);
@@ -63,7 +63,7 @@ export function WaterTracker() {
   const progress = Math.min((total / WATER_GOAL) * 100, 100);
 
   return (
-    <Card className="p-6 border border-border bg-card relative overflow-hidden group">
+    <Card className="p-6 border border-border dark:bg-zinc-900 relative overflow-hidden group">
       <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:rotate-12 transition-transform duration-700">
         <DropIcon weight="fill" className="size-24 text-primary" />
       </div>
