@@ -1,17 +1,51 @@
 "use client";
 
-import { GetFriends200Item } from "@/lib/api/fetch-generated";
+import { GetFriends200Item, removeFriend } from "@/lib/api/fetch-generated";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { UsersIcon, EyeIcon, ActivityIcon } from "@phosphor-icons/react";
+import { UsersIcon, EyeIcon, ActivityIcon, TrashIcon, WarningIcon } from "@phosphor-icons/react";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { CreateDuelDialog } from "@/components/gamification/createDuelDialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useState } from "react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface FriendsListProps {
   friends: GetFriends200Item[];
 }
 
 export function FriendsList({ friends }: FriendsListProps) {
+  const [loading, setLoading] = useState<string | null>(null);
+  const router = useRouter();
+
+  const handleRemoveFriend = async (friendId: string) => {
+    setLoading(friendId);
+    try {
+      const response = await removeFriend(friendId);
+      if (response.status === 200 || response.status === 204) {
+        toast.success("Conexão removida com sucesso.");
+        router.refresh();
+      } else {
+        toast.error("Erro ao remover amigo.");
+      }
+    } catch {
+      toast.error("Erro na conexão ao remover amigo.");
+    } finally {
+      setLoading(null);
+    }
+  };
+
   if (friends.length === 0)
     return (
       <div className="flex flex-col items-center justify-center p-16 text-center bg-card/50 border border-dashed border-border rounded-[3rem] space-y-6">
@@ -82,7 +116,7 @@ export function FriendsList({ friends }: FriendsListProps) {
 
               <Link href={`/feed/users/${friend.id}`}>
                 <button
-                  className="p-3 bg-muted/50 hover:bg-primary hover:text-primary-foreground rounded-2xl transition-all active:scale-90 cursor-pointer"
+                  className="p-3 bg-muted/50 hover:bg-primary hover:text-primary-foreground rounded-2xl transition-all active:scale-90 cursor-pointer text-muted-foreground"
                   title="Ver Atividades"
                 >
                   <ActivityIcon weight="duotone" className="size-5" />
@@ -91,12 +125,52 @@ export function FriendsList({ friends }: FriendsListProps) {
 
               <Link href={`/profile/${friend.id}`}>
                 <button
-                  className="p-3 bg-muted/50 hover:bg-primary hover:text-primary-foreground rounded-2xl transition-all active:scale-90 cursor-pointer"
+                  className="p-3 bg-muted/50 hover:bg-primary hover:text-primary-foreground rounded-2xl transition-all active:scale-90 cursor-pointer text-muted-foreground"
                   title="Ver perfil público"
                 >
                   <EyeIcon weight="duotone" className="size-5" />
                 </button>
               </Link>
+
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <button
+                    disabled={loading === friend.id}
+                    className="p-3 bg-muted/50 hover:bg-destructive hover:text-destructive-foreground rounded-2xl transition-all active:scale-90 cursor-pointer text-muted-foreground"
+                    title="Remover Amigo"
+                  >
+                    {loading === friend.id ? (
+                      <div className="size-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <TrashIcon weight="duotone" className="size-5" />
+                    )}
+                  </button>
+                </AlertDialogTrigger>
+                <AlertDialogContent className="bg-card border-border rounded-[2.5rem]">
+                  <AlertDialogHeader>
+                    <div className="size-12 bg-destructive/10 rounded-2xl flex items-center justify-center mb-2">
+                      <WarningIcon weight="duotone" className="size-6 text-destructive" />
+                    </div>
+                    <AlertDialogTitle className="text-2xl font-anton italic uppercase text-foreground">
+                      Encerrar Conexão
+                    </AlertDialogTitle>
+                    <AlertDialogDescription className="text-sm font-medium text-muted-foreground">
+                      Tem certeza que deseja remover <span className="text-foreground font-black italic">{friend.name}</span> da sua rede? Você deixará de acompanhar as atividades deste atleta.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter className="gap-3 mt-4">
+                    <AlertDialogCancel className="rounded-2xl font-black uppercase italic tracking-widest text-[10px] h-12 border-border cursor-pointer">
+                      Cancelar
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => handleRemoveFriend(friend.id)}
+                      className="bg-destructive hover:bg-red-600 text-white rounded-2xl font-black uppercase italic tracking-widest text-[10px] h-12 px-8 shadow-xl shadow-destructive/20 cursor-pointer"
+                    >
+                      Remover Conexão
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </div>
         ))}

@@ -866,6 +866,30 @@ export type DeclineFriendRequest500 = {
   code: string;
 };
 
+/**
+ * @nullable
+ */
+export type RemoveFriend204 =
+  | (typeof RemoveFriend204)[keyof typeof RemoveFriend204]
+  | null;
+
+export const RemoveFriend204 = {} as const;
+
+export type RemoveFriend401 = {
+  error: string;
+  code: string;
+};
+
+export type RemoveFriend404 = {
+  error: string;
+  code: string;
+};
+
+export type RemoveFriend500 = {
+  error: string;
+  code: string;
+};
+
 export type GetFeedParams = {
   /**
    * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
@@ -3236,6 +3260,59 @@ export const declineFriendRequest = async (
       method: "PATCH",
     },
   );
+};
+
+/**
+ * Ends a friendship with another user.
+ * @summary Remove a friend
+ */
+export type removeFriendResponse204 = {
+  data: RemoveFriend204;
+  status: 204;
+};
+
+export type removeFriendResponse401 = {
+  data: RemoveFriend401;
+  status: 401;
+};
+
+export type removeFriendResponse404 = {
+  data: RemoveFriend404;
+  status: 404;
+};
+
+export type removeFriendResponse500 = {
+  data: RemoveFriend500;
+  status: 500;
+};
+
+export type removeFriendResponseSuccess = removeFriendResponse204 & {
+  headers: Headers;
+};
+export type removeFriendResponseError = (
+  | removeFriendResponse401
+  | removeFriendResponse404
+  | removeFriendResponse500
+) & {
+  headers: Headers;
+};
+
+export type removeFriendResponse =
+  | removeFriendResponseSuccess
+  | removeFriendResponseError;
+
+export const getRemoveFriendUrl = (friendId: string) => {
+  return `/friendships/${friendId}`;
+};
+
+export const removeFriend = async (
+  friendId: string,
+  options?: RequestInit,
+): Promise<removeFriendResponse> => {
+  return customFetch<removeFriendResponse>(getRemoveFriendUrl(friendId), {
+    ...options,
+    method: "DELETE",
+  });
 };
 
 /**
