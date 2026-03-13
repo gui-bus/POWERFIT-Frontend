@@ -26,8 +26,6 @@ const AuthPage = () => {
     }
   }, [session, isPending, router]);
 
-
-
   const handleGoogleLogin = async () => {
     await authClient.signIn.social({
       provider: "google",
@@ -35,12 +33,18 @@ const AuthPage = () => {
     });
   };
 
-
-
-  if (isPending || session) {
-    return null;
+  if (session && !isPending) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-4">
+          <div className="size-12 rounded-full border-4 border-primary border-t-transparent animate-spin" />
+          <p className="text-muted-foreground animate-pulse uppercase italic font-black tracking-tighter">
+            Redirecionando...
+          </p>
+        </div>
+      </div>
+    );
   }
-
 
   return (
     <div className="relative flex min-h-screen w-full flex-col overflow-hidden bg-background selection:bg-primary/30 selection:text-foreground antialiased transition-colors duration-700">
