@@ -31,6 +31,14 @@ export function FeedItem({ item }: FeedItemProps) {
   const [showComments, setShowComments] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
+  
+  // Local state for comments to fix immediate update issue
+  const [localComments, setLocalComments] = useState(item.comments);
+
+  // Sync local state when item.comments prop changes (e.g. from router.refresh())
+  useEffect(() => {
+    setLocalComments(item.comments);
+  }, [item.comments]);
 
   useEffect(() => {
     setMounted(true);
@@ -67,12 +75,28 @@ export function FeedItem({ item }: FeedItemProps) {
     e.preventDefault();
     if (!commentText.trim() || isSubmittingComment) return;
 
+    const newCommentContent = commentText.trim();
     setIsSubmittingComment(true);
+    
     try {
-      const response = await addComment(item.id, { content: commentText });
+      const response = await addComment(item.id, { content: newCommentContent });
       if (response.status === 204) {
         setCommentText("");
         toast.success("Comentário adicionado!");
+        
+        // Optimistically add comment to local state if session info is available
+        if (session?.user) {
+          const optimisticComment = {
+            id: Math.random().toString(), // Temp ID
+            userId: session.user.id,
+            userName: session.user.name,
+            userImage: session.user.image ?? null,
+            content: newCommentContent,
+            createdAt: new Date().toISOString(),
+          };
+          setLocalComments(prev => [...prev, optimisticComment]);
+        }
+        
         router.refresh();
       }
     } catch (error) {
@@ -91,6 +115,7 @@ export function FeedItem({ item }: FeedItemProps) {
       className="bg-card border border-border rounded-[2.5rem] overflow-hidden group"
     >
       <FeedHeader
+        activityId={item.id}
         userName={item.userName}
         userImage={item.userImage}
         completedAt={item.completedAt}
@@ -106,7 +131,7 @@ export function FeedItem({ item }: FeedItemProps) {
       <FeedInteractions
         hasPowerup={hasPowerup}
         powerupsCount={powerupsCount}
-        commentsCount={item.comments.length}
+        commentsCount={localComments.length}
         isLoading={isLoading}
         isOwnPost={isOwnPost}
         showComments={showComments}
@@ -115,9 +140,9 @@ export function FeedItem({ item }: FeedItemProps) {
       />
 
       <FeedComments
-        comments={item.comments.map(c => ({
+        comments={localComments.map(c => ({
           ...c,
-          userId: c.userId // Ensuring mapping
+          userId: c.userId
         }))}
         showComments={showComments}
         commentText={commentText}

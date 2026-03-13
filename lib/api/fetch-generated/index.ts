@@ -635,19 +635,120 @@ export type CloneWorkoutPlan500 = {
   code: string;
 };
 
+export type GetAdminStats200 = {
+  totalUsers: number;
+  bannedUsers: number;
+  totalActivities: number;
+  totalWorkoutPlans: number;
+  totalExercises: number;
+};
+
+export type GetAdminStats401 = {
+  error: string;
+  code: string;
+};
+
+export type GetAdminStats403 = {
+  error: string;
+  code: string;
+};
+
+export type GetAdminStats500 = {
+  error: string;
+  code: string;
+};
+
+export type PatchAdminUsersIdRoleBodyRole =
+  (typeof PatchAdminUsersIdRoleBodyRole)[keyof typeof PatchAdminUsersIdRoleBodyRole];
+
+export const PatchAdminUsersIdRoleBodyRole = {
+  USER: "USER",
+  ADMIN: "ADMIN",
+} as const;
+
+export type PatchAdminUsersIdRoleBody = {
+  role: PatchAdminUsersIdRoleBodyRole;
+};
+
+/**
+ * @nullable
+ */
+export type PatchAdminUsersIdRole204 =
+  | (typeof PatchAdminUsersIdRole204)[keyof typeof PatchAdminUsersIdRole204]
+  | null;
+
+export const PatchAdminUsersIdRole204 = {} as const;
+
+export type PatchAdminUsersIdRole401 = {
+  error: string;
+  code: string;
+};
+
+export type PatchAdminUsersIdRole403 = {
+  error: string;
+  code: string;
+};
+
+export type PatchAdminUsersIdRole404 = {
+  error: string;
+  code: string;
+};
+
+export type PatchAdminUsersIdRole500 = {
+  error: string;
+  code: string;
+};
+
+export type GetAdminUsersParams = {
+  /**
+   * @minimum 1
+   */
+  page?: number;
+  /**
+   * @minimum 1
+   * @maximum 100
+   */
+  pageSize?: number;
+  orderBy?: GetAdminUsersOrderBy;
+  orderDir?: GetAdminUsersOrderDir;
+};
+
+export type GetAdminUsersOrderBy =
+  (typeof GetAdminUsersOrderBy)[keyof typeof GetAdminUsersOrderBy];
+
+export const GetAdminUsersOrderBy = {
+  createdAt: "createdAt",
+  role: "role",
+  xp: "xp",
+  name: "name",
+} as const;
+
+export type GetAdminUsersOrderDir =
+  (typeof GetAdminUsersOrderDir)[keyof typeof GetAdminUsersOrderDir];
+
+export const GetAdminUsersOrderDir = {
+  asc: "asc",
+  desc: "desc",
+} as const;
+
 export type GetAdminUsers200UsersItem = {
   id: string;
   name: string;
   email: string;
+  /** @nullable */
+  image: string | null;
   role: string;
+  isBanned: boolean;
   level: number;
   xp: number;
   createdAt: string;
-  image?: string | null;
 };
 
 export type GetAdminUsers200 = {
   users: GetAdminUsers200UsersItem[];
+  total: number;
+  page: number;
+  pageSize: number;
 };
 
 export type GetAdminUsers401 = {
@@ -661,6 +762,190 @@ export type GetAdminUsers403 = {
 };
 
 export type GetAdminUsers500 = {
+  error: string;
+  code: string;
+};
+
+export type PatchAdminUsersIdToggleBan200 = {
+  isBanned: boolean;
+};
+
+export type PatchAdminUsersIdToggleBan401 = {
+  error: string;
+  code: string;
+};
+
+export type PatchAdminUsersIdToggleBan403 = {
+  error: string;
+  code: string;
+};
+
+export type PatchAdminUsersIdToggleBan404 = {
+  error: string;
+  code: string;
+};
+
+export type PatchAdminUsersIdToggleBan500 = {
+  error: string;
+  code: string;
+};
+
+/**
+ * @nullable
+ */
+export type DeleteAdminActivitiesId204 =
+  | (typeof DeleteAdminActivitiesId204)[keyof typeof DeleteAdminActivitiesId204]
+  | null;
+
+export const DeleteAdminActivitiesId204 = {} as const;
+
+export type DeleteAdminActivitiesId401 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteAdminActivitiesId403 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteAdminActivitiesId404 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteAdminActivitiesId500 = {
+  error: string;
+  code: string;
+};
+
+/**
+ * @nullable
+ */
+export type DeleteAdminCommentsId204 =
+  | (typeof DeleteAdminCommentsId204)[keyof typeof DeleteAdminCommentsId204]
+  | null;
+
+export const DeleteAdminCommentsId204 = {} as const;
+
+export type DeleteAdminCommentsId401 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteAdminCommentsId403 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteAdminCommentsId404 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteAdminCommentsId500 = {
+  error: string;
+  code: string;
+};
+
+export type PostAdminExercisesBody = {
+  /** @minLength 1 */
+  name: string;
+  description?: string;
+  /** @minLength 1 */
+  muscleGroup: string;
+  equipment?: string;
+  instructions?: string;
+  imageUrl?: string;
+  videoUrl?: string;
+  difficulty?: string;
+};
+
+export type PostAdminExercises201 = {
+  id: string;
+  name: string;
+};
+
+export type PostAdminExercises401 = {
+  error: string;
+  code: string;
+};
+
+export type PostAdminExercises403 = {
+  error: string;
+  code: string;
+};
+
+export type PostAdminExercises500 = {
+  error: string;
+  code: string;
+};
+
+export type PutAdminExercisesIdBody = {
+  name?: string;
+  description?: string;
+  muscleGroup?: string;
+  equipment?: string;
+  instructions?: string;
+  imageUrl?: string;
+  videoUrl?: string;
+  difficulty?: string;
+};
+
+/**
+ * @nullable
+ */
+export type PutAdminExercisesId204 =
+  | (typeof PutAdminExercisesId204)[keyof typeof PutAdminExercisesId204]
+  | null;
+
+export const PutAdminExercisesId204 = {} as const;
+
+export type PutAdminExercisesId401 = {
+  error: string;
+  code: string;
+};
+
+export type PutAdminExercisesId403 = {
+  error: string;
+  code: string;
+};
+
+export type PutAdminExercisesId404 = {
+  error: string;
+  code: string;
+};
+
+export type PutAdminExercisesId500 = {
+  error: string;
+  code: string;
+};
+
+/**
+ * @nullable
+ */
+export type DeleteAdminExercisesId204 =
+  | (typeof DeleteAdminExercisesId204)[keyof typeof DeleteAdminExercisesId204]
+  | null;
+
+export const DeleteAdminExercisesId204 = {} as const;
+
+export type DeleteAdminExercisesId401 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteAdminExercisesId403 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteAdminExercisesId404 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteAdminExercisesId500 = {
   error: string;
   code: string;
 };
@@ -776,9 +1061,9 @@ export type GetMe200 = {
   friendCode: string | null;
   xp: number;
   level: number;
+  role: string;
   isPublicProfile: boolean;
   showStats: boolean;
-  role: 'ADMIN' | 'USER';
 };
 
 export type GetMe401 = {
@@ -843,6 +1128,7 @@ export type AddFriend200 = {
   friendCode: string | null;
   xp: number;
   level: number;
+  role: string;
   isPublicProfile: boolean;
   showStats: boolean;
 };
@@ -2351,6 +2637,45 @@ export type LogBodyProgress500 = {
 };
 
 /**
+ * @nullable
+ */
+export type GetMeProfile200DataSocialLinks = { [key: string]: string } | null;
+
+export type GetMeProfile200Data = {
+  id: string;
+  name: string;
+  /** @pattern ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$ */
+  email: string;
+  /** @nullable */
+  image: string | null;
+  /** @nullable */
+  bio: string | null;
+  /** @nullable */
+  socialLinks: GetMeProfile200DataSocialLinks;
+  /** @nullable */
+  friendCode: string | null;
+  xp: number;
+  level: number;
+  role: string;
+  isPublicProfile: boolean;
+  showStats: boolean;
+};
+
+export type GetMeProfile200 = {
+  data: GetMeProfile200Data;
+};
+
+export type GetMeProfile401 = {
+  error: string;
+  code: string;
+};
+
+export type GetMeProfile500 = {
+  error: string;
+  code: string;
+};
+
+/**
  * Returns all of the user's workout plans, with the option to filter by currently active plans.
  * @summary List workout plans
  */
@@ -3162,7 +3487,123 @@ export const cloneWorkoutPlan = async (
 };
 
 /**
- * @summary List all users (Admin only)
+ * @summary Get engagement metrics (Admin only)
+ */
+export type getAdminStatsResponse200 = {
+  data: GetAdminStats200;
+  status: 200;
+};
+
+export type getAdminStatsResponse401 = {
+  data: GetAdminStats401;
+  status: 401;
+};
+
+export type getAdminStatsResponse403 = {
+  data: GetAdminStats403;
+  status: 403;
+};
+
+export type getAdminStatsResponse500 = {
+  data: GetAdminStats500;
+  status: 500;
+};
+
+export type getAdminStatsResponseSuccess = getAdminStatsResponse200 & {
+  headers: Headers;
+};
+export type getAdminStatsResponseError = (
+  | getAdminStatsResponse401
+  | getAdminStatsResponse403
+  | getAdminStatsResponse500
+) & {
+  headers: Headers;
+};
+
+export type getAdminStatsResponse =
+  | getAdminStatsResponseSuccess
+  | getAdminStatsResponseError;
+
+export const getGetAdminStatsUrl = () => {
+  return `/admin/stats`;
+};
+
+export const getAdminStats = async (
+  options?: RequestInit,
+): Promise<getAdminStatsResponse> => {
+  return customFetch<getAdminStatsResponse>(getGetAdminStatsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Update user role (Admin only)
+ */
+export type patchAdminUsersIdRoleResponse204 = {
+  data: PatchAdminUsersIdRole204;
+  status: 204;
+};
+
+export type patchAdminUsersIdRoleResponse401 = {
+  data: PatchAdminUsersIdRole401;
+  status: 401;
+};
+
+export type patchAdminUsersIdRoleResponse403 = {
+  data: PatchAdminUsersIdRole403;
+  status: 403;
+};
+
+export type patchAdminUsersIdRoleResponse404 = {
+  data: PatchAdminUsersIdRole404;
+  status: 404;
+};
+
+export type patchAdminUsersIdRoleResponse500 = {
+  data: PatchAdminUsersIdRole500;
+  status: 500;
+};
+
+export type patchAdminUsersIdRoleResponseSuccess =
+  patchAdminUsersIdRoleResponse204 & {
+    headers: Headers;
+  };
+export type patchAdminUsersIdRoleResponseError = (
+  | patchAdminUsersIdRoleResponse401
+  | patchAdminUsersIdRoleResponse403
+  | patchAdminUsersIdRoleResponse404
+  | patchAdminUsersIdRoleResponse500
+) & {
+  headers: Headers;
+};
+
+export type patchAdminUsersIdRoleResponse =
+  | patchAdminUsersIdRoleResponseSuccess
+  | patchAdminUsersIdRoleResponseError;
+
+export const getPatchAdminUsersIdRoleUrl = (id: string) => {
+  return `/admin/users/${id}/role`;
+};
+
+export const patchAdminUsersIdRole = async (
+  id: string,
+  patchAdminUsersIdRoleBody: PatchAdminUsersIdRoleBody,
+  options?: RequestInit,
+): Promise<patchAdminUsersIdRoleResponse> => {
+  return customFetch<patchAdminUsersIdRoleResponse>(
+    getPatchAdminUsersIdRoleUrl(id),
+    {
+      ...options,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(patchAdminUsersIdRoleBody),
+    },
+  );
+};
+
+/**
+ * @summary List all users with pagination and sorting (Admin only)
  */
 export type getAdminUsersResponse200 = {
   data: GetAdminUsers200;
@@ -3199,17 +3640,398 @@ export type getAdminUsersResponse =
   | getAdminUsersResponseSuccess
   | getAdminUsersResponseError;
 
-export const getGetAdminUsersUrl = () => {
-  return `/admin/users`;
+export const getGetAdminUsersUrl = (params?: GetAdminUsersParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/admin/users?${stringifiedParams}`
+    : `/admin/users`;
 };
 
 export const getAdminUsers = async (
+  params?: GetAdminUsersParams,
   options?: RequestInit,
 ): Promise<getAdminUsersResponse> => {
-  return customFetch<getAdminUsersResponse>(getGetAdminUsersUrl(), {
+  return customFetch<getAdminUsersResponse>(getGetAdminUsersUrl(params), {
     ...options,
     method: "GET",
   });
+};
+
+/**
+ * @summary Ban or unban a user (Admin only)
+ */
+export type patchAdminUsersIdToggleBanResponse200 = {
+  data: PatchAdminUsersIdToggleBan200;
+  status: 200;
+};
+
+export type patchAdminUsersIdToggleBanResponse401 = {
+  data: PatchAdminUsersIdToggleBan401;
+  status: 401;
+};
+
+export type patchAdminUsersIdToggleBanResponse403 = {
+  data: PatchAdminUsersIdToggleBan403;
+  status: 403;
+};
+
+export type patchAdminUsersIdToggleBanResponse404 = {
+  data: PatchAdminUsersIdToggleBan404;
+  status: 404;
+};
+
+export type patchAdminUsersIdToggleBanResponse500 = {
+  data: PatchAdminUsersIdToggleBan500;
+  status: 500;
+};
+
+export type patchAdminUsersIdToggleBanResponseSuccess =
+  patchAdminUsersIdToggleBanResponse200 & {
+    headers: Headers;
+  };
+export type patchAdminUsersIdToggleBanResponseError = (
+  | patchAdminUsersIdToggleBanResponse401
+  | patchAdminUsersIdToggleBanResponse403
+  | patchAdminUsersIdToggleBanResponse404
+  | patchAdminUsersIdToggleBanResponse500
+) & {
+  headers: Headers;
+};
+
+export type patchAdminUsersIdToggleBanResponse =
+  | patchAdminUsersIdToggleBanResponseSuccess
+  | patchAdminUsersIdToggleBanResponseError;
+
+export const getPatchAdminUsersIdToggleBanUrl = (id: string) => {
+  return `/admin/users/${id}/toggle-ban`;
+};
+
+export const patchAdminUsersIdToggleBan = async (
+  id: string,
+  options?: RequestInit,
+): Promise<patchAdminUsersIdToggleBanResponse> => {
+  return customFetch<patchAdminUsersIdToggleBanResponse>(
+    getPatchAdminUsersIdToggleBanUrl(id),
+    {
+      ...options,
+      method: "PATCH",
+    },
+  );
+};
+
+/**
+ * @summary Delete any activity (Admin only)
+ */
+export type deleteAdminActivitiesIdResponse204 = {
+  data: DeleteAdminActivitiesId204;
+  status: 204;
+};
+
+export type deleteAdminActivitiesIdResponse401 = {
+  data: DeleteAdminActivitiesId401;
+  status: 401;
+};
+
+export type deleteAdminActivitiesIdResponse403 = {
+  data: DeleteAdminActivitiesId403;
+  status: 403;
+};
+
+export type deleteAdminActivitiesIdResponse404 = {
+  data: DeleteAdminActivitiesId404;
+  status: 404;
+};
+
+export type deleteAdminActivitiesIdResponse500 = {
+  data: DeleteAdminActivitiesId500;
+  status: 500;
+};
+
+export type deleteAdminActivitiesIdResponseSuccess =
+  deleteAdminActivitiesIdResponse204 & {
+    headers: Headers;
+  };
+export type deleteAdminActivitiesIdResponseError = (
+  | deleteAdminActivitiesIdResponse401
+  | deleteAdminActivitiesIdResponse403
+  | deleteAdminActivitiesIdResponse404
+  | deleteAdminActivitiesIdResponse500
+) & {
+  headers: Headers;
+};
+
+export type deleteAdminActivitiesIdResponse =
+  | deleteAdminActivitiesIdResponseSuccess
+  | deleteAdminActivitiesIdResponseError;
+
+export const getDeleteAdminActivitiesIdUrl = (id: string) => {
+  return `/admin/activities/${id}`;
+};
+
+export const deleteAdminActivitiesId = async (
+  id: string,
+  options?: RequestInit,
+): Promise<deleteAdminActivitiesIdResponse> => {
+  return customFetch<deleteAdminActivitiesIdResponse>(
+    getDeleteAdminActivitiesIdUrl(id),
+    {
+      ...options,
+      method: "DELETE",
+    },
+  );
+};
+
+/**
+ * @summary Delete any comment (Admin only)
+ */
+export type deleteAdminCommentsIdResponse204 = {
+  data: DeleteAdminCommentsId204;
+  status: 204;
+};
+
+export type deleteAdminCommentsIdResponse401 = {
+  data: DeleteAdminCommentsId401;
+  status: 401;
+};
+
+export type deleteAdminCommentsIdResponse403 = {
+  data: DeleteAdminCommentsId403;
+  status: 403;
+};
+
+export type deleteAdminCommentsIdResponse404 = {
+  data: DeleteAdminCommentsId404;
+  status: 404;
+};
+
+export type deleteAdminCommentsIdResponse500 = {
+  data: DeleteAdminCommentsId500;
+  status: 500;
+};
+
+export type deleteAdminCommentsIdResponseSuccess =
+  deleteAdminCommentsIdResponse204 & {
+    headers: Headers;
+  };
+export type deleteAdminCommentsIdResponseError = (
+  | deleteAdminCommentsIdResponse401
+  | deleteAdminCommentsIdResponse403
+  | deleteAdminCommentsIdResponse404
+  | deleteAdminCommentsIdResponse500
+) & {
+  headers: Headers;
+};
+
+export type deleteAdminCommentsIdResponse =
+  | deleteAdminCommentsIdResponseSuccess
+  | deleteAdminCommentsIdResponseError;
+
+export const getDeleteAdminCommentsIdUrl = (id: string) => {
+  return `/admin/comments/${id}`;
+};
+
+export const deleteAdminCommentsId = async (
+  id: string,
+  options?: RequestInit,
+): Promise<deleteAdminCommentsIdResponse> => {
+  return customFetch<deleteAdminCommentsIdResponse>(
+    getDeleteAdminCommentsIdUrl(id),
+    {
+      ...options,
+      method: "DELETE",
+    },
+  );
+};
+
+/**
+ * @summary Create a new official exercise (Admin only)
+ */
+export type postAdminExercisesResponse201 = {
+  data: PostAdminExercises201;
+  status: 201;
+};
+
+export type postAdminExercisesResponse401 = {
+  data: PostAdminExercises401;
+  status: 401;
+};
+
+export type postAdminExercisesResponse403 = {
+  data: PostAdminExercises403;
+  status: 403;
+};
+
+export type postAdminExercisesResponse500 = {
+  data: PostAdminExercises500;
+  status: 500;
+};
+
+export type postAdminExercisesResponseSuccess =
+  postAdminExercisesResponse201 & {
+    headers: Headers;
+  };
+export type postAdminExercisesResponseError = (
+  | postAdminExercisesResponse401
+  | postAdminExercisesResponse403
+  | postAdminExercisesResponse500
+) & {
+  headers: Headers;
+};
+
+export type postAdminExercisesResponse =
+  | postAdminExercisesResponseSuccess
+  | postAdminExercisesResponseError;
+
+export const getPostAdminExercisesUrl = () => {
+  return `/admin/exercises`;
+};
+
+export const postAdminExercises = async (
+  postAdminExercisesBody: PostAdminExercisesBody,
+  options?: RequestInit,
+): Promise<postAdminExercisesResponse> => {
+  return customFetch<postAdminExercisesResponse>(getPostAdminExercisesUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(postAdminExercisesBody),
+  });
+};
+
+/**
+ * @summary Update an existing exercise (Admin only)
+ */
+export type putAdminExercisesIdResponse204 = {
+  data: PutAdminExercisesId204;
+  status: 204;
+};
+
+export type putAdminExercisesIdResponse401 = {
+  data: PutAdminExercisesId401;
+  status: 401;
+};
+
+export type putAdminExercisesIdResponse403 = {
+  data: PutAdminExercisesId403;
+  status: 403;
+};
+
+export type putAdminExercisesIdResponse404 = {
+  data: PutAdminExercisesId404;
+  status: 404;
+};
+
+export type putAdminExercisesIdResponse500 = {
+  data: PutAdminExercisesId500;
+  status: 500;
+};
+
+export type putAdminExercisesIdResponseSuccess =
+  putAdminExercisesIdResponse204 & {
+    headers: Headers;
+  };
+export type putAdminExercisesIdResponseError = (
+  | putAdminExercisesIdResponse401
+  | putAdminExercisesIdResponse403
+  | putAdminExercisesIdResponse404
+  | putAdminExercisesIdResponse500
+) & {
+  headers: Headers;
+};
+
+export type putAdminExercisesIdResponse =
+  | putAdminExercisesIdResponseSuccess
+  | putAdminExercisesIdResponseError;
+
+export const getPutAdminExercisesIdUrl = (id: string) => {
+  return `/admin/exercises/${id}`;
+};
+
+export const putAdminExercisesId = async (
+  id: string,
+  putAdminExercisesIdBody: PutAdminExercisesIdBody,
+  options?: RequestInit,
+): Promise<putAdminExercisesIdResponse> => {
+  return customFetch<putAdminExercisesIdResponse>(
+    getPutAdminExercisesIdUrl(id),
+    {
+      ...options,
+      method: "PUT",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(putAdminExercisesIdBody),
+    },
+  );
+};
+
+/**
+ * @summary Delete an exercise (Admin only)
+ */
+export type deleteAdminExercisesIdResponse204 = {
+  data: DeleteAdminExercisesId204;
+  status: 204;
+};
+
+export type deleteAdminExercisesIdResponse401 = {
+  data: DeleteAdminExercisesId401;
+  status: 401;
+};
+
+export type deleteAdminExercisesIdResponse403 = {
+  data: DeleteAdminExercisesId403;
+  status: 403;
+};
+
+export type deleteAdminExercisesIdResponse404 = {
+  data: DeleteAdminExercisesId404;
+  status: 404;
+};
+
+export type deleteAdminExercisesIdResponse500 = {
+  data: DeleteAdminExercisesId500;
+  status: 500;
+};
+
+export type deleteAdminExercisesIdResponseSuccess =
+  deleteAdminExercisesIdResponse204 & {
+    headers: Headers;
+  };
+export type deleteAdminExercisesIdResponseError = (
+  | deleteAdminExercisesIdResponse401
+  | deleteAdminExercisesIdResponse403
+  | deleteAdminExercisesIdResponse404
+  | deleteAdminExercisesIdResponse500
+) & {
+  headers: Headers;
+};
+
+export type deleteAdminExercisesIdResponse =
+  | deleteAdminExercisesIdResponseSuccess
+  | deleteAdminExercisesIdResponseError;
+
+export const getDeleteAdminExercisesIdUrl = (id: string) => {
+  return `/admin/exercises/${id}`;
+};
+
+export const deleteAdminExercisesId = async (
+  id: string,
+  options?: RequestInit,
+): Promise<deleteAdminExercisesIdResponse> => {
+  return customFetch<deleteAdminExercisesIdResponse>(
+    getDeleteAdminExercisesIdUrl(id),
+    {
+      ...options,
+      method: "DELETE",
+    },
+  );
 };
 
 /**
@@ -5602,6 +6424,52 @@ export const logBodyProgress = async (
     method: "POST",
     headers: { "Content-Type": "application/json", ...options?.headers },
     body: JSON.stringify(logBodyProgressBody),
+  });
+};
+
+/**
+ * Returns the logged-in user's profile information, including role and level.
+ * @summary Get my full profile
+ */
+export type getMeProfileResponse200 = {
+  data: GetMeProfile200;
+  status: 200;
+};
+
+export type getMeProfileResponse401 = {
+  data: GetMeProfile401;
+  status: 401;
+};
+
+export type getMeProfileResponse500 = {
+  data: GetMeProfile500;
+  status: 500;
+};
+
+export type getMeProfileResponseSuccess = getMeProfileResponse200 & {
+  headers: Headers;
+};
+export type getMeProfileResponseError = (
+  | getMeProfileResponse401
+  | getMeProfileResponse500
+) & {
+  headers: Headers;
+};
+
+export type getMeProfileResponse =
+  | getMeProfileResponseSuccess
+  | getMeProfileResponseError;
+
+export const getGetMeProfileUrl = () => {
+  return `/me/profile`;
+};
+
+export const getMeProfile = async (
+  options?: RequestInit,
+): Promise<getMeProfileResponse> => {
+  return customFetch<getMeProfileResponse>(getGetMeProfileUrl(), {
+    ...options,
+    method: "GET",
   });
 };
 

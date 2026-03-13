@@ -1,14 +1,22 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatRelativeTime } from "@/lib/utils/date";
+import { FeedModeration } from "./feedModeration";
 
 interface FeedHeaderProps {
+  activityId: string;
   userName: string;
   userImage?: string | null;
   completedAt: string;
   workoutDayName: string;
 }
 
-export function FeedHeader({ userName, userImage, completedAt, workoutDayName }: FeedHeaderProps) {
+export function FeedHeader({ 
+  activityId,
+  userName, 
+  userImage, 
+  completedAt, 
+  workoutDayName 
+}: FeedHeaderProps) {
   const timeAgo = formatRelativeTime(completedAt);
 
   return (
@@ -42,6 +50,8 @@ export function FeedHeader({ userName, userImage, completedAt, workoutDayName }:
           </div>
         </div>
       </div>
+
+      <FeedModeration activityId={activityId} userName={userName} />
     </div>
   );
 }

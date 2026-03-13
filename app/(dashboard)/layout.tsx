@@ -29,6 +29,10 @@ export default async function DashboardLayout({
     getMe()
   ]);
 
+  if ((meResponse as any).status === 403 && (meResponse.data as any)?.code === "USER_BANNED") {
+    redirect("/suspended");
+  }
+
   if (homeResponse.status !== 200 || meResponse.status !== 200) {
     return (
       <div className="flex min-h-screen items-center justify-center p-6 text-center bg-background">

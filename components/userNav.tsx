@@ -65,7 +65,7 @@ export function UserNav({ user }: UserNavProps) {
     navItems.push({
       icon: ShieldIcon,
       label: "Painel Admin",
-      href: "/admin/users",
+      href: "/admin",
       active: pathname.startsWith("/admin"),
       disabled: false
     });

@@ -23,16 +23,16 @@ export async function proxy(request: NextRequest) {
   // Proteção de rotas ADMIN (Esta sim precisa ser rigorosa)
   if (pathname.startsWith('/admin')) {
     try {
-      const sessionRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-session`, {
+      const profileRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/me/profile`, {
         headers: {
           cookie: request.headers.get('cookie') || '',
         },
         cache: 'no-store'
       });
 
-      if (sessionRes.ok) {
-        const session = await sessionRes.json();
-        if (session?.user?.role !== 'ADMIN') {
+      if (profileRes.ok) {
+        const profile = await profileRes.json();
+        if (profile?.data?.role !== 'ADMIN') {
           return NextResponse.redirect(new URL('/', request.url));
         }
       } else {
@@ -40,7 +40,7 @@ export async function proxy(request: NextRequest) {
         return NextResponse.redirect(new URL('/', request.url));
       }
     } catch (error) {
-      console.error('Erro ao verificar sessão admin no proxy:', error);
+      console.error('Erro ao verificar perfil admin no proxy:', error);
       return NextResponse.redirect(new URL('/', request.url));
     }
   }
