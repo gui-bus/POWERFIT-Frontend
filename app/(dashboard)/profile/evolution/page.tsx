@@ -49,7 +49,12 @@ export default async function BodyEvolutionPage() {
           <PageHeader 
             title="EVOLUÇÃO" 
             subtitle="Sua Jornada Corporal" 
-          />
+            user={{
+              name: session.data.user.name,
+              email: session.data.user.email,
+              image: session.data.user.image,
+              role: (session.data.user as any).role as "ADMIN" | "USER",
+            }}          />
           <LogBodyProgressDialog />
         </div>
       </header>

@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdownMenu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { SignOutIcon, UserIcon, MoonIcon, SunIcon, CalendarIcon, HouseIcon, UsersIcon, TrophyIcon, ChartBarIcon } from "@phosphor-icons/react";
+import { SignOutIcon, UserIcon, MoonIcon, SunIcon, CalendarIcon, HouseIcon, UsersIcon, TrophyIcon, ChartBarIcon, ShieldIcon } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { useThemeTransition } from "@/lib/hooks/useThemeTransition";
 import { useActiveWorkoutPlanId } from "@/hooks/use-active-workout-plan-id";
@@ -23,6 +23,7 @@ interface UserNavProps {
     name: string;
     email: string;
     image?: string | null;
+    role: "ADMIN" | "USER";
   };
 }
 
@@ -59,6 +60,16 @@ export function UserNav({ user }: UserNavProps) {
     { icon: ChartBarIcon, label: "Estatísticas", href: "/stats", active: pathname === "/stats" },
     { icon: UserIcon, label: "Perfil", href: "/profile", active: pathname === "/profile" },
   ];
+
+  if (user.role === "ADMIN") {
+    navItems.push({
+      icon: ShieldIcon,
+      label: "Painel Admin",
+      href: "/admin/users",
+      active: pathname.startsWith("/admin"),
+      disabled: false
+    });
+  }
 
   return (
     <DropdownMenu>

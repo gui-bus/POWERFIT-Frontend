@@ -62,7 +62,12 @@ export default async function WorkoutDayPage({ params }: PageProps) {
     return (
       <RestDayView
         workoutDay={workoutDay}
-        user={session.data.user}
+        user={{
+          name: session.data.user.name,
+          email: session.data.user.email,
+          image: session.data.user.image,
+          role: (session.data.user as any).role as "ADMIN" | "USER",
+        }}
         planId={planId}
         dayId={dayId}
         activeSessionId={activeSession?.id}
@@ -81,6 +86,7 @@ export default async function WorkoutDayPage({ params }: PageProps) {
             name: session.data.user.name,
             email: session.data.user.email,
             image: session.data.user.image,
+            role: (session.data.user as any).role as "ADMIN" | "USER",
           }}
         />
       </header>

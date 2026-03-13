@@ -49,7 +49,12 @@ export default async function PersonalRecordsPage() {
           <PageHeader 
             title="RECORDES" 
             subtitle="Sua Galeria de Elite" 
-          />
+            user={{
+              name: session.data.user.name,
+              email: session.data.user.email,
+              image: session.data.user.image,
+              role: (session.data.user as any).role as "ADMIN" | "USER",
+            }}          />
           <UpsertPersonalRecordDialog />
         </div>
       </header>

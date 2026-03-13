@@ -11,6 +11,7 @@ interface PageHeaderProps {
     name: string;
     email: string;
     image?: string | null;
+    role: "ADMIN" | "USER";
   };
 }
 

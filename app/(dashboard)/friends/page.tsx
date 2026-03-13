@@ -66,6 +66,7 @@ export default async function FriendsPage() {
             name: me.name,
             email: me.email,
             image: me.image,
+            role: me.role as "ADMIN" | "USER",
           }}
         />
         

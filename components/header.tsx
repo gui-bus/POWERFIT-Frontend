@@ -38,6 +38,7 @@ export function Header({ homeData, userData }: HeaderProps) {
             name: userData.name,
             email: userData.email,
             image: userData.image,
+            role: userData.role as "ADMIN" | "USER",
           }} 
         />
 

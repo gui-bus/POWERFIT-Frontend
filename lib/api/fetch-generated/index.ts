@@ -635,6 +635,36 @@ export type CloneWorkoutPlan500 = {
   code: string;
 };
 
+export type GetAdminUsers200UsersItem = {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  level: number;
+  xp: number;
+  createdAt: string;
+  image?: string | null;
+};
+
+export type GetAdminUsers200 = {
+  users: GetAdminUsers200UsersItem[];
+};
+
+export type GetAdminUsers401 = {
+  error: string;
+  code: string;
+};
+
+export type GetAdminUsers403 = {
+  error: string;
+  code: string;
+};
+
+export type GetAdminUsers500 = {
+  error: string;
+  code: string;
+};
+
 /**
  * @nullable
  */
@@ -748,6 +778,7 @@ export type GetMe200 = {
   level: number;
   isPublicProfile: boolean;
   showStats: boolean;
+  role: 'ADMIN' | 'USER';
 };
 
 export type GetMe401 = {
@@ -1818,6 +1849,7 @@ export type GetExercises200ExercisesItem = {
   videoUrl: string | null;
   /** @nullable */
   difficulty: string | null;
+  isFavorite: boolean;
 };
 
 export type GetExercises200 = {
@@ -3126,6 +3158,57 @@ export const cloneWorkoutPlan = async (
   return customFetch<cloneWorkoutPlanResponse>(getCloneWorkoutPlanUrl(id), {
     ...options,
     method: "POST",
+  });
+};
+
+/**
+ * @summary List all users (Admin only)
+ */
+export type getAdminUsersResponse200 = {
+  data: GetAdminUsers200;
+  status: 200;
+};
+
+export type getAdminUsersResponse401 = {
+  data: GetAdminUsers401;
+  status: 401;
+};
+
+export type getAdminUsersResponse403 = {
+  data: GetAdminUsers403;
+  status: 403;
+};
+
+export type getAdminUsersResponse500 = {
+  data: GetAdminUsers500;
+  status: 500;
+};
+
+export type getAdminUsersResponseSuccess = getAdminUsersResponse200 & {
+  headers: Headers;
+};
+export type getAdminUsersResponseError = (
+  | getAdminUsersResponse401
+  | getAdminUsersResponse403
+  | getAdminUsersResponse500
+) & {
+  headers: Headers;
+};
+
+export type getAdminUsersResponse =
+  | getAdminUsersResponseSuccess
+  | getAdminUsersResponseError;
+
+export const getGetAdminUsersUrl = () => {
+  return `/admin/users`;
+};
+
+export const getAdminUsers = async (
+  options?: RequestInit,
+): Promise<getAdminUsersResponse> => {
+  return customFetch<getAdminUsersResponse>(getGetAdminUsersUrl(), {
+    ...options,
+    method: "GET",
   });
 };
 

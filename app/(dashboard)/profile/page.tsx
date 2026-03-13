@@ -27,7 +27,8 @@ import {
   CheckCircleIcon,
   ShareNetworkIcon,
   TrophyIcon,
-  InstagramLogoIcon
+  InstagramLogoIcon,
+  ShieldIcon
 } from "@phosphor-icons/react/ssr";
 import { LogoutButton } from "./logout-button";
 import { EditProfileDrawer } from "@/components/profile/editProfileDrawer";
@@ -81,6 +82,7 @@ export default async function ProfilePage() {
 
   const trainData = (trainDataRes as getUserTrainDataResponseSuccess).data;
   const userData = meRes.data;
+
   const xpHistory =
     xpRes.status === 200 ? (xpRes as getXpHistoryResponseSuccess).data : [];
   const friendsCount =
@@ -204,6 +206,17 @@ export default async function ProfilePage() {
               </div>
 
               <div className="flex items-center gap-3">
+                {userData.role === "ADMIN" && (
+                  <Link href="/admin/users">
+                    <button className="px-6 py-3 bg-primary text-primary-foreground rounded-2xl font-black uppercase italic tracking-widest text-[10px] flex items-center gap-2 transition-all active:scale-95 shadow-lg shadow-primary/20 cursor-pointer">
+                      <ShieldIcon
+                        weight="bold"
+                        className="size-4"
+                      />
+                      Painel Admin
+                    </button>
+                  </Link>
+                )}
                 <EditProfileDrawer 
                   initialData={trainData} 
                   user={userData}

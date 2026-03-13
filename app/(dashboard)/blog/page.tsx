@@ -66,6 +66,7 @@ export default async function BlogListingPage() {
             name: session.data.user.name,
             email: session.data.user.email,
             image: session.data.user.image,
+            role: (session.data.user as any).role as "ADMIN" | "USER",
           } : undefined}
         />
       </header>
