@@ -95,15 +95,15 @@ export default async function AdminDashboardPage() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <Link href="/admin/users" className="group">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <Link href="/admin/users" className="group text-left">
           <Card className="p-8 border-border bg-card/50 backdrop-blur-sm rounded-[2.5rem] shadow-xl hover:bg-primary/[0.02] transition-all relative overflow-hidden h-full">
             <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
               <UsersIcon weight="duotone" className="size-32" />
             </div>
             <div className="relative z-10 space-y-4">
               <h3 className="font-anton text-2xl text-foreground italic uppercase">Gerenciar Usuários</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 Visualize, bana ou altere permissões de membros da plataforma.
               </p>
               <div className="flex items-center gap-2 text-primary text-[10px] font-black uppercase tracking-widest italic">
@@ -114,13 +114,41 @@ export default async function AdminDashboardPage() {
           </Card>
         </Link>
 
-        {/* Placeholder para Gerenciamento de Conteúdo ou Exercícios se houver futuramente */}
-        <Card className="p-8 border-border bg-muted/20 backdrop-blur-sm rounded-[2.5rem] shadow-inner flex flex-col items-center justify-center text-center space-y-4 border-dashed">
-          <BarbellIcon weight="duotone" className="size-12 text-muted-foreground/30" />
-          <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground italic">
-            Novas ferramentas em breve
-          </p>
-        </Card>
+        <Link href="/admin/exercises" className="group text-left">
+          <Card className="p-8 border-border bg-card/50 backdrop-blur-sm rounded-[2.5rem] shadow-xl hover:bg-primary/[0.02] transition-all relative overflow-hidden h-full">
+            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+              <BarbellIcon weight="duotone" className="size-32" />
+            </div>
+            <div className="relative z-10 space-y-4">
+              <h3 className="font-anton text-2xl text-foreground italic uppercase tracking-wider">Biblioteca de Exercícios</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Adicione, edite ou remova exercícios oficiais do catálogo global.
+              </p>
+              <div className="flex items-center gap-2 text-primary text-[10px] font-black uppercase tracking-widest italic">
+                Gerenciar Catálogo
+                <ArrowRightIcon weight="duotone" className="size-4 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+          </Card>
+        </Link>
+
+        <Link href="/admin/templates" className="group text-left">
+          <Card className="p-8 border-border bg-card/50 backdrop-blur-sm rounded-[2.5rem] shadow-xl hover:bg-primary/[0.02] transition-all relative overflow-hidden h-full">
+            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+              <ActivityIcon weight="duotone" className="size-32" />
+            </div>
+            <div className="relative z-10 space-y-4">
+              <h3 className="font-anton text-2xl text-foreground italic uppercase tracking-wider">Planos Recomendados</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Crie templates de treino que servem de base para novos usuários.
+              </p>
+              <div className="flex items-center gap-2 text-primary text-[10px] font-black uppercase tracking-widest italic">
+                Gerenciar Templates
+                <ArrowRightIcon weight="duotone" className="size-4 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+          </Card>
+        </Link>
       </div>
     </Container>
   );

@@ -41,6 +41,7 @@ import { WEEKDAY_TRANSLATIONS } from "@/lib/utils/date";
 
 interface TemplateCardProps {
   template: GetWorkoutTemplates200TemplatesItem;
+  actions?: React.ReactNode;
 }
 
 const DIFFICULTY_MAP: Record<string, { label: string, color: string, icon: any }> = {
@@ -49,7 +50,7 @@ const DIFFICULTY_MAP: Record<string, { label: string, color: string, icon: any }
   ADVANCED: { label: "Avançado", color: "text-destructive border-destructive/20 bg-destructive/10", icon: SwordIcon },
 };
 
-export function TemplateCard({ template }: TemplateCardProps) {
+export function TemplateCard({ template, actions }: TemplateCardProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -100,8 +101,13 @@ export function TemplateCard({ template }: TemplateCardProps) {
             </h3>
           </div>
 
-          <div className="size-14 rounded-2xl bg-muted/50 flex items-center justify-center border border-border/50 group-hover:border-primary/30 transition-colors">
+          <div className="size-14 rounded-2xl bg-muted/50 flex items-center justify-center border border-border/50 group-hover:border-primary/30 transition-colors relative">
             <BarbellIcon weight="duotone" className="size-8 text-muted-foreground group-hover:text-primary transition-colors" />
+            {actions && (
+              <div className="absolute -top-2 -right-2 z-20">
+                {actions}
+              </div>
+            )}
           </div>
         </div>
 
