@@ -1,6 +1,6 @@
 "use client";
 
-import { useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { 
@@ -23,15 +23,35 @@ import {
   PencilSimpleIcon, 
   PlusIcon, 
   TrashIcon, 
-  ArrowsDownUpIcon, 
   CheckIcon, 
   XIcon,
   BarbellIcon,
-  TimerIcon
+  TimerIcon,
+  DotsSixVerticalIcon
 } from "@phosphor-icons/react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+
+// DND Kit Imports
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+  useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { restrictToVerticalAxis, restrictToFirstScrollableAncestor } from "@dnd-kit/modifiers";
 
 const exerciseSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -53,6 +73,103 @@ interface EditWorkoutDaySheetProps {
   workoutDay: GetWorkoutDayById200;
   planId: string;
   dayId: string;
+}
+
+// Sortable Item Component
+interface SortableExerciseItemProps {
+  id: string;
+  index: number;
+  form: UseFormReturn<WorkoutDayFormValues>;
+  remove: (index: number) => void;
+}
+
+function SortableExerciseItem({ id, index, form, remove }: SortableExerciseItemProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    zIndex: isDragging ? 50 : 0,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div 
+      ref={setNodeRef}
+      style={style}
+      className="bg-muted/30 border border-border/50 rounded-3xl p-6 space-y-6 relative group/item hover:border-primary/20 transition-colors"
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-center gap-4 flex-1">
+          {/* Drag Handle */}
+          <div 
+            {...attributes} 
+            {...listeners}
+            className="cursor-grab active:cursor-grabbing p-1 -ml-2 text-muted-foreground hover:text-primary transition-colors"
+          >
+            <DotsSixVerticalIcon weight="bold" className="size-5" />
+          </div>
+
+          <div className="size-8 rounded-xl bg-background border border-border flex items-center justify-center text-[10px] font-black text-primary italic shrink-0">
+            {index + 1}
+          </div>
+          <div className="flex-1 space-y-1">
+            <Input 
+              {...form.register(`exercises.${index}.name` as const)}
+              placeholder="Nome do Exercício"
+              className="h-10 bg-background/50 border-border/50 rounded-xl focus-visible:ring-primary/20 focus-visible:border-primary/30 font-bold uppercase italic text-xs"
+            />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-1 shrink-0">
+          <Button
+            type="button"
+            onClick={() => remove(index)}
+            variant="ghost"
+            size="icon"
+            className="size-8 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 cursor-pointer"
+          >
+            <TrashIcon weight="bold" className="size-4" />
+          </Button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-4">
+        <div className="space-y-1.5">
+          <Label className="text-[8px] font-black uppercase tracking-widest text-muted-foreground ml-1">Séries</Label>
+          <Input 
+            type="number"
+            {...form.register(`exercises.${index}.sets` as const)}
+            className="h-10 bg-background/50 border-border/50 rounded-xl font-bold italic text-xs text-center"
+          />
+        </div>
+        <div className="space-y-1.5">
+          <Label className="text-[8px] font-black uppercase tracking-widest text-muted-foreground ml-1">Reps</Label>
+          <Input 
+            type="number"
+            {...form.register(`exercises.${index}.reps` as const)}
+            className="h-10 bg-background/50 border-border/50 rounded-xl font-bold italic text-xs text-center"
+          />
+        </div>
+        <div className="space-y-1.5">
+          <Label className="text-[8px] font-black uppercase tracking-widest text-muted-foreground ml-1">Pausa (s)</Label>
+          <Input 
+            type="number"
+            {...form.register(`exercises.${index}.restTimeInSeconds` as const)}
+            className="h-10 bg-background/50 border-border/50 rounded-xl font-bold italic text-xs text-center"
+          />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDaySheetProps) {
@@ -81,6 +198,28 @@ export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDa
     control: form.control,
     name: "exercises",
   });
+
+  // Sensors for DND
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      const oldIndex = fields.findIndex((f) => f.id === active.id);
+      const newIndex = fields.findIndex((f) => f.id === over.id);
+      move(oldIndex, newIndex);
+    }
+  }
 
   const onSubmit = async (values: WorkoutDayFormValues) => {
     setLoading(true);
@@ -202,76 +341,27 @@ export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDa
                 </div>
 
                 <div className="space-y-4">
-                  {fields.map((field, index) => (
-                    <div 
-                      key={field.id} 
-                      className="bg-muted/30 border border-border/50 rounded-3xl p-6 space-y-6 relative group/item hover:border-primary/20 transition-colors"
+                  <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                    onDragEnd={handleDragEnd}
+                    modifiers={[restrictToVerticalAxis, restrictToFirstScrollableAncestor]}
+                  >
+                    <SortableContext
+                      items={fields.map((f) => f.id)}
+                      strategy={verticalListSortingStrategy}
                     >
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex items-center gap-4 flex-1">
-                          <div className="size-8 rounded-xl bg-background border border-border flex items-center justify-center text-[10px] font-black text-primary italic shrink-0">
-                            {index + 1}
-                          </div>
-                          <div className="flex-1 space-y-1">
-                            <Input 
-                              {...form.register(`exercises.${index}.name` as const)}
-                              placeholder="Nome do Exercício"
-                              className="h-10 bg-background/50 border-border/50 rounded-xl focus-visible:ring-primary/20 focus-visible:border-primary/30 font-bold uppercase italic text-xs"
-                            />
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-1 shrink-0">
-                          <Button
-                            type="button"
-                            onClick={() => index > 0 && move(index, index - 1)}
-                            variant="ghost"
-                            size="icon"
-                            disabled={index === 0}
-                            className="size-8 rounded-lg text-muted-foreground hover:text-primary"
-                          >
-                            <ArrowsDownUpIcon weight="bold" className="size-4" />
-                          </Button>
-                          <Button
-                            type="button"
-                            onClick={() => remove(index)}
-                            variant="ghost"
-                            size="icon"
-                            className="size-8 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-                          >
-                            <TrashIcon weight="bold" className="size-4" />
-                          </Button>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-4">
-                        <div className="space-y-1.5">
-                          <Label className="text-[8px] font-black uppercase tracking-widest text-muted-foreground ml-1">Séries</Label>
-                          <Input 
-                            type="number"
-                            {...form.register(`exercises.${index}.sets` as const)}
-                            className="h-10 bg-background/50 border-border/50 rounded-xl font-bold italic text-xs text-center"
-                          />
-                        </div>
-                        <div className="space-y-1.5">
-                          <Label className="text-[8px] font-black uppercase tracking-widest text-muted-foreground ml-1">Reps</Label>
-                          <Input 
-                            type="number"
-                            {...form.register(`exercises.${index}.reps` as const)}
-                            className="h-10 bg-background/50 border-border/50 rounded-xl font-bold italic text-xs text-center"
-                          />
-                        </div>
-                        <div className="space-y-1.5">
-                          <Label className="text-[8px] font-black uppercase tracking-widest text-muted-foreground ml-1">Pausa (s)</Label>
-                          <Input 
-                            type="number"
-                            {...form.register(`exercises.${index}.restTimeInSeconds` as const)}
-                            className="h-10 bg-background/50 border-border/50 rounded-xl font-bold italic text-xs text-center"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                      {fields.map((field, index) => (
+                        <SortableExerciseItem
+                          key={field.id}
+                          id={field.id}
+                          index={index}
+                          form={form}
+                          remove={remove}
+                        />
+                      ))}
+                    </SortableContext>
+                  </DndContext>
 
                   {fields.length === 0 && (
                     <div className="py-12 text-center border-2 border-dashed border-border rounded-3xl bg-muted/10">
