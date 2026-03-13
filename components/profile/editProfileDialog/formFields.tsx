@@ -144,14 +144,17 @@ export function ProfileFormFields({ form }: ProfileFormFieldsProps) {
             <FormItem className="space-y-3">
               <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground flex items-center gap-2 px-1">
                 <InstagramLogoIcon weight="duotone" className="size-3.5 text-primary" />
-                Instagram (Link Público)
+                Instagram (Identificador)
               </FormLabel>
               <FormControl>
-                <div className="relative">
-                  <Input
-                    placeholder="https://instagram.com/atleta"
-                    className="rounded-2xl bg-muted/30 border-border/50 h-14 font-medium text-sm focus:border-primary/50 transition-all pl-6 shadow-inner"
+                <div className="flex items-center rounded-2xl bg-muted/30 border border-border/50 h-14 overflow-hidden focus-within:border-primary/50 transition-all shadow-inner group/insta">
+                  <div className="h-full bg-muted/50 border-r border-border/50 flex items-center px-4 select-none">
+                    <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest italic">instagram.com/</span>
+                  </div>
+                  <input
                     {...field}
+                    placeholder="atleta"
+                    className="flex-1 h-full bg-transparent border-none outline-hidden px-4 font-bold text-sm italic placeholder:text-muted-foreground/30"
                   />
                 </div>
               </FormControl>

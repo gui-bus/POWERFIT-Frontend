@@ -24,7 +24,7 @@ export function ProfileAvatarSection({ user, isUploading, setIsUploading }: Prof
       <div className="relative">
         <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
         
-        <Avatar className="size-40 rounded-[2.5rem] border-4 border-background shadow-2xl transition-all duration-500 group-hover:scale-105 group-hover:rotate-2 relative z-10">
+        <Avatar className="size-40 rounded-full shadow-2xl transition-all duration-500 group-hover:scale-105 group-hover:rotate-2 relative z-10">
           <AvatarImage src={user.image || ""} className="object-cover" />
           <AvatarFallback className="bg-linear-to-br from-primary to-orange-600 text-white font-black text-5xl italic">
             {user.name.substring(0, 1).toUpperCase()}

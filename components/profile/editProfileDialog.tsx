@@ -27,7 +27,6 @@ import { CheckIcon, SpinnerGapIcon, UserCircleIcon } from "@phosphor-icons/react
 import { profileSchema, ProfileFormValues } from "./editProfileDialog/schema";
 import { ProfileAvatarSection } from "./editProfileDialog/avatarSection";
 import { ProfileFormFields } from "./editProfileDialog/formFields";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface EditProfileDialogProps {
   initialData: GetUserTrainData200;
@@ -45,6 +44,12 @@ export function EditProfileDialog({
   const [isUploading, setIsUploading] = useState(false);
   const router = useRouter();
 
+  // Helper to extract username from Instagram URL
+  const extractUsername = (url?: string | null) => {
+    if (!url) return "";
+    return url.replace("https://instagram.com/", "").replace("/", "");
+  };
+
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema) as unknown as Resolver<ProfileFormValues>,
     defaultValues: {
@@ -55,13 +60,17 @@ export function EditProfileDialog({
         ? initialData?.bodyFatPercentage * 100
         : 0,
       bio: user.bio || "",
-      instagram: user.socialLinks?.instagram || "",
+      instagram: extractUsername(user.socialLinks?.instagram),
     },
   });
 
   async function onSubmit(values: ProfileFormValues) {
     setIsLoading(true);
     try {
+      const fullInstagramUrl = values.instagram 
+        ? `https://instagram.com/${values.instagram.replace("@", "")}` 
+        : "";
+
       const [trainRes, profileRes] = await Promise.all([
         upsertUserTrainData({
           weightInGrams: values.weight * 1000,
@@ -72,7 +81,7 @@ export function EditProfileDialog({
         updateProfile({
           bio: values.bio,
           socialLinks: {
-            instagram: values.instagram || ""
+            instagram: fullInstagramUrl
           }
         })
       ]);
@@ -102,10 +111,10 @@ export function EditProfileDialog({
                 <UserCircleIcon weight="duotone" className="size-7 text-primary" />
               </div>
               <div className="space-y-1 text-left">
-                <SheetTitle className="text-4xl font-anton italic uppercase text-foreground leading-none tracking-tight">
+                <SheetTitle className="text-4xl font-anton uppercase text-foreground leading-none tracking-tight">
                   Perfil do Atleta
                 </SheetTitle>
-                <SheetDescription className="text-[10px] font-black uppercase tracking-[0.2em] text-primary italic">
+                <SheetDescription className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">
                   Configurações de Performance
                 </SheetDescription>
               </div>
@@ -116,9 +125,9 @@ export function EditProfileDialog({
         <Form {...form}>
           <form 
             onSubmit={form.handleSubmit(onSubmit)} 
-            className="space-y-10"
+            className="flex flex-col"
           >
-            <div className="px-8 space-y-10 py-6 pb-32">
+            <div className="px-8 space-y-10 py-6">
               <ProfileAvatarSection 
                 user={{ name: user.name, image: user.image }} 
                 isUploading={isUploading} 
