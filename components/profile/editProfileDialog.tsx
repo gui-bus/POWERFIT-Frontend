@@ -72,7 +72,7 @@ export function EditProfileDialog({
         updateProfile({
           bio: values.bio,
           socialLinks: {
-            instagram: values.instagram
+            instagram: values.instagram || ""
           }
         })
       ]);
