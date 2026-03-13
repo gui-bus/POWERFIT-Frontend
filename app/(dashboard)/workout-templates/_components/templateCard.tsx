@@ -42,6 +42,8 @@ import { WEEKDAY_TRANSLATIONS } from "@/lib/utils/date";
 interface TemplateCardProps {
   template: GetWorkoutTemplates200TemplatesItem;
   actions?: React.ReactNode;
+  mainAction?: React.ReactNode;
+  hideApplyButton?: boolean;
 }
 
 const DIFFICULTY_MAP: Record<string, { label: string, color: string, icon: any }> = {
@@ -50,7 +52,7 @@ const DIFFICULTY_MAP: Record<string, { label: string, color: string, icon: any }
   ADVANCED: { label: "Avançado", color: "text-destructive border-destructive/20 bg-destructive/10", icon: SwordIcon },
 };
 
-export function TemplateCard({ template, actions }: TemplateCardProps) {
+export function TemplateCard({ template, mainAction, hideApplyButton }: TemplateCardProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -103,11 +105,6 @@ export function TemplateCard({ template, actions }: TemplateCardProps) {
 
           <div className="size-14 rounded-2xl bg-muted/50 flex items-center justify-center border border-border/50 group-hover:border-primary/30 transition-colors relative">
             <BarbellIcon weight="duotone" className="size-8 text-muted-foreground group-hover:text-primary transition-colors" />
-            {actions && (
-              <div className="absolute -top-2 -right-2 z-20">
-                {actions}
-              </div>
-            )}
           </div>
         </div>
 
@@ -223,74 +220,82 @@ export function TemplateCard({ template, actions }: TemplateCardProps) {
                   </div>
                 </div>
 
-                <div className="pt-10 border-t border-border">
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button 
-                        className="w-full bg-primary hover:bg-orange-600 text-white rounded-2xl h-14 font-black uppercase italic tracking-widest shadow-xl shadow-primary/20 transition-all active:scale-95 cursor-pointer"
-                      >
-                        Ativar Protocolo Agora
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent className="bg-card border-border rounded-[2.5rem]">
-                      <AlertDialogHeader>
-                        <div className="size-12 bg-primary/10 rounded-2xl flex items-center justify-center mb-2">
-                          <WarningIcon weight="duotone" className="size-6 text-primary" />
-                        </div>
-                        <AlertDialogTitle className="text-2xl font-anton italic uppercase">Confirmar Substituição</AlertDialogTitle>
-                        <AlertDialogDescription className="text-sm font-medium text-muted-foreground leading-relaxed">
-                          Ao ativar o <span className="text-foreground font-black italic">{template.name}</span>, seu plano de treino atual será <span className="text-destructive font-black italic underline decoration-destructive/30">permanentemente substituído</span>. Deseja prosseguir com a mudança de protocolo?
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter className="gap-3 mt-4">
-                        <AlertDialogCancel className="rounded-2xl font-black uppercase italic tracking-widest text-[10px] h-12 border-border cursor-pointer">Cancelar</AlertDialogCancel>
-                        <AlertDialogAction 
-                          onClick={handleApply}
-                          disabled={loading}
-                          className="bg-primary hover:bg-orange-600 text-white rounded-2xl font-black uppercase italic tracking-widest text-[10px] h-12 px-8 shadow-xl shadow-primary/20 cursor-pointer"
+                {!hideApplyButton && (
+                  <div className="pt-10 border-t border-border">
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button 
+                          className="w-full bg-primary hover:bg-orange-600 text-white rounded-2xl h-14 font-black uppercase italic tracking-widest shadow-xl shadow-primary/20 transition-all active:scale-95 cursor-pointer"
                         >
-                          Sim, Substituir Plano
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </div>
+                          Ativar Protocolo Agora
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent className="bg-card border-border rounded-[2.5rem]">
+                        <AlertDialogHeader>
+                          <div className="size-12 bg-primary/10 rounded-2xl flex items-center justify-center mb-2">
+                            <WarningIcon weight="duotone" className="size-6 text-primary" />
+                          </div>
+                          <AlertDialogTitle className="text-2xl font-anton italic uppercase">Confirmar Substituição</AlertDialogTitle>
+                          <AlertDialogDescription className="text-sm font-medium text-muted-foreground leading-relaxed">
+                            Ao ativar o <span className="text-foreground font-black italic">{template.name}</span>, seu plano de treino atual será <span className="text-destructive font-black italic underline decoration-destructive/30">permanentemente substituído</span>. Deseja prosseguir com a mudança de protocolo?
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter className="gap-3 mt-4">
+                          <AlertDialogCancel className="rounded-2xl font-black uppercase italic tracking-widest text-[10px] h-12 border-border cursor-pointer">Cancelar</AlertDialogCancel>
+                          <AlertDialogAction 
+                            onClick={handleApply}
+                            disabled={loading}
+                            className="bg-primary hover:bg-orange-600 text-white rounded-2xl font-black uppercase italic tracking-widest text-[10px] h-12 px-8 shadow-xl shadow-primary/20 cursor-pointer"
+                          >
+                            Sim, Substituir Plano
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
+                )}
               </div>
             </SheetContent>
           </Sheet>
 
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button 
-                disabled={loading}
-                className="w-full sm:flex-2 bg-primary hover:bg-orange-600 text-white rounded-2xl h-12 gap-2 font-black uppercase italic tracking-widest text-[10px] shadow-xl shadow-primary/20 group/btn transition-all active:scale-95 cursor-pointer"
-              >
-                <PlusIcon weight="bold" className="size-4" />
-                Ativar Plano
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent className="bg-card border-border rounded-[2.5rem]">
-              <AlertDialogHeader>
-                <div className="size-12 bg-primary/10 rounded-2xl flex items-center justify-center mb-2">
-                  <WarningIcon weight="duotone" className="size-6 text-primary" />
-                </div>
-                <AlertDialogTitle className="text-2xl font-anton italic uppercase">Alterar Protocolo Ativo</AlertDialogTitle>
-                <AlertDialogDescription className="text-sm font-medium text-muted-foreground leading-relaxed">
-                  Você está prestes a substituir seu plano atual pelo <span className="text-foreground font-black italic">{template.name}</span>. Esta ação não pode ser desfeita. Confirmar alteração?
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter className="gap-3 mt-4">
-                <AlertDialogCancel className="rounded-2xl font-black uppercase italic tracking-widest text-[10px] h-12 border-border cursor-pointer">Manter Atual</AlertDialogCancel>
-                <AlertDialogAction 
-                  onClick={handleApply}
+          {mainAction ? (
+            <div className="w-full sm:flex-2">
+              {mainAction}
+            </div>
+          ) : !hideApplyButton && (
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button 
                   disabled={loading}
-                  className="bg-primary hover:bg-orange-600 text-white rounded-2xl font-black uppercase italic tracking-widest text-[10px] h-12 px-8 shadow-xl shadow-primary/20 cursor-pointer"
+                  className="w-full sm:flex-2 bg-primary hover:bg-orange-600 text-white rounded-2xl h-12 gap-2 font-black uppercase italic tracking-widest text-[10px] shadow-xl shadow-primary/20 group/btn transition-all active:scale-95 cursor-pointer"
                 >
-                  Ativar Novo Plano
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+                  <PlusIcon weight="bold" className="size-4" />
+                  Ativar Plano
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent className="bg-card border-border rounded-[2.5rem]">
+                <AlertDialogHeader>
+                  <div className="size-12 bg-primary/10 rounded-2xl flex items-center justify-center mb-2">
+                    <WarningIcon weight="duotone" className="size-6 text-primary" />
+                  </div>
+                  <AlertDialogTitle className="text-2xl font-anton italic uppercase">Alterar Protocolo Ativo</AlertDialogTitle>
+                  <AlertDialogDescription className="text-sm font-medium text-muted-foreground leading-relaxed">
+                    Você está prestes a substituir seu plano atual pelo <span className="text-foreground font-black italic">{template.name}</span>. Esta ação não pode ser desfeita. Confirmar alteração?
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter className="gap-3 mt-4">
+                  <AlertDialogCancel className="rounded-2xl font-black uppercase italic tracking-widest text-[10px] h-12 border-border cursor-pointer">Manter Atual</AlertDialogCancel>
+                  <AlertDialogAction 
+                    onClick={handleApply}
+                    disabled={loading}
+                    className="bg-primary hover:bg-orange-600 text-white rounded-2xl font-black uppercase italic tracking-widest text-[10px] h-12 px-8 shadow-xl shadow-primary/20 cursor-pointer"
+                  >
+                    Ativar Novo Plano
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          )}
         </div>
       </div>
     </Card>

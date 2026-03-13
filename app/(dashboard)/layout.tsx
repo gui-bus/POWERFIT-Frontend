@@ -12,6 +12,8 @@ import { Header } from "@/components/header";
 import BackgroundImages from "@/components/common/backgroundImages";
 import { Chat } from "@/components/chatbot/chatInterface";
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardLayout({
   children,
 }: {
@@ -22,7 +24,9 @@ export default async function DashboardLayout({
       fetchOptions: { headers: await headers() },
     });
 
-    if (!session.data?.user) redirect("/auth");
+    if (!session.data?.user) {
+      redirect("/auth");
+    }
 
     const today = dayjs();
     const [homeResponse, meResponse] = await Promise.all([
@@ -39,7 +43,6 @@ export default async function DashboardLayout({
     }
 
     const homeData = homeResponse.data;
-    // GetMeProfile200 tem os dados dentro de um campo 'data' adicional
     const userData = (meResponse.data as any).data;
 
     return (
@@ -62,13 +65,16 @@ export default async function DashboardLayout({
         <Chat />
       </div>
     );
-  } catch (error) {
-    if ((error as any).digest?.startsWith("NEXT_REDIRECT")) {
+  } catch (error: any) {
+    if (error.digest?.startsWith("NEXT_REDIRECT")) {
       throw error;
     }
     
-    // This will trigger the error.tsx boundary
-    console.error("DashboardLayout Fetch Error:", error);
+    if (error.message?.includes("Dynamic server usage") || error.digest === 'DYNAMIC_SERVER_USAGE') {
+      throw error;
+    }
+
+    console.error("DashboardLayout Critical Error:", error);
     throw error;
   }
 }

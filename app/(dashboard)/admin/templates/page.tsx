@@ -1,15 +1,9 @@
 import { getWorkoutTemplates, getMe } from "@/lib/api/fetch-generated";
 import { Container } from "@/components/common/container";
 import { PageHeader } from "@/components/pageHeader";
-import { Card } from "@/components/ui/card";
 import { TemplateCard } from "../../workout-templates/_components/templateCard";
 import { TemplateActions } from "@/components/admin/templateActions";
 import { CreateTemplateDialog } from "@/components/admin/createTemplateDialog";
-import { 
-  ActivityIcon,
-  ShieldCheckIcon,
-  PlusIcon
-} from "@phosphor-icons/react/ssr";
 import Link from "next/link";
 
 interface AdminTemplatesPageProps {
@@ -20,7 +14,9 @@ interface AdminTemplatesPageProps {
   }>;
 }
 
-export default async function AdminTemplatesPage({ searchParams }: AdminTemplatesPageProps) {
+export default async function AdminTemplatesPage({
+  searchParams,
+}: AdminTemplatesPageProps) {
   const filters = await searchParams;
   const [templatesResponse, meResponse] = await Promise.all([
     getWorkoutTemplates(filters),
@@ -44,8 +40,10 @@ export default async function AdminTemplatesPage({ searchParams }: AdminTemplate
 
   return (
     <Container className="py-10 space-y-10">
-      <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground italic mb-[-2rem]">
-        <Link href="/admin" className="hover:text-primary transition-colors">Painel</Link>
+      <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground italic mb-8">
+        <Link href="/admin" className="hover:text-primary transition-colors">
+          Painel
+        </Link>
         <span>/</span>
         <span className="text-foreground">Planos Recomendados</span>
       </div>
@@ -67,9 +65,11 @@ export default async function AdminTemplatesPage({ searchParams }: AdminTemplate
           <TemplateCard 
             key={template.id} 
             template={template} 
-            actions={<TemplateActions templateId={template.id} templateName={template.name} />}
+            hideApplyButton
+            mainAction={<TemplateActions templateId={template.id} templateName={template.name} />}
           />
         ))}
+
         {templates.length === 0 && (
           <div className="col-span-full py-20 text-center space-y-4 bg-card/50 border border-dashed border-border rounded-[3rem]">
             <p className="text-muted-foreground font-medium uppercase italic tracking-widest text-sm">
