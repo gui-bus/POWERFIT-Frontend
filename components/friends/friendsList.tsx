@@ -33,7 +33,7 @@ export function FriendsList({ friends }: FriendsListProps) {
     setLoading(friendId);
     try {
       const response = await removeFriend(friendId);
-      if (response.status === 200 || response.status === 204) {
+      if (response.status === 204) {
         toast.success("Conexão removida com sucesso.");
         router.refresh();
       } else {
