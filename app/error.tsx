@@ -13,7 +13,7 @@ export default function DashboardError({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error("Global Application Error:", error);
+    console.error("Erro Global da Aplicação:", error);
   }, [error]);
 
   return (
@@ -44,12 +44,9 @@ export default function DashboardError({
 
           <div className="space-y-8">
             <div className="space-y-2">
-              <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary italic">
-                System Connectivity Issue
-              </p>
               <h1 className="font-anton text-6xl md:text-8xl text-foreground italic uppercase tracking-tighter leading-[0.85]">
-                OFFLINE <br />
-                <span className="text-transparent bg-clip-text bg-linear-to-b from-primary to-primary/50">TERMINAL</span>
+                SERVIDOR <br />
+                <span className="text-transparent bg-clip-text bg-linear-to-b from-primary to-primary/50">DESCONECTADO</span>
               </h1>
             </div>
             
@@ -73,7 +70,7 @@ export default function DashboardError({
 
           <div className="pt-10 flex flex-col items-center gap-4 border-t border-white/5">
             <p className="text-[10px] text-muted-foreground/20 font-black uppercase tracking-[0.6em] italic">
-              PowerFIT Recovery Protocol v2.4.0
+              POWER.FIT RECOVERY SYSTEM
             </p>
           </div>
         </div>
