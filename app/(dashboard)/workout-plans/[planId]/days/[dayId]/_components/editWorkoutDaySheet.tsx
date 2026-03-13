@@ -27,14 +27,11 @@ import {
   CheckIcon, 
   XIcon,
   BarbellIcon,
-  ClockIcon,
   TimerIcon
 } from "@phosphor-icons/react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
 
 const exerciseSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -65,6 +62,8 @@ export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDa
 
   const form = useForm<WorkoutDayFormValues>({
     resolver: zodResolver(workoutDaySchema),
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
     defaultValues: {
       name: workoutDay.name,
       estimatedDurationInSeconds: workoutDay.estimatedDurationInSeconds,
@@ -86,7 +85,6 @@ export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDa
   const onSubmit = async (values: WorkoutDayFormValues) => {
     setLoading(true);
     try {
-      // Re-map order just in case
       const payload = {
         ...values,
         weekDay: workoutDay.weekDay as unknown as UpdateWorkoutDayBodyWeekDay,
@@ -119,14 +117,14 @@ export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDa
         <Button 
           variant="outline" 
           size="sm" 
-          className="rounded-xl border-white/20 bg-white/10 hover:bg-white/20 text-white gap-2 font-black uppercase italic tracking-widest text-[10px] h-10 px-4 transition-all"
+          className="rounded-xl w-full md:w-fit md:min-w-fit px-10! border-white/20 bg-white/10 hover:bg-white/20 text-white gap-2 font-black uppercase italic tracking-widest text-[10px] h-10 transition-all"
         >
           <PencilSimpleIcon weight="bold" className="size-3.5" />
           Editar Protocolo
         </Button>
       </SheetTrigger>
-      <SheetContent className="sm:max-w-2xl bg-card border-l border-border p-0 overflow-y-auto custom-scrollbar">
-        <div className="p-8 space-y-10 pb-32">
+      <SheetContent className="sm:max-w-2xl bg-card border-l border-border p-0 flex flex-col h-full overflow-hidden">
+        <div className="p-8 pb-4">
           <SheetHeader>
             <div className="space-y-1 text-left">
               <SheetTitle className="text-4xl font-anton italic uppercase text-foreground leading-none tracking-tight">
@@ -137,8 +135,15 @@ export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDa
               </SheetDescription>
             </div>
           </SheetHeader>
+        </div>
 
-          <form id="edit-workout-day-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
+        <form 
+          id="edit-workout-day-form" 
+          onSubmit={form.handleSubmit(onSubmit)} 
+          className="flex-1 flex flex-col min-h-0"
+        >
+          <div className="flex-1 overflow-y-auto custom-scrollbar px-8">
+            <div className="space-y-10 py-4 pb-10">
               {/* Informações Básicas */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-muted/30 p-6 rounded-3xl border border-border/50">
                 <div className="space-y-2">
@@ -182,10 +187,14 @@ export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDa
                   </div>
                   <Button 
                     type="button"
-                    onClick={() => append({ name: "", sets: 3, reps: 12, restTimeInSeconds: 60, order: fields.length })}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      append({ name: "", sets: 3, reps: 12, restTimeInSeconds: 60, order: fields.length });
+                    }}
                     variant="ghost"
                     size="sm"
-                    className="rounded-xl text-[10px] font-black uppercase italic tracking-widest text-primary gap-2 hover:bg-primary/10"
+                    className="rounded-xl text-[10px] font-black uppercase italic tracking-widest text-primary gap-2 hover:bg-primary/10 cursor-pointer"
                   >
                     <PlusIcon weight="bold" className="size-3" />
                     Adicionar
@@ -205,7 +214,7 @@ export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDa
                           </div>
                           <div className="flex-1 space-y-1">
                             <Input 
-                              {...form.register(`exercises.${index}.name`)}
+                              {...form.register(`exercises.${index}.name` as const)}
                               placeholder="Nome do Exercício"
                               className="h-10 bg-background/50 border-border/50 rounded-xl focus-visible:ring-primary/20 focus-visible:border-primary/30 font-bold uppercase italic text-xs"
                             />
@@ -240,7 +249,7 @@ export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDa
                           <Label className="text-[8px] font-black uppercase tracking-widest text-muted-foreground ml-1">Séries</Label>
                           <Input 
                             type="number"
-                            {...form.register(`exercises.${index}.sets`)}
+                            {...form.register(`exercises.${index}.sets` as const)}
                             className="h-10 bg-background/50 border-border/50 rounded-xl font-bold italic text-xs text-center"
                           />
                         </div>
@@ -248,7 +257,7 @@ export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDa
                           <Label className="text-[8px] font-black uppercase tracking-widest text-muted-foreground ml-1">Reps</Label>
                           <Input 
                             type="number"
-                            {...form.register(`exercises.${index}.reps`)}
+                            {...form.register(`exercises.${index}.reps` as const)}
                             className="h-10 bg-background/50 border-border/50 rounded-xl font-bold italic text-xs text-center"
                           />
                         </div>
@@ -256,7 +265,7 @@ export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDa
                           <Label className="text-[8px] font-black uppercase tracking-widest text-muted-foreground ml-1">Pausa (s)</Label>
                           <Input 
                             type="number"
-                            {...form.register(`exercises.${index}.restTimeInSeconds`)}
+                            {...form.register(`exercises.${index}.restTimeInSeconds` as const)}
                             className="h-10 bg-background/50 border-border/50 rounded-xl font-bold italic text-xs text-center"
                           />
                         </div>
@@ -271,38 +280,37 @@ export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDa
                   )}
                 </div>
               </div>
-              </form>
-              </div>
-
-              <div className="p-8 pt-4 border-t border-border bg-card/80 backdrop-blur-md sticky bottom-0 z-30">
-
-          <div className="flex gap-3">
-            <Button 
-              type="button" 
-              variant="outline" 
-              onClick={() => setOpen(false)}
-              className="flex-1 rounded-2xl h-14 font-black uppercase italic tracking-widest text-[10px] cursor-pointer"
-            >
-              <XIcon weight="bold" className="size-4 mr-2" />
-              Cancelar
-            </Button>
-            <Button 
-              type="submit" 
-              form="edit-workout-day-form"
-              disabled={loading}
-              className="flex-2 bg-primary hover:bg-orange-600 text-white rounded-2xl h-14 font-black uppercase italic tracking-widest text-[10px] shadow-xl shadow-primary/20 transition-all active:scale-95 cursor-pointer"
-            >
-              {loading ? (
-                <div className="size-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              ) : (
-                <>
-                  <CheckIcon weight="bold" className="size-4 mr-2" />
-                  Salvar Protocolo
-                </>
-              )}
-            </Button>
+            </div>
           </div>
-        </div>
+
+          <div className="p-8 pt-4 border-t border-border bg-card/80 backdrop-blur-md">
+            <div className="flex gap-3">
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={() => setOpen(false)}
+                className="flex-1 rounded-2xl h-14 font-black uppercase italic tracking-widest text-[10px] cursor-pointer"
+              >
+                <XIcon weight="bold" className="size-4 mr-2" />
+                Cancelar
+              </Button>
+              <Button 
+                type="submit" 
+                disabled={loading}
+                className="flex-2 bg-primary hover:bg-orange-600 text-white rounded-2xl h-14 font-black uppercase italic tracking-widest text-[10px] shadow-xl shadow-primary/20 transition-all active:scale-95 cursor-pointer"
+              >
+                {loading ? (
+                  <div className="size-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <>
+                    <CheckIcon weight="bold" className="size-4 mr-2" />
+                    Salvar Protocolo
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+        </form>
       </SheetContent>
     </Sheet>
   );

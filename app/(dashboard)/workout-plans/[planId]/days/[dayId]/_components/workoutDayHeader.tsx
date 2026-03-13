@@ -33,8 +33,8 @@ export function WorkoutDayHeader({
       <div className="absolute inset-0 bg-linear-to-r from-black/40 via-transparent to-transparent opacity-60" />
       
       <div className="absolute inset-0 flex flex-col justify-between p-8 sm:p-10 lg:p-14">
-        <div className="flex justify-between items-start relative z-20">
-          <div className="group/badge flex items-center gap-2 bg-black/20 backdrop-blur-xl border border-white/20 px-5 py-2 rounded-full transition-all hover:bg-white/10">
+        <div className="flex flex-col md:flex-row gap-5 justify-between items-start relative z-20">
+          <div className="group/badge w-full md:w-fit flex items-center justify-center gap-2 bg-black/20 backdrop-blur-xl px-5 py-2 rounded-full transition-all hover:bg-white/10">
             <div className="relative">
               <CalendarIcon weight="duotone" className="size-3.5 text-primary animate-pulse" />
               <div className="absolute inset-0 blur-sm bg-primary/40 size-3.5" />

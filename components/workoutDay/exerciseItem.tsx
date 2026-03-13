@@ -34,7 +34,9 @@ export function ExerciseItem({
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  const [setInputs, setSetInputs] = useState<{ weight: string; reps: string }[]>(
+  const [setInputs, setSetInputs] = useState<
+    { weight: string; reps: string }[]
+  >(
     Array.from({ length: exercise.sets }, () => ({
       weight: "",
       reps: exercise.reps.toString(),
@@ -50,7 +52,9 @@ export function ExerciseItem({
         if (response.status === 200 && response.data && !ignore) {
           setHistory(response.data.lastSets);
 
-          const lastWeight = gramsToKg(response.data.lastSets[0]?.weightInGrams);
+          const lastWeight = gramsToKg(
+            response.data.lastSets[0]?.weightInGrams,
+          );
           if (lastWeight) {
             setSetInputs((prev) =>
               prev.map((input) => ({
@@ -123,7 +127,9 @@ export function ExerciseItem({
       toast.error("Preencha o peso da primeira série primeiro.");
       return;
     }
-    setSetInputs(prev => prev.map(input => ({ ...input, weight: firstWeight })));
+    setSetInputs((prev) =>
+      prev.map((input) => ({ ...input, weight: firstWeight })),
+    );
     toast.success("Carga replicada para todas as séries!");
   };
 
@@ -165,10 +171,9 @@ export function ExerciseItem({
         if (isPersonalRecord(index)) {
           toast.success("Novo Recorde Pessoal Batido! 🔥", {
             description: `${currentInput.weight}kg neste exercício!`,
-            icon: <TrophyIcon weight="fill" className="text-yellow-500" />
+            icon: <TrophyIcon weight="fill" className="text-yellow-500" />,
           });
         }
-
       } catch {
         toast.error("Erro de conexão ao salvar série.");
         return;
@@ -193,9 +198,7 @@ export function ExerciseItem({
       <div
         className={cn(
           "group bg-card border border-border rounded-[2.5rem] overflow-hidden transition-all duration-500",
-          isAllCompleted
-            ? "opacity-60 grayscale-[0.5]"
-            : "hover:shadow-xl hover:shadow-primary/5",
+          isAllCompleted && "opacity-60 grayscale-[0.5]",
         )}
       >
         <div className="p-8 sm:p-10 space-y-8">
