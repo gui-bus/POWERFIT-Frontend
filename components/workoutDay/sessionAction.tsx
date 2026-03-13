@@ -48,7 +48,7 @@ export function SessionAction({ planId, dayId, activeSessionId, isCompleted }: S
         trigger={
           <Button 
             disabled={isLoading}
-            className="w-full h-12 rounded-full bg-primary text-primary-foreground font-bold uppercase italic tracking-widest hover:opacity-90 transition-all shadow-lg shadow-primary/20 cursor-pointer"
+            className="w-full lg:px-20 h-12 rounded-full bg-primary text-primary-foreground font-bold uppercase italic tracking-widest hover:opacity-90 transition-all shadow-lg shadow-primary/20 cursor-pointer"
           >
             {isLoading ? "Processando..." : "Marcar como concluído"}
           </Button>

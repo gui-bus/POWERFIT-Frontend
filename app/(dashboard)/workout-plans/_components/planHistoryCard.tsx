@@ -107,7 +107,7 @@ export function PlanHistoryCard({ plan }: PlanHistoryCardProps) {
               </div>
             </div>
 
-            <div className="size-16 rounded-2xl bg-muted/30 border border-border flex items-center justify-center shrink-0 hidden sm:flex">
+            <div className="size-16 rounded-2xl bg-muted/30 border border-border items-center justify-center shrink-0 hidden sm:flex">
               <BarbellIcon weight={plan.isActive ? "fill" : "duotone"} className={`size-8 ${plan.isActive ? "text-primary" : "text-muted-foreground"}`} />
             </div>
           </div>
@@ -134,7 +134,7 @@ export function PlanHistoryCard({ plan }: PlanHistoryCardProps) {
                     <AlertDialogTrigger asChild>
                       <Button 
                         disabled={loading}
-                        className="h-11 rounded-2xl bg-primary hover:bg-orange-600 text-white font-black uppercase italic tracking-widest text-[10px] px-8 transition-all active:scale-95 cursor-pointer shadow-lg shadow-primary/20 gap-2"
+                        className="h-11 px-16! rounded-2xl bg-primary hover:bg-orange-600 text-white font-black uppercase tracking-widest text-[10px] transition-all active:scale-95 cursor-pointer shadow-lg shadow-primary/20 gap-2"
                       >
                         <PlayIcon weight="fill" className="size-4" />
                         Reativar
@@ -142,17 +142,17 @@ export function PlanHistoryCard({ plan }: PlanHistoryCardProps) {
                     </AlertDialogTrigger>
                     <AlertDialogContent className="bg-card border-border rounded-[2.5rem]">
                       <AlertDialogHeader>
-                        <AlertDialogTitle className="text-2xl font-anton italic uppercase">Retomar Protocolo</AlertDialogTitle>
+                        <AlertDialogTitle className="text-2xl font-anton uppercase">Retomar Protocolo</AlertDialogTitle>
                         <AlertDialogDescription className="text-sm font-medium text-muted-foreground">
-                          Deseja tornar o plano <span className="text-foreground font-black italic">{plan.name}</span> seu protocolo ativo novamente?
+                          Deseja tornar o plano <span className="text-foreground font-black uppercase">{plan.name}{" "}</span> ativo novamente?
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter className="gap-3 mt-4">
-                        <AlertDialogCancel className="rounded-2xl font-black uppercase italic tracking-widest text-[10px] h-12 border-border cursor-pointer">Voltar</AlertDialogCancel>
+                        <AlertDialogCancel className="rounded-2xl font-black uppercase tracking-widest text-[10px] h-12 border-border cursor-pointer">Voltar</AlertDialogCancel>
                         <AlertDialogAction 
                           onClick={handleActivate}
                           disabled={loading}
-                          className="bg-primary hover:bg-orange-600 text-white rounded-2xl font-black uppercase italic tracking-widest text-[10px] h-12 px-8 cursor-pointer"
+                          className="bg-primary hover:bg-orange-600 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] h-12 px-8 cursor-pointer"
                         >
                           Ativar Agora
                         </AlertDialogAction>
@@ -172,17 +172,17 @@ export function PlanHistoryCard({ plan }: PlanHistoryCardProps) {
                     </AlertDialogTrigger>
                     <AlertDialogContent className="bg-card border-border rounded-[2.5rem]">
                       <AlertDialogHeader>
-                        <AlertDialogTitle className="text-2xl font-anton italic uppercase text-destructive">Remover Definitivamente</AlertDialogTitle>
+                        <AlertDialogTitle className="text-2xl font-anton uppercase">Remover Definitivamente</AlertDialogTitle>
                         <AlertDialogDescription className="text-sm font-medium text-muted-foreground">
-                          Confirmar exclusão permanente de <span className="text-foreground font-black italic">{plan.name}</span>? Esta ação não pode ser desfeita.
+                          Confirmar exclusão permanente de <span className="text-foreground font-black uppercase">{plan.name}</span>? Esta ação não pode ser desfeita.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter className="gap-3 mt-4">
-                        <AlertDialogCancel className="rounded-2xl font-black uppercase italic tracking-widest text-[10px] h-12 border-border cursor-pointer">Cancelar</AlertDialogCancel>
+                        <AlertDialogCancel className="rounded-2xl font-black uppercase tracking-widest text-[10px] h-12 border-border cursor-pointer">Cancelar</AlertDialogCancel>
                         <AlertDialogAction 
                           onClick={handleDelete}
                           disabled={loading}
-                          className="bg-destructive hover:bg-red-600 text-white rounded-2xl font-black uppercase italic tracking-widest text-[10px] h-12 px-8 shadow-xl shadow-destructive/20 cursor-pointer"
+                          className="bg-red-800! hover:bg-red-700! text-white rounded-2xl font-black uppercase tracking-widest text-[10px] h-12 px-8 shadow-xl shadow-destructive/20 cursor-pointer"
                         >
                           Sim, Excluir
                         </AlertDialogAction>
