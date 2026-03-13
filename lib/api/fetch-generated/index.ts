@@ -848,6 +848,116 @@ export type DeleteAdminCommentsId500 = {
   code: string;
 };
 
+export type PostAdminWorkoutTemplatesBodyDaysItemWeekDay =
+  (typeof PostAdminWorkoutTemplatesBodyDaysItemWeekDay)[keyof typeof PostAdminWorkoutTemplatesBodyDaysItemWeekDay];
+
+export const PostAdminWorkoutTemplatesBodyDaysItemWeekDay = {
+  MONDAY: "MONDAY",
+  TUESDAY: "TUESDAY",
+  WEDNESDAY: "WEDNESDAY",
+  THURSDAY: "THURSDAY",
+  FRIDAY: "FRIDAY",
+  SATURDAY: "SATURDAY",
+  SUNDAY: "SUNDAY",
+} as const;
+
+export type PostAdminWorkoutTemplatesBodyDaysItemExercisesItem = {
+  /**
+   * @minimum -9007199254740991
+   * @maximum 9007199254740991
+   */
+  order: number;
+  /** @minLength 1 */
+  name: string;
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  sets: number;
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  reps: number;
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  restTimeInSeconds: number;
+};
+
+export type PostAdminWorkoutTemplatesBodyDaysItem = {
+  /** @minLength 1 */
+  name: string;
+  weekDay: PostAdminWorkoutTemplatesBodyDaysItemWeekDay;
+  isRestDay: boolean;
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  estimatedDurationInSeconds: number;
+  exercises: PostAdminWorkoutTemplatesBodyDaysItemExercisesItem[];
+};
+
+export type PostAdminWorkoutTemplatesBody = {
+  /** @minLength 1 */
+  name: string;
+  description?: string;
+  category?: string;
+  difficulty?: string;
+  imageUrl?: string;
+  days: PostAdminWorkoutTemplatesBodyDaysItem[];
+};
+
+export type PostAdminWorkoutTemplates201 = {
+  id: string;
+  name: string;
+};
+
+export type PostAdminWorkoutTemplates401 = {
+  error: string;
+  code: string;
+};
+
+export type PostAdminWorkoutTemplates403 = {
+  error: string;
+  code: string;
+};
+
+export type PostAdminWorkoutTemplates500 = {
+  error: string;
+  code: string;
+};
+
+/**
+ * @nullable
+ */
+export type DeleteAdminWorkoutTemplatesId204 =
+  | (typeof DeleteAdminWorkoutTemplatesId204)[keyof typeof DeleteAdminWorkoutTemplatesId204]
+  | null;
+
+export const DeleteAdminWorkoutTemplatesId204 = {} as const;
+
+export type DeleteAdminWorkoutTemplatesId401 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteAdminWorkoutTemplatesId403 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteAdminWorkoutTemplatesId404 = {
+  error: string;
+  code: string;
+};
+
+export type DeleteAdminWorkoutTemplatesId500 = {
+  error: string;
+  code: string;
+};
+
 export type PostAdminExercisesBody = {
   /** @minLength 1 */
   name: string;
@@ -3845,6 +3955,126 @@ export const deleteAdminCommentsId = async (
 ): Promise<deleteAdminCommentsIdResponse> => {
   return customFetch<deleteAdminCommentsIdResponse>(
     getDeleteAdminCommentsIdUrl(id),
+    {
+      ...options,
+      method: "DELETE",
+    },
+  );
+};
+
+/**
+ * @summary Create a new workout template (Admin only)
+ */
+export type postAdminWorkoutTemplatesResponse201 = {
+  data: PostAdminWorkoutTemplates201;
+  status: 201;
+};
+
+export type postAdminWorkoutTemplatesResponse401 = {
+  data: PostAdminWorkoutTemplates401;
+  status: 401;
+};
+
+export type postAdminWorkoutTemplatesResponse403 = {
+  data: PostAdminWorkoutTemplates403;
+  status: 403;
+};
+
+export type postAdminWorkoutTemplatesResponse500 = {
+  data: PostAdminWorkoutTemplates500;
+  status: 500;
+};
+
+export type postAdminWorkoutTemplatesResponseSuccess =
+  postAdminWorkoutTemplatesResponse201 & {
+    headers: Headers;
+  };
+export type postAdminWorkoutTemplatesResponseError = (
+  | postAdminWorkoutTemplatesResponse401
+  | postAdminWorkoutTemplatesResponse403
+  | postAdminWorkoutTemplatesResponse500
+) & {
+  headers: Headers;
+};
+
+export type postAdminWorkoutTemplatesResponse =
+  | postAdminWorkoutTemplatesResponseSuccess
+  | postAdminWorkoutTemplatesResponseError;
+
+export const getPostAdminWorkoutTemplatesUrl = () => {
+  return `/admin/workout-templates`;
+};
+
+export const postAdminWorkoutTemplates = async (
+  postAdminWorkoutTemplatesBody: PostAdminWorkoutTemplatesBody,
+  options?: RequestInit,
+): Promise<postAdminWorkoutTemplatesResponse> => {
+  return customFetch<postAdminWorkoutTemplatesResponse>(
+    getPostAdminWorkoutTemplatesUrl(),
+    {
+      ...options,
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(postAdminWorkoutTemplatesBody),
+    },
+  );
+};
+
+/**
+ * @summary Delete a workout template (Admin only)
+ */
+export type deleteAdminWorkoutTemplatesIdResponse204 = {
+  data: DeleteAdminWorkoutTemplatesId204;
+  status: 204;
+};
+
+export type deleteAdminWorkoutTemplatesIdResponse401 = {
+  data: DeleteAdminWorkoutTemplatesId401;
+  status: 401;
+};
+
+export type deleteAdminWorkoutTemplatesIdResponse403 = {
+  data: DeleteAdminWorkoutTemplatesId403;
+  status: 403;
+};
+
+export type deleteAdminWorkoutTemplatesIdResponse404 = {
+  data: DeleteAdminWorkoutTemplatesId404;
+  status: 404;
+};
+
+export type deleteAdminWorkoutTemplatesIdResponse500 = {
+  data: DeleteAdminWorkoutTemplatesId500;
+  status: 500;
+};
+
+export type deleteAdminWorkoutTemplatesIdResponseSuccess =
+  deleteAdminWorkoutTemplatesIdResponse204 & {
+    headers: Headers;
+  };
+export type deleteAdminWorkoutTemplatesIdResponseError = (
+  | deleteAdminWorkoutTemplatesIdResponse401
+  | deleteAdminWorkoutTemplatesIdResponse403
+  | deleteAdminWorkoutTemplatesIdResponse404
+  | deleteAdminWorkoutTemplatesIdResponse500
+) & {
+  headers: Headers;
+};
+
+export type deleteAdminWorkoutTemplatesIdResponse =
+  | deleteAdminWorkoutTemplatesIdResponseSuccess
+  | deleteAdminWorkoutTemplatesIdResponseError;
+
+export const getDeleteAdminWorkoutTemplatesIdUrl = (id: string) => {
+  return `/admin/workout-templates/${id}`;
+};
+
+export const deleteAdminWorkoutTemplatesId = async (
+  id: string,
+  options?: RequestInit,
+): Promise<deleteAdminWorkoutTemplatesIdResponse> => {
+  return customFetch<deleteAdminWorkoutTemplatesIdResponse>(
+    getDeleteAdminWorkoutTemplatesIdUrl(id),
     {
       ...options,
       method: "DELETE",

@@ -67,12 +67,6 @@ export default function DashboardError({
               Restabelecer Conexão
             </Button>
           </div>
-
-          <div className="pt-10 flex flex-col items-center gap-4 border-t border-white/5">
-            <p className="text-[10px] text-muted-foreground/20 font-black uppercase tracking-[0.6em] italic">
-              POWER.FIT RECOVERY SYSTEM
-            </p>
-          </div>
         </div>
       </Container>
     </div>
