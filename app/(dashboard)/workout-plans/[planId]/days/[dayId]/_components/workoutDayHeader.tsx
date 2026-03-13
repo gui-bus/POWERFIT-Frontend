@@ -65,7 +65,7 @@ export function WorkoutDayHeader({
               </h2>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-3">
               {[
                 {
                   icon: TimerIcon,
@@ -78,10 +78,10 @@ export function WorkoutDayHeader({
               ].map((item, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-2.5 bg-white/5 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10 hover:border-white/30 transition-colors"
+                  className="flex w-full items-center gap-2.5 bg-white/5 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10 hover:border-white/30 transition-colors"
                 >
                   <item.icon weight="duotone" className="size-4 text-primary" />
-                  <span className="text-[11px] font-semibold text-zinc-100 uppercase tracking-wide">
+                  <span className="text-[10px] font-semibold text-zinc-100 uppercase tracking-wide">
                     {item.text}
                   </span>
                 </div>

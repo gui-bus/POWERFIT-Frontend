@@ -3,39 +3,37 @@
 import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { 
-  updateWorkoutDay, 
-  GetWorkoutDayById200, 
-  UpdateWorkoutDayBodyWeekDay 
+import {
+  updateWorkoutDay,
+  GetWorkoutDayById200,
+  UpdateWorkoutDayBodyWeekDay,
 } from "@/lib/api/fetch-generated";
-import { 
-  Sheet, 
-  SheetContent, 
-  SheetDescription, 
-  SheetHeader, 
-  SheetTitle, 
-  SheetTrigger 
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { 
-  PencilSimpleIcon, 
-  PlusIcon, 
-  TrashIcon, 
-  CheckIcon, 
+import {
+  PencilSimpleIcon,
+  PlusIcon,
+  TrashIcon,
+  CheckIcon,
   XIcon,
   BarbellIcon,
   TimerIcon,
   DotsSixVerticalIcon,
-  StarIcon
 } from "@phosphor-icons/react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { FavoriteExercisesSelection } from "./favoriteExercisesSelection";
 
-// DND Kit Imports
 import {
   DndContext,
   closestCenter,
@@ -46,14 +44,16 @@ import {
   DragEndEvent,
 } from "@dnd-kit/core";
 import {
-  arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { restrictToVerticalAxis, restrictToFirstScrollableAncestor } from "@dnd-kit/modifiers";
+import {
+  restrictToVerticalAxis,
+  restrictToFirstScrollableAncestor,
+} from "@dnd-kit/modifiers";
 
 const exerciseSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -85,7 +85,12 @@ interface SortableExerciseItemProps {
   remove: (index: number) => void;
 }
 
-function SortableExerciseItem({ id, index, form, remove }: SortableExerciseItemProps) {
+function SortableExerciseItem({
+  id,
+  index,
+  form,
+  remove,
+}: SortableExerciseItemProps) {
   const {
     attributes,
     listeners,
@@ -103,31 +108,23 @@ function SortableExerciseItem({ id, index, form, remove }: SortableExerciseItemP
   };
 
   return (
-    <div 
+    <div
       ref={setNodeRef}
       style={style}
       className="bg-muted/30 border border-border/50 rounded-3xl p-6 space-y-6 relative group/item hover:border-primary/20 transition-colors"
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-4 flex-1">
-          {/* Drag Handle */}
-          <div 
-            {...attributes} 
+          <div
+            {...attributes}
             {...listeners}
             className="cursor-grab active:cursor-grabbing p-1 -ml-2 text-muted-foreground hover:text-primary transition-colors"
           >
             <DotsSixVerticalIcon weight="bold" className="size-5" />
           </div>
 
-          <div className="size-8 rounded-xl bg-background border border-border flex items-center justify-center text-[10px] font-black text-primary italic shrink-0">
-            {index + 1}
-          </div>
-          <div className="flex-1 space-y-1">
-            <Input 
-              {...form.register(`exercises.${index}.name` as const)}
-              placeholder="Nome do Exercício"
-              className="h-10 bg-background/50 border-border/50 rounded-xl focus-visible:ring-primary/20 focus-visible:border-primary/30 font-bold uppercase italic text-xs"
-            />
+          <div className="flex items-center justify-center text-[10px] font-black shrink-0 uppercase">
+            Exercício {index < 10 ? "0" : ""}{index + 1}
           </div>
         </div>
 
@@ -144,26 +141,43 @@ function SortableExerciseItem({ id, index, form, remove }: SortableExerciseItemP
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="flex-1 space-y-1.5">
+        <Label className="text-[8px] font-black uppercase tracking-widest text-muted-foreground ml-1">
+          Nome do exercício
+        </Label>
+        <Input
+          {...form.register(`exercises.${index}.name` as const)}
+          placeholder="Nome do Exercício"
+          className="h-10 bg-background/50 border-border/50 rounded-xl focus-visible:ring-primary/20 focus-visible:border-primary/30 font-bold uppercase italic text-xs"
+        />
+      </div>
+
+      <div className="grid grid-cols-3 gap-5">
         <div className="space-y-1.5">
-          <Label className="text-[8px] font-black uppercase tracking-widest text-muted-foreground ml-1">Séries</Label>
-          <Input 
+          <Label className="text-[8px] font-black uppercase tracking-widest text-muted-foreground ml-1">
+            Séries
+          </Label>
+          <Input
             type="number"
             {...form.register(`exercises.${index}.sets` as const)}
             className="h-10 bg-background/50 border-border/50 rounded-xl font-bold italic text-xs text-center"
           />
         </div>
         <div className="space-y-1.5">
-          <Label className="text-[8px] font-black uppercase tracking-widest text-muted-foreground ml-1">Reps</Label>
-          <Input 
+          <Label className="text-[8px] font-black uppercase tracking-widest text-muted-foreground ml-1">
+            Reps
+          </Label>
+          <Input
             type="number"
             {...form.register(`exercises.${index}.reps` as const)}
             className="h-10 bg-background/50 border-border/50 rounded-xl font-bold italic text-xs text-center"
           />
         </div>
         <div className="space-y-1.5">
-          <Label className="text-[8px] font-black uppercase tracking-widest text-muted-foreground ml-1">Pausa (s)</Label>
-          <Input 
+          <Label className="text-[8px] font-black uppercase tracking-widest text-muted-foreground ml-1">
+            Pausa (s)
+          </Label>
+          <Input
             type="number"
             {...form.register(`exercises.${index}.restTimeInSeconds` as const)}
             className="h-10 bg-background/50 border-border/50 rounded-xl font-bold italic text-xs text-center"
@@ -174,7 +188,11 @@ function SortableExerciseItem({ id, index, form, remove }: SortableExerciseItemP
   );
 }
 
-export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDaySheetProps) {
+export function EditWorkoutDaySheet({
+  workoutDay,
+  planId,
+  dayId,
+}: EditWorkoutDaySheetProps) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -186,13 +204,15 @@ export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDa
     defaultValues: {
       name: workoutDay.name,
       estimatedDurationInSeconds: workoutDay.estimatedDurationInSeconds,
-      exercises: workoutDay.exercises.sort((a, b) => a.order - b.order).map(ex => ({
-        name: ex.name,
-        sets: ex.sets,
-        reps: ex.reps,
-        restTimeInSeconds: ex.restTimeInSeconds,
-        order: ex.order,
-      })),
+      exercises: workoutDay.exercises
+        .sort((a, b) => a.order - b.order)
+        .map((ex) => ({
+          name: ex.name,
+          sets: ex.sets,
+          reps: ex.reps,
+          restTimeInSeconds: ex.restTimeInSeconds,
+          order: ex.order,
+        })),
     },
   });
 
@@ -210,7 +230,7 @@ export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDa
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   function handleDragEnd(event: DragEndEvent) {
@@ -255,16 +275,16 @@ export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDa
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button 
-          variant="outline" 
-          size="sm" 
+        <Button
+          variant="outline"
+          size="sm"
           className="rounded-xl w-full md:w-fit md:min-w-fit px-10! border-white/20 bg-white/10 hover:bg-white/20 text-white gap-2 font-black uppercase italic tracking-widest text-[10px] h-10 transition-all"
         >
           <PencilSimpleIcon weight="bold" className="size-3.5" />
           Editar Protocolo
         </Button>
       </SheetTrigger>
-      <SheetContent className="sm:max-w-2xl bg-card border-l border-border p-0 flex flex-col h-full overflow-hidden">
+      <SheetContent className="w-full sm:max-w-2xl bg-card border-l border-border p-0 flex flex-col h-full overflow-hidden">
         <div className="p-8 pb-4">
           <SheetHeader>
             <div className="space-y-1 text-left">
@@ -278,35 +298,41 @@ export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDa
           </SheetHeader>
         </div>
 
-        <form 
-          id="edit-workout-day-form" 
-          onSubmit={form.handleSubmit(onSubmit)} 
+        <form
+          id="edit-workout-day-form"
+          onSubmit={form.handleSubmit(onSubmit)}
           className="flex-1 flex flex-col min-h-0"
         >
           <div className="flex-1 overflow-y-auto custom-scrollbar px-8">
-            <div className="space-y-10 py-4 pb-10">
+            <div className="space-y-10 py-4">
               {/* Informações Básicas */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-muted/30 p-6 rounded-3xl border border-border/50">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Nome do Treino</Label>
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">
+                    Nome do Treino
+                  </Label>
                   <div className="relative">
                     <BarbellIcon className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-primary" />
-                    <Input 
+                    <Input
                       {...form.register("name")}
                       placeholder="Ex: Peito e Tríceps"
                       className="pl-11 h-12 bg-background/50 border-border/50 rounded-2xl focus-visible:ring-primary/20 focus-visible:border-primary/30 font-bold uppercase italic"
                     />
                   </div>
                   {form.formState.errors.name && (
-                    <p className="text-[9px] font-bold text-destructive uppercase ml-1">{form.formState.errors.name.message}</p>
+                    <p className="text-[9px] font-bold text-destructive uppercase ml-1">
+                      {form.formState.errors.name.message}
+                    </p>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Duração (Segundos)</Label>
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">
+                    Duração (Segundos)
+                  </Label>
                   <div className="relative">
                     <TimerIcon className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-primary" />
-                    <Input 
+                    <Input
                       type="number"
                       {...form.register("estimatedDurationInSeconds")}
                       placeholder="3600"
@@ -314,38 +340,49 @@ export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDa
                     />
                   </div>
                   {form.formState.errors.estimatedDurationInSeconds && (
-                    <p className="text-[9px] font-bold text-destructive uppercase ml-1">{form.formState.errors.estimatedDurationInSeconds.message}</p>
+                    <p className="text-[9px] font-bold text-destructive uppercase ml-1">
+                      {form.formState.errors.estimatedDurationInSeconds.message}
+                    </p>
                   )}
                 </div>
               </div>
 
-              {/* Seção de Favoritos */}
-              <FavoriteExercisesSelection 
+              <FavoriteExercisesSelection
                 onSelect={(ex) => {
-                  append({ 
-                    name: ex.name, 
-                    sets: 3, 
-                    reps: 12, 
-                    restTimeInSeconds: 60, 
-                    order: fields.length 
+                  append({
+                    name: ex.name,
+                    sets: 3,
+                    reps: 12,
+                    restTimeInSeconds: 60,
+                    order: fields.length,
                   });
                   toast.success(`${ex.name} adicionado!`);
-                }} 
+                }}
               />
 
-              {/* Lista de Exercícios */}
               <div className="space-y-6">
                 <div className="flex items-center justify-between px-2">
                   <div className="flex items-center gap-2">
-                    <BarbellIcon weight="duotone" className="size-5 text-primary" />
-                    <h4 className="text-xs font-black uppercase tracking-[0.2em] italic text-foreground">Exercícios do Dia</h4>
+                    <BarbellIcon
+                      weight="duotone"
+                      className="size-5 text-primary"
+                    />
+                    <h4 className="text-xs font-black uppercase tracking-[0.2em] italic text-foreground">
+                      Exercícios do Dia
+                    </h4>
                   </div>
-                  <Button 
+                  <Button
                     type="button"
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      append({ name: "", sets: 3, reps: 12, restTimeInSeconds: 60, order: fields.length });
+                      append({
+                        name: "",
+                        sets: 3,
+                        reps: 12,
+                        restTimeInSeconds: 60,
+                        order: fields.length,
+                      });
                     }}
                     variant="ghost"
                     size="sm"
@@ -361,7 +398,10 @@ export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDa
                     sensors={sensors}
                     collisionDetection={closestCenter}
                     onDragEnd={handleDragEnd}
-                    modifiers={[restrictToVerticalAxis, restrictToFirstScrollableAncestor]}
+                    modifiers={[
+                      restrictToVerticalAxis,
+                      restrictToFirstScrollableAncestor,
+                    ]}
                   >
                     <SortableContext
                       items={fields.map((f) => f.id)}
@@ -381,7 +421,9 @@ export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDa
 
                   {fields.length === 0 && (
                     <div className="py-12 text-center border-2 border-dashed border-border rounded-3xl bg-muted/10">
-                      <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground italic">Nenhum exercício definido</p>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground italic">
+                        Nenhum exercício definido
+                      </p>
                     </div>
                   )}
                 </div>
@@ -389,21 +431,22 @@ export function EditWorkoutDaySheet({ workoutDay, planId, dayId }: EditWorkoutDa
             </div>
           </div>
 
-          <div className="p-8 pt-4 border-t border-border bg-card/80 backdrop-blur-md">
-            <div className="flex gap-3">
-              <Button 
-                type="button" 
-                variant="outline" 
+          <div className="p-8 pt-4 border-t border-border bg-card/50 backdrop-blur-md">
+            <div className="flex flex-col-reverse md:flex-row gap-5">
+              <Button
+                type="button"
+                variant="outline"
                 onClick={() => setOpen(false)}
-                className="flex-1 rounded-2xl h-14 font-black uppercase italic tracking-widest text-[10px] cursor-pointer"
+                className="rounded-2xl h-12 font-black uppercase italic tracking-widest text-[10px] cursor-pointer"
               >
                 <XIcon weight="bold" className="size-4 mr-2" />
                 Cancelar
               </Button>
-              <Button 
-                type="submit" 
+
+              <Button
+                type="submit"
                 disabled={loading}
-                className="flex-2 bg-primary hover:bg-orange-600 text-white rounded-2xl h-14 font-black uppercase italic tracking-widest text-[10px] shadow-xl shadow-primary/20 transition-all active:scale-95 cursor-pointer"
+                className="bg-primary hover:bg-orange-600 text-white rounded-2xl h-12 font-black uppercase italic tracking-widest text-[10px] shadow-xl shadow-primary/20 transition-all active:scale-95 cursor-pointer"
               >
                 {loading ? (
                   <div className="size-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
