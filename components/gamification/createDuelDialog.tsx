@@ -125,7 +125,7 @@ export function CreateDuelDialog({ friend, trigger }: CreateDuelDialogProps) {
             className="p-3 bg-muted/50 hover:bg-primary hover:text-primary-foreground rounded-2xl transition-all active:scale-90 cursor-pointer"
             title="Desafiar para Duelo"
           >
-            <SwordIcon weight="duotone" className="size-5" />
+            <SwordIcon weight="duotone" className="size-5 text-black dark:text-white" />
           </button>
         )}
       </DialogTrigger>

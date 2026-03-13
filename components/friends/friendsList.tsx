@@ -2,7 +2,12 @@
 
 import { GetFriends200Item, removeFriend } from "@/lib/api/fetch-generated";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { UsersIcon, EyeIcon, ActivityIcon, TrashIcon, WarningIcon } from "@phosphor-icons/react";
+import {
+  UsersIcon,
+  EyeIcon,
+  ActivityIcon,
+  TrashIcon,
+} from "@phosphor-icons/react";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { CreateDuelDialog } from "@/components/gamification/createDuelDialog";
@@ -56,7 +61,7 @@ export function FriendsList({ friends }: FriendsListProps) {
           />
         </div>
         <div className="space-y-2">
-          <h3 className="text-xl font-black uppercase italic tracking-tight">
+          <h3 className="text-xl font-black uppercase  tracking-tight">
             Sem conexões ainda
           </h3>
           <p className="text-sm text-muted-foreground font-medium max-w-xs mx-auto">
@@ -72,7 +77,7 @@ export function FriendsList({ friends }: FriendsListProps) {
       <div className="flex items-center justify-between px-2">
         <div className="flex items-center gap-3 text-foreground">
           <UsersIcon weight="duotone" className="size-6 text-primary" />
-          <h3 className="text-base font-black uppercase tracking-[0.2em] italic">
+          <h3 className="text-base font-black uppercase tracking-[0.2em] ">
             Seus Amigos
           </h3>
         </div>
@@ -95,14 +100,14 @@ export function FriendsList({ friends }: FriendsListProps) {
                     alt={friend.name}
                     className="object-cover"
                   />
-                  <AvatarFallback className="bg-primary/10 text-primary font-black uppercase italic rounded-2xl">
+                  <AvatarFallback className="bg-primary/10 text-primary font-black uppercase  rounded-2xl">
                     {friend.name.substring(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 <div className="absolute -bottom-1 -right-1 size-4 bg-green-500 border-2 border-card rounded-full" />
               </div>
               <div>
-                <p className="text-base font-black uppercase italic tracking-tight text-foreground group-hover:text-primary transition-colors">
+                <p className="text-base font-black uppercase  tracking-tight text-foreground group-hover:text-primary transition-colors">
                   {friend.name}
                 </p>
                 <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-0.5">
@@ -119,7 +124,10 @@ export function FriendsList({ friends }: FriendsListProps) {
                   className="p-3 bg-muted/50 hover:bg-primary hover:text-primary-foreground rounded-2xl transition-all active:scale-90 cursor-pointer text-muted-foreground"
                   title="Ver Atividades"
                 >
-                  <ActivityIcon weight="duotone" className="size-5" />
+                  <ActivityIcon
+                    weight="duotone"
+                    className="size-5 text-black dark:text-white"
+                  />
                 </button>
               </Link>
 
@@ -128,7 +136,10 @@ export function FriendsList({ friends }: FriendsListProps) {
                   className="p-3 bg-muted/50 hover:bg-primary hover:text-primary-foreground rounded-2xl transition-all active:scale-90 cursor-pointer text-muted-foreground"
                   title="Ver perfil público"
                 >
-                  <EyeIcon weight="duotone" className="size-5" />
+                  <EyeIcon
+                    weight="duotone"
+                    className="size-5 text-black dark:text-white"
+                  />
                 </button>
               </Link>
 
@@ -142,29 +153,34 @@ export function FriendsList({ friends }: FriendsListProps) {
                     {loading === friend.id ? (
                       <div className="size-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
                     ) : (
-                      <TrashIcon weight="duotone" className="size-5" />
+                      <TrashIcon
+                        weight="duotone"
+                        className="size-5 text-black dark:text-white"
+                      />
                     )}
                   </button>
                 </AlertDialogTrigger>
                 <AlertDialogContent className="bg-card border-border rounded-[2.5rem]">
                   <AlertDialogHeader>
-                    <div className="size-12 bg-destructive/10 rounded-2xl flex items-center justify-center mb-2">
-                      <WarningIcon weight="duotone" className="size-6 text-destructive" />
-                    </div>
-                    <AlertDialogTitle className="text-2xl font-anton italic uppercase text-foreground">
+                    <AlertDialogTitle className="text-2xl font-anton  uppercase text-foreground">
                       Encerrar Conexão
                     </AlertDialogTitle>
                     <AlertDialogDescription className="text-sm font-medium text-muted-foreground">
-                      Tem certeza que deseja remover <span className="text-foreground font-black italic">{friend.name}</span> da sua rede? Você deixará de acompanhar as atividades deste atleta.
+                      Tem certeza que deseja remover{" "}
+                      <span className="text-foreground font-black ">
+                        {friend.name}
+                      </span>{" "}
+                      da sua rede? Você deixará de acompanhar as atividades
+                      deste atleta.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter className="gap-3 mt-4">
-                    <AlertDialogCancel className="rounded-2xl font-black uppercase italic tracking-widest text-[10px] h-12 border-border cursor-pointer">
+                    <AlertDialogCancel className="rounded-2xl font-black uppercase  tracking-widest text-[10px] h-12 border-border cursor-pointer">
                       Cancelar
                     </AlertDialogCancel>
                     <AlertDialogAction
                       onClick={() => handleRemoveFriend(friend.id)}
-                      className="bg-destructive hover:bg-red-600 text-white rounded-2xl font-black uppercase italic tracking-widest text-[10px] h-12 px-8 shadow-xl shadow-destructive/20 cursor-pointer"
+                      className="bg-red-800! hover:bg-red-700! text-white rounded-2xl font-black uppercase  tracking-widest text-[10px] h-12 px-8 shadow-xl shadow-destructive/20 cursor-pointer"
                     >
                       Remover Conexão
                     </AlertDialogAction>
