@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://powerfit.guibus.dev/"><img src="https://img.shields.io/badge/Live_Demo-POWER.FIT-orange?style=for-the-badge&logo=vercel" alt="Live Demo" /></a>
-  <a href="https://powerfit-api.guibus.dev/swagger"><img src="https://img.shields.io/badge/API_Docs-Swagger-blue?style=for-the-badge&logo=swagger" alt="API Docs" /></a>
+  <a href="https://powerfit-api.guibus.dev/"><img src="https://img.shields.io/badge/API_Docs-Scalar-blue?style=for-the-badge&logo=scalar" alt="API Docs" /></a>
 </p>
 
 <p align="center">
