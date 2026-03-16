@@ -1,4 +1,4 @@
-# <p align="center"><img src="./public/images/powerfit-logo-dark.svg" alt="POWER.FIT Logo" width="400" /></p>
+# <p align="center"><img src="./public/images/powerfit-logo.svg" alt="POWER.FIT Logo" width="400" /></p>
 
 <p align="center">
   <strong>A Próxima Geração de Gestão Fitness: Inteligência Artificial, Gamificação e Performance.</strong>
