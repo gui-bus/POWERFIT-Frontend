@@ -1,5 +1,7 @@
 # <p align="center"><img src="./public/images/powerfit-logo.svg" alt="POWER.FIT Logo" width="400" /></p>
 
+<img src="https://github.com/gui-bus/portfolio/blob/master/public/projects/powerfit.png?raw=true" width="100%" alt="Thumbnail Powerfit">
+
 <p align="center">
   <img alt="React" height="60" width="60" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/React.svg">
   <img alt="NextJS" height="60" width="60" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/NextJS.svg">
