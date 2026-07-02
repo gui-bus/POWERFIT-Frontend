@@ -27,6 +27,9 @@
 
 ---
 
+## 💻 Deploy
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge&logo=render)](https://powerfit.guibus.dev/)
+
 ## 📖 Panorama Geral
 
 O **POWER.FIT** é uma plataforma de engenharia de software aplicada ao fitness de alta performance. Desenvolvido para resolver a fragmentação entre o registro de treinos, o acompanhamento nutricional e a motivação social, o projeto utiliza o estado da arte do ecossistema JavaScript/TypeScript para entregar uma SPA (Single Page Application) com performance de SSR (Server Side Rendering).
